@@ -5,11 +5,8 @@
   background-color: #25282C;
   color: white;
   padding: 5px;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  padding-left: 10px;
   margin-bottom: 8px;
-  border-radius: 0px;
+  border-radius: 3px;
   min-height: 23px;
   transition: background-color 0.3s ease;
   cursor: grab;

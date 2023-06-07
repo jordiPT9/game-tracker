@@ -6,6 +6,7 @@ body {
   background: #2a2c34;
   margin: 0;
   text-transform: capitalize;
+  padding: 10px;
 }
 
 button {
