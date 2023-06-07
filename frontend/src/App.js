@@ -213,7 +213,7 @@ const App = () => {
         </div>
       </Modal>
 
-      <div>
+      <div style={{display: "flex",   flexWrap: "nowrap", overflowX: "auto"}}>
         <List
           title="Want to play"
           listStatus="Want to play"
