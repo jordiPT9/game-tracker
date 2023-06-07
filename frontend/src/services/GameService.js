@@ -1,4 +1,4 @@
-export const getGames = async () => {
+export const getAllGames = async () => {
   const response = await fetch('http://localhost:8080/games');
   const games = await response.json();
   return games;
