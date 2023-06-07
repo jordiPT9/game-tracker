@@ -1,24 +1,24 @@
 import React, { useState } from 'react';
 import styles from './Game.module.css';
-import { MdModeEditOutline } from "react-icons/md";
+import { MdModeEditOutline, MdOutlineDragIndicator } from "react-icons/md";
 
 export const Game = ({ id, title, rating, status, deleteGame, onClick }) => {
   const [isHovered, setIsHovered] = useState(false);
 
-  function handleDragStart(evt) {
+  const handleDragStart = (evt) => {
     evt.dataTransfer.setData("gameId", id)
   }
 
-  function handleClick() {
+  const handleClick = () => {
     onClick(id, title, rating, status);
   }
 
-  function handleRightClick(evt) {
+  const handleRightClick = (evt) => {
     evt.preventDefault();
     deleteGame(id);
   };
 
-  function getBorderStyle() {
+  const getBorderStyle = () => {
     if (status === "Want to play") {
       return "3px solid #f1cc68";
     }
@@ -33,7 +33,7 @@ export const Game = ({ id, title, rating, status, deleteGame, onClick }) => {
     }
   }
 
-  function getRatingColor() {
+  const getRatingColor = () => {
     const value = parseFloat(rating);
 
     if (value === 10) {
@@ -72,8 +72,8 @@ export const Game = ({ id, title, rating, status, deleteGame, onClick }) => {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-
-      {title}
+      <MdOutlineDragIndicator style={{ marginRight: "5px", color: "rgba(255, 255, 255, 0.2)", fontSize: "20px" }} />
+      <span>{title}</span>
       {
         isHovered && <MdModeEditOutline
           className={styles.edit_icon}

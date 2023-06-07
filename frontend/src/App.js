@@ -46,37 +46,45 @@ const App = () => {
       })
   }
 
-  function compareGamesByRating(a, b) {
+  const compareGamesByRating = (a, b) => {
+    const NO_RATING = -0.1;
     const ratingA = parseFloat(a.rating);
     const ratingB = parseFloat(b.rating);
 
-    if (ratingA === -0.1 && ratingB !== -0.1) {
-      return 1;
-    } else if (ratingB === -0.1 && ratingA !== -0.1) {
-      return -1;
-    } else if (ratingA === -0.1 && ratingB === -0.1) {
-      return a.title.localeCompare(b.title)
+    if (ratingA === NO_RATING || ratingB === NO_RATING) {
+      if (ratingA === NO_RATING && ratingB !== NO_RATING) {
+        return 1;
+      } else if (ratingB === NO_RATING && ratingA !== NO_RATING) {
+        return -1;
+      } else {
+        return a.title.localeCompare(b.title);
+      }
+    }
+
+    const result = ratingB - ratingA;
+    if (result === 0) {
+      return a.title.localeCompare(b.title);
     }
 
     return ratingB - ratingA;
   }
 
-  async function editGame(id, title, rating, status) {
+  const editGame = async (id, title, rating, status) => {
     await updateGame({ id, title, rating, status });
     await loadGames();
   };
 
-  async function editGameStatus(id, status) {
+  const editGameStatus = async (id, status) => {
     await updateGame({ id, status });
     await loadGames();
   };
 
-  async function removeGame(id) {
+  const removeGame = async (id) => {
     await deleteGame(id)
     await loadGames();
   }
 
-  function handleGameClick(id, title, rating, status) {
+  const handleGameClick = (id, title, rating, status) => {
     console.log(id)
     setCurrentGameId(id);
     setCurrentGameTitle(title);
@@ -85,35 +93,35 @@ const App = () => {
     setIsEditGameModalVisible(true);
   }
 
-  function handleListTitleClick(status) {
+  const handleListTitleClick = (status) => {
     setCurrentGameStatus(status);
     setIsAddGameModalVisible(true);
   }
 
-  function handleCloseAddGameModal() {
+  const handleCloseAddGameModal = () => {
     setIsAddGameModalVisible(false);
     resetModalFields()
   }
 
-  function handleCloseEditGameModal() {
+  const handleCloseEditGameModal = () => {
     setIsEditGameModalVisible(false);
     resetModalFields()
   }
 
-  function handleNewGameRatingChange(evt) {
+  const handleNewGameRatingChange = (evt) => {
     const value = parseFloat(evt.target.value).toFixed(1);
     setCurrentGameRating(value.toString());
   };
 
-  function handleNewGameTitleChange(evt) {
+  const handleNewGameTitleChange = (evt) => {
     setCurrentGameTitle(evt.target.value);
   };
 
-  function handleNewGameStatusChange(evt) {
+  const handleNewGameStatusChange = (evt) => {
     setCurrentGameStatus(evt.target.id);
   }
 
-  async function saveNewGame() {
+  const saveNewGame = async () => {
     await createGame({ id: uuid(), title: currentGameTitle, rating: currentGameRating.toString(), status: currentGameStatus });
     await loadGames();
 
@@ -121,7 +129,7 @@ const App = () => {
     resetModalFields();
   }
 
-  async function saveEditedGame() {
+  const saveEditedGame = async () => {
     await editGame(currentGameId, currentGameTitle, currentGameRating.toString(), currentGameStatus);
     await loadGames();
 
@@ -129,7 +137,7 @@ const App = () => {
     resetModalFields();
   }
 
-  function resetModalFields() {
+  const resetModalFields = () => {
     setCurrentGameId("");
     setCurrentGameRating("-0.1");
     setCurrentGameTitle("");
@@ -213,7 +221,7 @@ const App = () => {
         </div>
       </Modal>
 
-      <div style={{display: "flex",   flexWrap: "nowrap", overflowX: "auto"}}>
+      <div style={{ display: "flex", flexWrap: "nowrap", overflowX: "auto" }}>
         <List
           title="Want to play"
           listStatus="Want to play"
