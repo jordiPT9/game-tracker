@@ -76,7 +76,7 @@ export const Game = ({ id, title, rating, status, deleteGame, onClick }) => {
       {title}
       {isHovered && <MdModeEditOutline className={styles.edit_icon} onClick={handleClick} />}
       <div className={styles.rating} style={{ color: getRatingColor() }} onClick={handleClick}>
-        {rating === -0.1 ? "" : rating.toFixed(1)}
+        {rating === -0.1 ? "" : rating.toString()}
       </div>
     </div>
   );
