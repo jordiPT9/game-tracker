@@ -3,17 +3,17 @@ import styles from './List.module.css';
 import { Game } from '../game/Game';
 
 export const List = ({ title, data, listStatus, updateGameStatus, deleteGame, onClickTitle, onClickGame }) => {
-  async function handleDrop(evt) {
+  const handleDrop = async (evt) => {
     evt.preventDefault();
     let gameId = evt.dataTransfer.getData("gameId");
     await updateGameStatus(gameId, listStatus);
   };
 
-  function handleDragOver(evt) {
+  const handleDragOver = (evt) => {
     evt.preventDefault();
   }
 
-  function renderGames() {
+  const renderGames = () => {
     return data.map(game => (
       <Game
         key={game.id}
