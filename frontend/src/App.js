@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styles from './App.module.css';
 import { v4 as uuid } from 'uuid';
-import { getGames, createGame, updateGame, deleteGame } from './api/GameApi';
+import { getAllGames, createGame, updateGame, deleteGame } from './services/GameService';
 
 import { List } from './components/list/List';
 import { Modal } from './components/modal/Modal';
@@ -16,7 +16,7 @@ const App = () => {
   const [isEditGameModalVisible, setIsEditGameModalVisible] = useState(false);
 
   const [currentGameId, setCurrentGameId] = useState("");
-  const [currentGameRating, setCurrentGameRating] = useState("-0.1");
+  const [currentGameRating, setCurrentGameRating] = useState(-0.1);
   const [currentGameTitle, setCurrentGameTitle] = useState("");
   const [currentGameStatus, setCurrentGameStatus] = useState("Want to play");
 
@@ -25,7 +25,7 @@ const App = () => {
   });
 
   async function loadGames() {
-    getGames()
+    getAllGames()
       .then(gameList => {
         const sortedWantToPlayGames = gameList.filter(game => game.status === 'Want to play').sort(compareGamesByRating);
         const sortedPlayingGames = gameList.filter(game => game.status === 'Playing').sort(compareGamesByRating);
@@ -48,8 +48,8 @@ const App = () => {
 
   const compareGamesByRating = (a, b) => {
     const NO_RATING = -0.1;
-    const ratingA = parseFloat(a.rating);
-    const ratingB = parseFloat(b.rating);
+    const ratingA = a.rating;
+    const ratingB = b.rating;
 
     if (ratingA === NO_RATING || ratingB === NO_RATING) {
       if (ratingA === NO_RATING && ratingB !== NO_RATING) {
@@ -85,7 +85,6 @@ const App = () => {
   }
 
   const handleGameClick = (id, title, rating, status) => {
-    console.log(id)
     setCurrentGameId(id);
     setCurrentGameTitle(title);
     setCurrentGameRating(rating);
@@ -109,8 +108,8 @@ const App = () => {
   }
 
   const handleNewGameRatingChange = (evt) => {
-    const value = parseFloat(evt.target.value).toFixed(1);
-    setCurrentGameRating(value.toString());
+    const value = parseFloat(evt.target.value);
+    setCurrentGameRating(value);
   };
 
   const handleNewGameTitleChange = (evt) => {
@@ -122,7 +121,7 @@ const App = () => {
   }
 
   const saveNewGame = async () => {
-    await createGame({ id: uuid(), title: currentGameTitle, rating: currentGameRating.toString(), status: currentGameStatus });
+    await createGame({ id: uuid(), title: currentGameTitle, rating: currentGameRating, status: currentGameStatus });
     await loadGames();
 
     setIsAddGameModalVisible(false);
@@ -130,7 +129,7 @@ const App = () => {
   }
 
   const saveEditedGame = async () => {
-    await editGame(currentGameId, currentGameTitle, currentGameRating.toString(), currentGameStatus);
+    await editGame(currentGameId, currentGameTitle, currentGameRating, currentGameStatus);
     await loadGames();
 
     setIsEditGameModalVisible(false);
@@ -139,7 +138,7 @@ const App = () => {
 
   const resetModalFields = () => {
     setCurrentGameId("");
-    setCurrentGameRating("-0.1");
+    setCurrentGameRating(-0.1);
     setCurrentGameTitle("");
     setCurrentGameStatus("Want to play");
   }
@@ -179,8 +178,8 @@ const App = () => {
         <div style={{ display: "flex", alignItems: "center", margin: "10px 5px 10px 10px" }}>
           <p>Rating</p>
           <input className={styles.rating_slider} type="range" min={-0.1} max={10} step={0.1} value={currentGameRating} onChange={handleNewGameRatingChange} />
-          <p className={styles.rating_value} style={{ color: currentGameRating === "-0.1" ? "rgba(255, 255, 255, 0.25)" : "white" }}>
-            {currentGameRating === "-0.1" ? "No rating" : currentGameRating}
+          <p className={styles.rating_value} style={{ color: currentGameRating === -0.1 ? "rgba(255, 255, 255, 0.25)" : "white" }}>
+            {currentGameRating === -0.1 ? "No rating" : currentGameRating}
           </p>
         </div>
       </Modal>
@@ -215,13 +214,13 @@ const App = () => {
         <div style={{ display: "flex", alignItems: "center", margin: "10px 5px 10px 10px" }}>
           <p>Rating</p>
           <input className={styles.rating_slider} type="range" min={-0.1} max={10} step={0.1} value={currentGameRating} onChange={handleNewGameRatingChange} />
-          <p className={styles.rating_value} style={{ color: currentGameRating === "-0.1" ? "rgba(255, 255, 255, 0.25)" : "white" }}>
-            {currentGameRating === "-0.1" ? "No rating" : currentGameRating}
+          <p className={styles.rating_value} style={{ color: currentGameRating === -0.1 ? "rgba(255, 255, 255, 0.25)" : "white" }}>
+            {currentGameRating === -0.1 ? "No rating" : currentGameRating}
           </p>
         </div>
       </Modal>
 
-      <div style={{ display: "flex", flexWrap: "nowrap", overflowX: "auto" }}>
+      <div style={{ display: "flex" }}>
         <List
           title="Want to play"
           listStatus="Want to play"

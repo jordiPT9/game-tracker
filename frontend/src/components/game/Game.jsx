@@ -20,7 +20,7 @@ export const Game = ({ id, title, rating, status, deleteGame, onClick }) => {
 
   const getBorderStyle = () => {
     if (status === "Want to play") {
-      return "3px solid #f1cc68";
+      return "3px solid #f1aa68";
     }
     else if (status === "Playing") {
       return "3px solid #7ff168";
@@ -34,7 +34,7 @@ export const Game = ({ id, title, rating, status, deleteGame, onClick }) => {
   }
 
   const getRatingColor = () => {
-    const value = parseFloat(rating);
+    const value = rating;
 
     if (value === 10) {
       return "rgb(191, 104, 241)";
@@ -73,15 +73,10 @@ export const Game = ({ id, title, rating, status, deleteGame, onClick }) => {
       onMouseLeave={() => setIsHovered(false)}
     >
       <MdOutlineDragIndicator style={{ marginRight: "5px", color: "rgba(255, 255, 255, 0.2)", fontSize: "20px" }} />
-      <span>{title}</span>
-      {
-        isHovered && <MdModeEditOutline
-          className={styles.edit_icon}
-          onClick={handleClick}
-        />
-      }
+      {title}
+      {isHovered && <MdModeEditOutline className={styles.edit_icon} onClick={handleClick} />}
       <div className={styles.rating} style={{ color: getRatingColor() }} onClick={handleClick}>
-        {rating === "-0.1" ? "" : rating}
+        {rating === -0.1 ? "" : rating.toFixed(1)}
       </div>
     </div>
   );
