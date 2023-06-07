@@ -1,67 +1,76 @@
-const express = require('express');
-const fs = require('fs');
+const express = require("express");
+const fs = require("fs");
 const cors = require("cors");
-const bodyParser = require('body-parser');
+const bodyParser = require("body-parser");
 
+const gamesFilePath = "games.json";
 const corsOptions = {
-  origin: '*',
+  origin: "*",
   credentials: true,
   optionSuccessStatus: 200,
-}
+};
 
 const app = express();
-const gamesFilePath = 'games.json';
 
 app.use(express.json());
-app.use(cors(corsOptions))
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
-app.post('/games', (req, res) => {
+app.post("/games", addGame);
+app.delete("/games", removeGame);
+app.put("/games", modifyGame);
+app.get("/games", getAllGames);
+
+function addGame(req, res) {
   const { id, title, rating, status } = req.body;
 
   if (!id || !title || !rating || !status) {
-    return res.status(400).json({ error: 'Missing required query parameters' });
+    return res.status(400).json({ error: "Missing required query parameters" });
   }
 
-  const games = getAllGames();
+  const games = loadGames();
   games.push({ id, title, rating, status });
   saveGames(games);
 
-  res.json({ message: 'Game added successfully' });
-});
+  res.json({ message: "Game added successfully" });
+}
 
-app.delete('/games', (req, res) => {
+function removeGame(req, res) {
   const { id } = req.query;
 
   if (!id) {
-    return res.status(400).json({ error: 'Missing required query parameter: id' });
+    return res
+      .status(400)
+      .json({ error: "Missing required query parameter: id" });
   }
 
-  const games = getAllGames();
-  const index = games.findIndex(game => game.id === id);
+  const games = loadGames();
+  const index = games.findIndex((game) => game.id === id);
 
   if (index === -1) {
-    return res.status(404).json({ error: 'Game not found' });
+    return res.status(404).json({ error: "Game not found" });
   }
 
   games.splice(index, 1);
   saveGames(games);
 
-  res.json({ message: 'Game removed successfully' });
-});
+  res.json({ message: "Game removed successfully" });
+}
 
-app.put('/games', (req, res) => {
+function modifyGame(req, res) {
   const { id, title, rating, status } = req.body;
 
   if (!id) {
-    return res.status(400).json({ error: 'Missing required query parameter: id' });
+    return res
+      .status(400)
+      .json({ error: "Missing required query parameter: id" });
   }
 
-  const games = getAllGames();
-  const game = games.find(game => game.id === id);
+  const games = loadGames();
+  const game = games.find((game) => game.id === id);
 
   if (!game) {
-    return res.status(404).json({ error: 'Game not found' });
+    return res.status(404).json({ error: "Game not found" });
   }
 
   if (title) {
@@ -78,15 +87,15 @@ app.put('/games', (req, res) => {
 
   saveGames(games);
 
-  res.json({ message: 'Game modified successfully' });
-});
+  res.json({ message: "Game modified successfully" });
+}
 
-app.get('/games', (req, res) => {
-  const games = getAllGames();
+function getAllGames(req, res) {
+  const games = loadGames();
   res.json(games);
-});
+}
 
-function getAllGames() {
+function loadGames() {
   const data = fs.readFileSync(gamesFilePath);
   return JSON.parse(data);
 }
@@ -95,4 +104,4 @@ function saveGames(games) {
   fs.writeFileSync(gamesFilePath, JSON.stringify(games, null, 2));
 }
 
-app.listen(8080, console.log('Server started on port 8080...'));
+app.listen(8080, console.log("Server started on port 8080..."));
