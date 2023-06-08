@@ -1,87 +1,36 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styles from './App.module.css';
 import { v4 as uuid } from 'uuid';
-import { getAllGames, createGame, updateGame, deleteGame } from './services/GameService';
+import { createGame, updateGame, deleteGame } from './services/GameService';
 
 import { List } from './components/list/List';
 import { Modal } from './components/modal/Modal';
+import { useFetchGames } from './hooks/useFetchGames';
+import { useModal } from './hooks/useModal';
 
 const App = () => {
-  const [wantToPlayGames, setWantToPlayGames] = useState([]);
-  const [playingGames, setPlayingGames] = useState([]);
-  const [playedGames, setPlayedGames] = useState([]);
-  const [abandonedGames, setAbandonedGames] = useState([]);
-
-  const [isAddGameModalVisible, setIsAddGameModalVisible] = useState(false);
-  const [isEditGameModalVisible, setIsEditGameModalVisible] = useState(false);
+  const { games, fetchGames } = useFetchGames();
+  const addGameModal = useModal();
+  const editGameModal = useModal();
 
   const [currentGameId, setCurrentGameId] = useState("");
   const [currentGameRating, setCurrentGameRating] = useState(-0.1);
   const [currentGameTitle, setCurrentGameTitle] = useState("");
   const [currentGameStatus, setCurrentGameStatus] = useState("Want to play");
 
-  useEffect(() => {
-    loadGames();
-  });
-
-  async function loadGames() {
-    getAllGames()
-      .then(gameList => {
-        const sortedWantToPlayGames = gameList.filter(game => game.status === 'Want to play').sort(compareGamesByRating);
-        const sortedPlayingGames = gameList.filter(game => game.status === 'Playing').sort(compareGamesByRating);
-        const sortedPlayedGames = gameList.filter(game => game.status === 'Played').sort(compareGamesByRating);
-        const sortedAbandonedGames = gameList.filter(game => game.status === 'Abandoned').sort(compareGamesByRating);
-
-        setWantToPlayGames(sortedWantToPlayGames);
-        setPlayingGames(sortedPlayingGames);
-        setPlayedGames(sortedPlayedGames);
-        setAbandonedGames(sortedAbandonedGames);
-      })
-      .catch(error => {
-        setWantToPlayGames([]);
-        setPlayingGames([]);
-        setPlayedGames([]);
-        setAbandonedGames([]);
-        console.log(error)
-      })
-  }
-
-  const compareGamesByRating = (a, b) => {
-    const NO_RATING = -0.1;
-    const ratingA = a.rating;
-    const ratingB = b.rating;
-
-    if (ratingA === NO_RATING || ratingB === NO_RATING) {
-      if (ratingA === NO_RATING && ratingB !== NO_RATING) {
-        return 1;
-      } else if (ratingB === NO_RATING && ratingA !== NO_RATING) {
-        return -1;
-      } else {
-        return a.title.localeCompare(b.title);
-      }
-    }
-
-    const result = ratingB - ratingA;
-    if (result === 0) {
-      return a.title.localeCompare(b.title);
-    }
-
-    return ratingB - ratingA;
-  }
-
   const editGame = async (id, title, rating, status) => {
     await updateGame({ id, title, rating, status });
-    await loadGames();
+    await fetchGames();
   };
 
   const editGameStatus = async (id, status) => {
     await updateGame({ id, status });
-    await loadGames();
+    await fetchGames();
   };
 
   const removeGame = async (id) => {
     await deleteGame(id)
-    await loadGames();
+    await fetchGames();
   }
 
   const handleGameClick = (id, title, rating, status) => {
@@ -89,21 +38,21 @@ const App = () => {
     setCurrentGameTitle(title);
     setCurrentGameRating(rating);
     setCurrentGameStatus(status);
-    setIsEditGameModalVisible(true);
+    editGameModal.showModal();
   }
 
   const handleListTitleClick = (status) => {
     setCurrentGameStatus(status);
-    setIsAddGameModalVisible(true);
+    addGameModal.showModal();
   }
 
   const handleCloseAddGameModal = () => {
-    setIsAddGameModalVisible(false);
+    addGameModal.closeModal();
     resetModalFields()
   }
 
   const handleCloseEditGameModal = () => {
-    setIsEditGameModalVisible(false);
+    editGameModal.closeModal();
     resetModalFields()
   }
 
@@ -122,17 +71,17 @@ const App = () => {
 
   const saveNewGame = async () => {
     await createGame({ id: uuid(), title: currentGameTitle, rating: currentGameRating, status: currentGameStatus });
-    await loadGames();
+    await fetchGames();
 
-    setIsAddGameModalVisible(false);
+    addGameModal.closeModal();
     resetModalFields();
   }
 
   const saveEditedGame = async () => {
     await editGame(currentGameId, currentGameTitle, currentGameRating, currentGameStatus);
-    await loadGames();
+    await fetchGames();
 
-    setIsEditGameModalVisible(false);
+    editGameModal.closeModal();
     resetModalFields();
   }
 
@@ -150,7 +99,7 @@ const App = () => {
     <div className="app">
       <Modal
         title={"ADD GAME"}
-        visible={isAddGameModalVisible}
+        visible={addGameModal.isVisible}
         onSave={saveNewGame}
         onClose={handleCloseAddGameModal}
       >
@@ -186,7 +135,7 @@ const App = () => {
 
       <Modal
         title={"EDIT GAME"}
-        visible={isEditGameModalVisible}
+        visible={editGameModal.isVisible}
         onSave={saveEditedGame}
         onClose={handleCloseEditGameModal}
       >
@@ -224,7 +173,7 @@ const App = () => {
         <List
           title="Want to play"
           listStatus="Want to play"
-          data={wantToPlayGames}
+          data={games.wantToPlayGames}
           updateGameStatus={editGameStatus}
           deleteGame={removeGame}
           onClickTitle={() => handleListTitleClick("Want to play")}
@@ -234,7 +183,7 @@ const App = () => {
         <List
           title="Playing"
           listStatus="Playing"
-          data={playingGames}
+          data={games.playingGames}
           updateGameStatus={editGameStatus}
           deleteGame={removeGame}
           onClickTitle={() => handleListTitleClick("Playing")}
@@ -244,7 +193,7 @@ const App = () => {
         <List
           title="Played"
           listStatus="Played"
-          data={playedGames}
+          data={games.playedGames}
           updateGameStatus={editGameStatus}
           deleteGame={removeGame}
           onClickTitle={() => handleListTitleClick("Played")}
@@ -254,7 +203,7 @@ const App = () => {
         <List
           title="Abandoned"
           listStatus="Abandoned"
-          data={abandonedGames}
+          data={games.abandonedGames}
           updateGameStatus={editGameStatus}
           deleteGame={removeGame}
           onClickTitle={() => handleListTitleClick("Abandoned")}
