@@ -17,10 +17,7 @@ export const List = ({ title, data, listStatus, updateGameStatus, deleteGame, on
     return data.map(game => (
       <Game
         key={game.id}
-        id={game.id}
-        title={game.title}
-        rating={game.rating}
-        status={game.status}
+        game={game}
         deleteGame={deleteGame}
         onClick={onClickGame}
       />

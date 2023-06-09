@@ -4,3 +4,5 @@ export const STATUS = Object.freeze({
   PLAYED: "Played",
   ABANDONED: "Abandoned"
 })
+
+export const NO_RATING = Object.freeze(-0.1)

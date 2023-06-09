@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styles from './App.module.css';
 import { v4 as uuid } from 'uuid';
 import { createGame, updateGame, deleteGame } from './services/gameService';
-import { STATUS } from './constants/constants'
+import { STATUS, NO_RATING } from './constants/constants'
 import { List } from './components/list/List';
 import { Modal } from './components/modal/Modal';
 import { useFetchGames } from './hooks/useFetchGames';
@@ -14,7 +14,7 @@ const App = () => {
   const editGameModal = useModal();
 
   const [currentGameId, setCurrentGameId] = useState("");
-  const [currentGameRating, setCurrentGameRating] = useState(-0.1);
+  const [currentGameRating, setCurrentGameRating] = useState(NO_RATING);
   const [currentGameTitle, setCurrentGameTitle] = useState("");
   const [currentGameStatus, setCurrentGameStatus] = useState(STATUS.WANT_TO_PLAY);
 
@@ -87,7 +87,7 @@ const App = () => {
 
   const resetModalFields = () => {
     setCurrentGameId("");
-    setCurrentGameRating(-0.1);
+    setCurrentGameRating(NO_RATING);
     setCurrentGameTitle("");
     setCurrentGameStatus(STATUS.WANT_TO_PLAY);
   }
@@ -135,9 +135,9 @@ const App = () => {
 
         <div style={{ display: "flex", alignItems: "center", margin: "10px 5px 10px 10px" }}>
           <p>Rating</p>
-          <input className={styles.rating_slider} type="range" min={-0.1} max={10} step={0.1} value={currentGameRating} onChange={handleNewGameRatingChange} />
-          <p className={styles.rating_value} style={{ color: currentGameRating === -0.1 ? "rgba(255, 255, 255, 0.25)" : "white" }}>
-            {currentGameRating === -0.1 ? "No rating" : currentGameRating}
+          <input className={styles.rating_slider} type="range" min={NO_RATING} max={10} step={0.1} value={currentGameRating} onChange={handleNewGameRatingChange} />
+          <p className={styles.rating_value} style={{ color: currentGameRating === NO_RATING ? "rgba(255, 255, 255, 0.25)" : "white" }}>
+            {currentGameRating === NO_RATING ? "No rating" : currentGameRating}
           </p>
         </div>
       </Modal>
@@ -171,16 +171,16 @@ const App = () => {
 
         <div style={{ display: "flex", alignItems: "center", margin: "10px 5px 10px 10px" }}>
           <p>Rating</p>
-          <input className={styles.rating_slider} type="range" min={-0.1} max={10} step={0.1} value={currentGameRating} onChange={handleNewGameRatingChange} />
-          <p className={styles.rating_value} style={{ color: currentGameRating === -0.1 ? "rgba(255, 255, 255, 0.25)" : "white" }}>
-            {currentGameRating === -0.1 ? "No rating" : currentGameRating}
+          <input className={styles.rating_slider} type="range" min={NO_RATING} max={10} step={0.1} value={currentGameRating} onChange={handleNewGameRatingChange} />
+          <p className={styles.rating_value} style={{ color: currentGameRating === NO_RATING ? "rgba(255, 255, 255, 0.25)" : "white" }}>
+            {currentGameRating === NO_RATING ? "No rating" : currentGameRating}
           </p>
         </div>
       </Modal>
 
       <div style={{ display: "flex" }}>
         <List
-          title={STATUS.WANT_TO_PLAY}
+          title="Want to play"
           listStatus={STATUS.WANT_TO_PLAY}
           data={games.wantToPlayGames}
           updateGameStatus={editGameStatus}
@@ -190,7 +190,7 @@ const App = () => {
         />
 
         <List
-          title={STATUS.PLAYING}
+          title="Playing"
           listStatus={STATUS.PLAYING}
           data={games.playingGames}
           updateGameStatus={editGameStatus}
@@ -200,7 +200,7 @@ const App = () => {
         />
 
         <List
-          title={STATUS.PLAYED}
+          title="Played"
           listStatus={STATUS.PLAYED}
           data={games.playedGames}
           updateGameStatus={editGameStatus}
@@ -210,7 +210,7 @@ const App = () => {
         />
 
         <List
-          title={STATUS.ABANDONED}
+          title="Abandoned"
           listStatus={STATUS.ABANDONED}
           data={games.abandonedGames}
           updateGameStatus={editGameStatus}

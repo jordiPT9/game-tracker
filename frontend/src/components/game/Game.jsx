@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import styles from './Game.module.css';
-import { STATUS } from '../../constants/constants';
+import { STATUS, NO_RATING } from '../../constants/constants';
 import { MdModeEditOutline, MdOutlineDragIndicator } from "react-icons/md";
 
-export const Game = ({ id, title, rating, status, deleteGame, onClick }) => {
+export const Game = ({ game, deleteGame, onClick }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const { id, title, rating, status } = game;
 
   const handleDragStart = (evt) => {
     evt.dataTransfer.setData("gameId", id)
@@ -35,27 +36,25 @@ export const Game = ({ id, title, rating, status, deleteGame, onClick }) => {
   }
 
   const getRatingColor = () => {
-    const value = rating;
-
-    if (value === 10) {
+    if (rating === 10) {
       return "rgb(191, 104, 241)";
     }
-    else if (value >= 9 && value < 10) {
+    else if (rating >= 9 && rating < 10) {
       return "rgb(104, 236, 241)";
     }
-    else if (value >= 8 && value < 9) {
+    else if (rating >= 8 && rating < 9) {
       return "rgb(104, 241, 161)";
     }
-    else if (value >= 7 && value < 8) {
+    else if (rating >= 7 && rating < 8) {
       return "rgb(154, 241, 104)";
     }
-    else if (value >= 6 && value < 7) {
+    else if (rating >= 6 && rating < 7) {
       return "rgb(241, 232, 104)";
     }
-    else if (value >= 5 && value < 6) {
+    else if (rating >= 5 && rating < 6) {
       return "rgb(241, 159, 104)";
     }
-    else if (value >= 0 && value < 5) {
+    else if (rating >= 0 && rating < 5) {
       return "rgb(241, 104, 104)";
     } else {
       return "white";
@@ -77,7 +76,7 @@ export const Game = ({ id, title, rating, status, deleteGame, onClick }) => {
       {title}
       {isHovered && <MdModeEditOutline className={styles.edit_icon} onClick={handleClick} />}
       <div className={styles.rating} style={{ color: getRatingColor() }} onClick={handleClick}>
-        {rating === -0.1 ? "" : rating.toString()}
+        {rating === NO_RATING ? "" : rating.toString()}
       </div>
     </div>
   );

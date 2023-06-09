@@ -18,10 +18,11 @@ export const useFetchGames = () => {
   const fetchGames = async () => {
     getAllGames()
       .then(gameList => {
-        const sortedWantToPlayGames = gameList.filter(game => game.status === STATUS.WANT_TO_PLAY).sort(compareGamesByRating);
-        const sortedPlayingGames = gameList.filter(game => game.status === STATUS.PLAYING).sort(compareGamesByRating);
-        const sortedPlayedGames = gameList.filter(game => game.status === STATUS.PLAYED).sort(compareGamesByRating);
-        const sortedAbandonedGames = gameList.filter(game => game.status === STATUS.ABANDONED).sort(compareGamesByRating);
+        const sortedGameList = gameList.sort(compareGamesByRating)
+        const sortedWantToPlayGames = sortedGameList.filter(game => game.status === STATUS.WANT_TO_PLAY);
+        const sortedPlayingGames = sortedGameList.filter(game => game.status === STATUS.PLAYING);
+        const sortedPlayedGames = sortedGameList.filter(game => game.status === STATUS.PLAYED);
+        const sortedAbandonedGames = sortedGameList.filter(game => game.status === STATUS.ABANDONED);
 
         setWantToPlayGames(sortedWantToPlayGames);
         setPlayingGames(sortedPlayingGames);
