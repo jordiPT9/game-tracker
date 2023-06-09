@@ -9,26 +9,10 @@ export const useFetchGames = () => {
   const [abandonedGames, setAbandonedGames] = useState([]);
 
   const compareGamesByRating = (a, b) => {
-    const NO_RATING = -0.1;
-    const ratingA = a.rating;
-    const ratingB = b.rating;
-
-    if (ratingA === NO_RATING || ratingB === NO_RATING) {
-      if (ratingA === NO_RATING && ratingB !== NO_RATING) {
-        return 1;
-      } else if (ratingB === NO_RATING && ratingA !== NO_RATING) {
-        return -1;
-      } else {
-        return a.title.localeCompare(b.title);
-      }
-    }
-
-    const result = ratingB - ratingA;
-    if (result === 0) {
-      return a.title.localeCompare(b.title);
-    }
-
-    return ratingB - ratingA;
+    const ratingA = a.rating || Number.NEGATIVE_INFINITY;
+    const ratingB = b.rating || Number.NEGATIVE_INFINITY;
+  
+    return ratingB - ratingA || a.title.localeCompare(b.title);
   }
 
   const fetchGames = async () => {
