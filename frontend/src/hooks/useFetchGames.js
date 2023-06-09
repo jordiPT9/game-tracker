@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { getAllGames } from '../services/GameService';
+import { getAllGames } from '../services/gameService';
+import { STATUS } from "../constants/constants";
 
 export const useFetchGames = () => {
   const [wantToPlayGames, setWantToPlayGames] = useState([]);
@@ -33,10 +34,10 @@ export const useFetchGames = () => {
   const fetchGames = async () => {
     getAllGames()
       .then(gameList => {
-        const sortedWantToPlayGames = gameList.filter(game => game.status === 'Want to play').sort(compareGamesByRating);
-        const sortedPlayingGames = gameList.filter(game => game.status === 'Playing').sort(compareGamesByRating);
-        const sortedPlayedGames = gameList.filter(game => game.status === 'Played').sort(compareGamesByRating);
-        const sortedAbandonedGames = gameList.filter(game => game.status === 'Abandoned').sort(compareGamesByRating);
+        const sortedWantToPlayGames = gameList.filter(game => game.status === STATUS.WANT_TO_PLAY).sort(compareGamesByRating);
+        const sortedPlayingGames = gameList.filter(game => game.status === STATUS.PLAYING).sort(compareGamesByRating);
+        const sortedPlayedGames = gameList.filter(game => game.status === STATUS.PLAYED).sort(compareGamesByRating);
+        const sortedAbandonedGames = gameList.filter(game => game.status === STATUS.ABANDONED).sort(compareGamesByRating);
 
         setWantToPlayGames(sortedWantToPlayGames);
         setPlayingGames(sortedPlayingGames);
@@ -57,7 +58,12 @@ export const useFetchGames = () => {
   });
 
   return {
-    games: { wantToPlayGames, playingGames, playedGames, abandonedGames },
+    games: {
+      wantToPlayGames,
+      playingGames,
+      playedGames,
+      abandonedGames
+    },
     fetchGames
   }
 }

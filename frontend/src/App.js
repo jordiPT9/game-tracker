@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import styles from './App.module.css';
 import { v4 as uuid } from 'uuid';
-import { createGame, updateGame, deleteGame } from './services/GameService';
-
+import { createGame, updateGame, deleteGame } from './services/gameService';
+import { STATUS } from './constants/constants'
 import { List } from './components/list/List';
 import { Modal } from './components/modal/Modal';
 import { useFetchGames } from './hooks/useFetchGames';
@@ -16,7 +16,7 @@ const App = () => {
   const [currentGameId, setCurrentGameId] = useState("");
   const [currentGameRating, setCurrentGameRating] = useState(-0.1);
   const [currentGameTitle, setCurrentGameTitle] = useState("");
-  const [currentGameStatus, setCurrentGameStatus] = useState("Want to play");
+  const [currentGameStatus, setCurrentGameStatus] = useState(STATUS.WANT_TO_PLAY);
 
   const editGame = async (id, title, rating, status) => {
     await updateGame({ id, title, rating, status });
@@ -89,11 +89,20 @@ const App = () => {
     setCurrentGameId("");
     setCurrentGameRating(-0.1);
     setCurrentGameTitle("");
-    setCurrentGameStatus("Want to play");
+    setCurrentGameStatus(STATUS.WANT_TO_PLAY);
   }
 
-  const statusSelectorStyle = { backgroundColor: "#ffdf52", textShadow: "0px 0px 10px rgba(0, 0, 0, 0.3)", color: "black" }
-  const gameStatusOptions = ["Want to play", "Playing", "Played", "Abandoned"];
+  const statusSelectorStyle = {
+    backgroundColor: "#ffdf52",
+    textShadow: "0px 0px 10px rgba(0, 0, 0, 0.3)",
+    color: "black"
+  }
+  const gameStatusOptions = [
+    STATUS.WANT_TO_PLAY,
+    STATUS.PLAYING,
+    STATUS.PLAYED,
+    STATUS.ABANDONED
+  ];
 
   return (
     <div className="app">
@@ -171,42 +180,42 @@ const App = () => {
 
       <div style={{ display: "flex" }}>
         <List
-          title="Want to play"
-          listStatus="Want to play"
+          title={STATUS.WANT_TO_PLAY}
+          listStatus={STATUS.WANT_TO_PLAY}
           data={games.wantToPlayGames}
           updateGameStatus={editGameStatus}
           deleteGame={removeGame}
-          onClickTitle={() => handleListTitleClick("Want to play")}
+          onClickTitle={() => handleListTitleClick(STATUS.WANT_TO_PLAY)}
           onClickGame={handleGameClick}
         />
 
         <List
-          title="Playing"
-          listStatus="Playing"
+          title={STATUS.PLAYING}
+          listStatus={STATUS.PLAYING}
           data={games.playingGames}
           updateGameStatus={editGameStatus}
           deleteGame={removeGame}
-          onClickTitle={() => handleListTitleClick("Playing")}
+          onClickTitle={() => handleListTitleClick(STATUS.PLAYING)}
           onClickGame={handleGameClick}
         />
 
         <List
-          title="Played"
-          listStatus="Played"
+          title={STATUS.PLAYED}
+          listStatus={STATUS.PLAYED}
           data={games.playedGames}
           updateGameStatus={editGameStatus}
           deleteGame={removeGame}
-          onClickTitle={() => handleListTitleClick("Played")}
+          onClickTitle={() => handleListTitleClick(STATUS.PLAYED)}
           onClickGame={handleGameClick}
         />
 
         <List
-          title="Abandoned"
-          listStatus="Abandoned"
+          title={STATUS.ABANDONED}
+          listStatus={STATUS.ABANDONED}
           data={games.abandonedGames}
           updateGameStatus={editGameStatus}
           deleteGame={removeGame}
-          onClickTitle={() => handleListTitleClick("Abandoned")}
+          onClickTitle={() => handleListTitleClick(STATUS.ABANDONED)}
           onClickGame={handleGameClick}
         />
       </div>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styles from './Game.module.css';
+import { STATUS } from '../../constants/constants';
 import { MdModeEditOutline, MdOutlineDragIndicator } from "react-icons/md";
 
 export const Game = ({ id, title, rating, status, deleteGame, onClick }) => {
@@ -19,16 +20,16 @@ export const Game = ({ id, title, rating, status, deleteGame, onClick }) => {
   };
 
   const getBorderStyle = () => {
-    if (status === "Want to play") {
+    if (status === STATUS.WANT_TO_PLAY) {
       return "3px solid #f1aa68";
     }
-    else if (status === "Playing") {
+    else if (status === STATUS.PLAYING) {
       return "3px solid #7ff168";
     }
-    else if (status === "Played") {
+    else if (status === STATUS.PLAYED) {
       return "3px solid #6881f1";
     }
-    else if (status === "Abandoned") {
+    else if (status === STATUS.ABANDONED) {
       return "3px solid #f16868";
     }
   }
