@@ -15,10 +15,11 @@ export const useFetchGames = () => {
     return ratingB - ratingA || a.title.localeCompare(b.title);
   }
 
-  const fetchGames = async () => {
+  const fetchGames = () => {
     getAllGames()
       .then(gameList => {
         const sortedGameList = gameList.sort(compareGamesByRating)
+
         const sortedWantToPlayGames = sortedGameList.filter(game => game.status === STATUS.WANT_TO_PLAY);
         const sortedPlayingGames = sortedGameList.filter(game => game.status === STATUS.PLAYING);
         const sortedPlayedGames = sortedGameList.filter(game => game.status === STATUS.PLAYED);
@@ -38,9 +39,7 @@ export const useFetchGames = () => {
       })
   }
 
-  useEffect(() => {
-    fetchGames();
-  });
+  useEffect(fetchGames);
 
   return {
     games: {

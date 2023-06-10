@@ -1,48 +1,38 @@
 import React, { useState } from 'react';
-import styles from './App.module.css';
+import './App.css';
 import { v4 as uuid } from 'uuid';
 import { createGame, updateGame, deleteGame } from './services/gameService';
 import { STATUS, NO_RATING } from './constants/constants'
-import { List } from './components/list/List';
+import { GameList } from './components/gameList/GameList';
 import { Modal } from './components/modal/Modal';
+import { Rating } from './components/rating/Rating';
+import { StatusSelector } from './components/statusSelector/StatusSelector';
+import { Input } from './components/input/Input';
 import { useFetchGames } from './hooks/useFetchGames';
 import { useModal } from './hooks/useModal';
+
+const { WANT_TO_PLAY, PLAYING, PLAYED, ABANDONED } = STATUS;
+const DEFAULT_GAME = {
+  id: "",
+  title: "",
+  status: WANT_TO_PLAY,
+  rating: NO_RATING
+}
 
 const App = () => {
   const { games, fetchGames } = useFetchGames();
   const addGameModal = useModal();
   const editGameModal = useModal();
 
-  const [currentGameId, setCurrentGameId] = useState("");
-  const [currentGameRating, setCurrentGameRating] = useState(NO_RATING);
-  const [currentGameTitle, setCurrentGameTitle] = useState("");
-  const [currentGameStatus, setCurrentGameStatus] = useState(STATUS.WANT_TO_PLAY);
-
-  const editGame = async (id, title, rating, status) => {
-    await updateGame({ id, title, rating, status });
-    await fetchGames();
-  };
-
-  const editGameStatus = async (id, status) => {
-    await updateGame({ id, status });
-    await fetchGames();
-  };
-
-  const removeGame = async (id) => {
-    await deleteGame(id)
-    await fetchGames();
-  }
+  const [currentGame, setCurrentGame] = useState(DEFAULT_GAME);
 
   const handleGameClick = (id, title, rating, status) => {
-    setCurrentGameId(id);
-    setCurrentGameTitle(title);
-    setCurrentGameRating(rating);
-    setCurrentGameStatus(status);
+    setCurrentGame({ id, title, rating, status });
     editGameModal.showModal();
   }
 
   const handleListTitleClick = (status) => {
-    setCurrentGameStatus(status);
+    setCurrentGame(prevGame => { return { ...prevGame, status } });
     addGameModal.showModal();
   }
 
@@ -56,52 +46,55 @@ const App = () => {
     resetModalFields()
   }
 
-  const handleNewGameRatingChange = (evt) => {
-    const value = parseFloat(evt.target.value);
-    setCurrentGameRating(value);
+  const handleCurrentGameRatingChange = (rating) => {
+    setCurrentGame(prevGame => { return { ...prevGame, rating } });
   };
 
-  const handleNewGameTitleChange = (evt) => {
-    setCurrentGameTitle(evt.target.value);
+  const handleCurrentGameTitleChange = (title) => {
+    setCurrentGame(prevGame => { return { ...prevGame, title } });
+
   };
 
-  const handleNewGameStatusChange = (evt) => {
-    setCurrentGameStatus(evt.target.id);
+  const handleCurrentGameStatusChange = (status) => {
+    setCurrentGame(prevGame => { return { ...prevGame, status } });
+  }
+
+  const editGameStatus = async (id, status) => {
+    await updateGame({ id, status });
+    fetchGames();
+  };
+
+  const removeGame = async (id) => {
+    await deleteGame(id)
+    fetchGames();
   }
 
   const saveNewGame = async () => {
-    await createGame({ id: uuid(), title: currentGameTitle, rating: currentGameRating, status: currentGameStatus });
-    await fetchGames();
+    await createGame({ ...currentGame, id: uuid() });
+    fetchGames();
 
     addGameModal.closeModal();
     resetModalFields();
   }
 
   const saveEditedGame = async () => {
-    await editGame(currentGameId, currentGameTitle, currentGameRating, currentGameStatus);
-    await fetchGames();
+    const { id, title, rating, status } = currentGame;
+    await updateGame({ id, title, rating, status });
+    fetchGames();
 
     editGameModal.closeModal();
     resetModalFields();
   }
 
   const resetModalFields = () => {
-    setCurrentGameId("");
-    setCurrentGameRating(NO_RATING);
-    setCurrentGameTitle("");
-    setCurrentGameStatus(STATUS.WANT_TO_PLAY);
+    setCurrentGame(DEFAULT_GAME);
   }
 
-  const statusSelectorStyle = {
-    backgroundColor: "#ffdf52",
-    textShadow: "0px 0px 10px rgba(0, 0, 0, 0.3)",
-    color: "black"
-  }
   const gameStatusOptions = [
-    STATUS.WANT_TO_PLAY,
-    STATUS.PLAYING,
-    STATUS.PLAYED,
-    STATUS.ABANDONED
+    WANT_TO_PLAY,
+    PLAYING,
+    PLAYED,
+    ABANDONED
   ];
 
   return (
@@ -112,34 +105,9 @@ const App = () => {
         onSave={saveNewGame}
         onClose={handleCloseAddGameModal}
       >
-        <input
-          className={styles.game_title_input}
-          value={currentGameTitle}
-          placeholder="Enter your game"
-          onChange={handleNewGameTitleChange}
-        />
-
-        <div className={styles.status_selector}>
-          {gameStatusOptions.map(statusOption => (
-            <span
-              className={styles.status_selector_button}
-              key={statusOption}
-              style={currentGameStatus === statusOption ? statusSelectorStyle : {}}
-              onClick={handleNewGameStatusChange}
-              id={statusOption}
-            >
-              {statusOption}
-            </span>
-          ))}
-        </div>
-
-        <div style={{ display: "flex", alignItems: "center", margin: "10px 5px 10px 10px" }}>
-          <p>Rating</p>
-          <input className={styles.rating_slider} type="range" min={NO_RATING} max={10} step={0.1} value={currentGameRating} onChange={handleNewGameRatingChange} />
-          <p className={styles.rating_value} style={{ color: currentGameRating === NO_RATING ? "rgba(255, 255, 255, 0.25)" : "white" }}>
-            {currentGameRating === NO_RATING ? "No rating" : currentGameRating}
-          </p>
-        </div>
+        <Input value={currentGame.title} handleValueChange={handleCurrentGameTitleChange} />
+        <StatusSelector options={gameStatusOptions} value={currentGame.status} handleValueChange={handleCurrentGameStatusChange} />
+        <Rating value={currentGame.rating} handleValueChange={handleCurrentGameRatingChange} />
       </Modal>
 
       <Modal
@@ -148,74 +116,49 @@ const App = () => {
         onSave={saveEditedGame}
         onClose={handleCloseEditGameModal}
       >
-        <input
-          className={styles.game_title_input}
-          value={currentGameTitle}
-          placeholder="Enter your game"
-          onChange={handleNewGameTitleChange}
-        />
-
-        <div className={styles.status_selector}>
-          {gameStatusOptions.map(statusOption => (
-            <span
-              className={styles.status_selector_button}
-              key={statusOption}
-              style={currentGameStatus === statusOption ? statusSelectorStyle : {}}
-              onClick={handleNewGameStatusChange}
-              id={statusOption}
-            >
-              {statusOption}
-            </span>
-          ))}
-        </div>
-
-        <div style={{ display: "flex", alignItems: "center", margin: "10px 5px 10px 10px" }}>
-          <p>Rating</p>
-          <input className={styles.rating_slider} type="range" min={NO_RATING} max={10} step={0.1} value={currentGameRating} onChange={handleNewGameRatingChange} />
-          <p className={styles.rating_value} style={{ color: currentGameRating === NO_RATING ? "rgba(255, 255, 255, 0.25)" : "white" }}>
-            {currentGameRating === NO_RATING ? "No rating" : currentGameRating}
-          </p>
-        </div>
+        <Input value={currentGame.title} handleValueChange={handleCurrentGameTitleChange} />
+        <StatusSelector options={gameStatusOptions} value={currentGame.status} handleValueChange={handleCurrentGameStatusChange} />
+        <Rating value={currentGame.rating} handleValueChange={handleCurrentGameRatingChange} />
       </Modal>
 
       <div style={{ display: "flex" }}>
-        <List
+        <GameList
           title="Want to play"
-          listStatus={STATUS.WANT_TO_PLAY}
+          listStatus={WANT_TO_PLAY}
           data={games.wantToPlayGames}
           updateGameStatus={editGameStatus}
           deleteGame={removeGame}
-          onClickTitle={() => handleListTitleClick(STATUS.WANT_TO_PLAY)}
+          onClickTitle={handleListTitleClick}
           onClickGame={handleGameClick}
         />
 
-        <List
+        <GameList
           title="Playing"
-          listStatus={STATUS.PLAYING}
+          listStatus={PLAYING}
           data={games.playingGames}
           updateGameStatus={editGameStatus}
           deleteGame={removeGame}
-          onClickTitle={() => handleListTitleClick(STATUS.PLAYING)}
+          onClickTitle={handleListTitleClick}
           onClickGame={handleGameClick}
         />
 
-        <List
+        <GameList
           title="Played"
-          listStatus={STATUS.PLAYED}
+          listStatus={PLAYED}
           data={games.playedGames}
           updateGameStatus={editGameStatus}
           deleteGame={removeGame}
-          onClickTitle={() => handleListTitleClick(STATUS.PLAYED)}
+          onClickTitle={handleListTitleClick}
           onClickGame={handleGameClick}
         />
 
-        <List
+        <GameList
           title="Abandoned"
-          listStatus={STATUS.ABANDONED}
+          listStatus={ABANDONED}
           data={games.abandonedGames}
           updateGameStatus={editGameStatus}
           deleteGame={removeGame}
-          onClickTitle={() => handleListTitleClick(STATUS.ABANDONED)}
+          onClickTitle={handleListTitleClick}
           onClickGame={handleGameClick}
         />
       </div>

@@ -1,0 +1,29 @@
+body {
+  font-family: 'Roboto', sans-serif;
+  font-family: 'Poppins', sans-serif;
+  font-family: 'Ubuntu', sans-serif;
+  font-family: 'Open Sans', sans-serif;
+  background: #2a2c34;
+  margin: 0;
+  text-transform: capitalize;
+  padding: 10px;
+}
+
+button {
+  background-color: #000000;
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  margin: 5px;
+  font-size: 15px;
+  font-family: 'Roboto', sans-serif;
+  transition: background-color 0.2s ease;
+
+}
+
+button:hover {
+  background-color: #1e2022;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+}

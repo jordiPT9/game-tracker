@@ -1,8 +1,8 @@
 import React from 'react';
-import styles from './List.module.css';
+import styles from './GameList.module.css';
 import { Game } from '../game/Game';
 
-export const List = ({ title, data, listStatus, updateGameStatus, deleteGame, onClickTitle, onClickGame }) => {
+export const GameList = ({ title, data, listStatus, updateGameStatus, deleteGame, onClickTitle, onClickGame }) => {
   const handleDrop = async (evt) => {
     evt.preventDefault();
     let gameId = evt.dataTransfer.getData("gameId");
@@ -26,11 +26,11 @@ export const List = ({ title, data, listStatus, updateGameStatus, deleteGame, on
 
   return (
     <div className={styles.list} onDrop={handleDrop} onDragOver={handleDragOver} type={listStatus}>
-      <div className={styles.list_title} onClick={onClickTitle}>{title}</div>
+      <div className={styles.list_title} onClick={() => onClickTitle(listStatus)}>{title}</div>
       {renderGames()}
     </div>
   );
 }
 
 
-export default List;
+export default GameList;
