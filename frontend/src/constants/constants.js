@@ -5,4 +5,4 @@ export const STATUS = Object.freeze({
   ABANDONED: "Abandoned"
 })
 
-export const NO_RATING = Object.freeze(-0.1)
+export const NO_RATING = Object.freeze(-1)

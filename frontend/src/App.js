@@ -122,6 +122,7 @@ const App = () => {
       </Modal>
 
       <div style={{ display: "flex" }}>
+
         <GameList
           title="Want to play"
           listStatus={WANT_TO_PLAY}

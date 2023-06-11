@@ -36,25 +36,25 @@ export const Game = ({ game, deleteGame, onClick }) => {
   }
 
   const getRatingColor = () => {
-    if (rating === 10) {
+    if (rating === 100) {
       return "rgb(191, 104, 241)";
     }
-    else if (rating >= 9 && rating < 10) {
+    else if (rating >= 90 && rating < 100) {
       return "rgb(104, 236, 241)";
     }
-    else if (rating >= 8 && rating < 9) {
+    else if (rating >= 80 && rating < 90) {
       return "rgb(104, 241, 161)";
     }
-    else if (rating >= 7 && rating < 8) {
+    else if (rating >= 70 && rating < 80) {
       return "rgb(154, 241, 104)";
     }
-    else if (rating >= 6 && rating < 7) {
+    else if (rating >= 60 && rating < 70) {
       return "rgb(241, 232, 104)";
     }
-    else if (rating >= 5 && rating < 6) {
+    else if (rating >= 50 && rating < 60) {
       return "rgb(241, 159, 104)";
     }
-    else if (rating >= 0 && rating < 5) {
+    else if (rating >= 0 && rating < 50) {
       return "rgb(241, 104, 104)";
     } else {
       return "white";
@@ -76,7 +76,7 @@ export const Game = ({ game, deleteGame, onClick }) => {
       {title}
       {isHovered && <MdModeEditOutline className={styles.edit_icon} onClick={handleClick} />}
       <div className={styles.rating} style={{ color: getRatingColor() }} onClick={handleClick}>
-        {rating === NO_RATING ? "" : rating.toString()}
+        {rating === NO_RATING ? "" : rating/10}
       </div>
     </div>
   );

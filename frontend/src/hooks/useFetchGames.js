@@ -18,6 +18,7 @@ export const useFetchGames = () => {
   const fetchGames = () => {
     getAllGames()
       .then(gameList => {
+        console.log("Fetched games")
         const sortedGameList = gameList.sort(compareGamesByRating)
 
         const sortedWantToPlayGames = sortedGameList.filter(game => game.status === STATUS.WANT_TO_PLAY);
@@ -39,7 +40,7 @@ export const useFetchGames = () => {
       })
   }
 
-  useEffect(fetchGames);
+  useEffect(fetchGames, []);
 
   return {
     games: {
