@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import './App.css';
 import { v4 as uuid } from 'uuid';
-import { createGame, updateGame, deleteGame } from './services/gameService';
+import { searchGame, createGame, updateGame, deleteGame } from './services/gameService';
 import { STATUS, NO_RATING } from './constants/constants'
 import { GameList } from './components/gameList/GameList';
+import { GameResult } from './components/gameResult/GameResult';
 import { Modal } from './components/modal/Modal';
 import { Rating } from './components/rating/Rating';
 import { StatusSelector } from './components/statusSelector/StatusSelector';
@@ -23,6 +24,10 @@ const App = () => {
   const { games, fetchGames } = useFetchGames();
   const addGameModal = useModal();
   const editGameModal = useModal();
+
+  const [inputSearchGame, setInputSearchGame] = useState("");
+  const [gameSearchResults, setGameSearchResults] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const [currentGame, setCurrentGame] = useState(DEFAULT_GAME);
 
@@ -121,8 +126,42 @@ const App = () => {
         <Rating value={currentGame.rating} handleValueChange={handleCurrentGameRatingChange} />
       </Modal>
 
-      <div style={{ display: "flex" }}>
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <input placeholder='Search game...' style={{
+          backgroundColor: "#000",
+          color: "white",
+          border: "none",
+          borderRadius: "3px",
+          fontSize: "15px",
+          fontFamily: "'Roboto', sans-serif",
+          padding: "8px 16px",
+          margin: "5px",
+          width: "400px",
+        }} value={inputSearchGame} onChange={(evt) => { setInputSearchGame(evt.target.value); }} />
+        <button onClick={() => {
+          setLoading(true);
+          searchGame(inputSearchGame).then(gameList => {
+            setGameSearchResults(gameList)
+            setLoading(false);
+          })
+        }}>Search</button>
+      </div>
 
+      {loading && <p style={{ textAlign: "center", color: "white" }}>Loading...</p>}
+      {!loading && <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", }}>
+        {gameSearchResults?.map(game => {
+          const timestamp = game.first_release_date;
+          const date = new Date(timestamp * 1000); // Multiply by 1000 since the timestamp is in seconds
+          const options = { year: 'numeric', month: 'long', day: 'numeric' };
+          const dateStr = date.toLocaleDateString('en-US', options);
+
+          return <GameResult key={game.name} game={{url: game.url, title: game.name, releaseDate: dateStr}} />
+        }
+
+        )}
+      </div>}
+
+      <div style={{ display: "flex" }}>
         <GameList
           title="Want to play"
           listStatus={WANT_TO_PLAY}

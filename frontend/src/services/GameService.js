@@ -1,5 +1,12 @@
 const BASE_URL = 'http://localhost:8080'
 
+export const searchGame = async (word) => {
+  const response = await fetch(`${BASE_URL}/games/search?word=${word}`);
+  const gameResults = await response.json();
+  console.log(gameResults)
+  return gameResults;
+}
+
 export const getAllGames = async () => {
   const response = await fetch(`${BASE_URL}/games`);
   const games = await response.json();

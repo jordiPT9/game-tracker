@@ -2,6 +2,7 @@ const express = require("express");
 const fs = require("fs");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const gateway = require('./gateway.js');
 
 const gamesFilePath = "games.json";
 const corsOptions = {
@@ -20,6 +21,37 @@ app.post("/games", addGame);
 app.delete("/games", removeGame);
 app.put("/games", modifyGame);
 app.get("/games", getAllGames);
+app.get("/games/search", searchGame);
+
+async function searchGame(req, res) {
+  const { word } = req.query;
+
+  try {
+    const games = await gateway.searchGame(word);
+
+    const sortedGames = games.sort(sortingAlgorithm);
+    const topGames = sortedGames.slice(0, 10);
+    const gamesWithCover = await Promise.all(topGames.map(game => getGameWithCover(game)));
+    return res.json(gamesWithCover);
+  } catch (error) {
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+}
+
+async function getGameWithCover(game) {
+  try {
+    const cover = await gateway.getCover(game.cover);
+    return { ...game, url: cover[0].url };
+  } catch (error) {
+    return game;
+  }
+}
+
+function sortingAlgorithm(a, b) {
+  const followsA = a.follows || 0;
+  const followsB = b.follows || 0;
+  return followsB - followsA;
+}
 
 function addGame(req, res) {
   const { id, title, rating, status } = req.body;
