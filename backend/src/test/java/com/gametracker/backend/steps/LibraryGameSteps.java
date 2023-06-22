@@ -3,6 +3,7 @@ package com.gametracker.backend.steps;
 import com.gametracker.backend.libraryGame.domain.GameStatus;
 import com.gametracker.backend.libraryGame.domain.LibraryGame;
 import com.gametracker.backend.libraryGame.domain.LibraryGameRepository;
+import com.gametracker.backend.shared.infrastructure.IgdbService;
 import io.cucumber.java.DataTableType;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -16,8 +17,9 @@ public class LibraryGameSteps {
     private final LibraryGameRepository libraryGameRepository;
     private final IgdbService igdbService;
 
-    public LibraryGameSteps(LibraryGameRepository libraryGameRepository) {
+    public LibraryGameSteps(LibraryGameRepository libraryGameRepository, IgdbService igdbService) {
         this.libraryGameRepository = libraryGameRepository;
+        this.igdbService = igdbService;
     }
 
     @DataTableType
