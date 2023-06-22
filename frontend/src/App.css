@@ -1,12 +1,11 @@
 body {
   font-family: 'Roboto', sans-serif;
-  font-family: 'Poppins', sans-serif;
   font-family: 'Ubuntu', sans-serif;
   font-family: 'Open Sans', sans-serif;
+  font-family: 'Poppins', sans-serif;
   background: #2a2c34;
-  margin: 0;
   text-transform: capitalize;
-  padding: 10px;
+  margin: 0px;
 }
 
 button {
@@ -20,7 +19,6 @@ button {
   font-size: 15px;
   font-family: 'Roboto', sans-serif;
   transition: background-color 0.2s ease;
-
 }
 
 button:hover {

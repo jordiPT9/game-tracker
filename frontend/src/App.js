@@ -6,6 +6,7 @@ import { STATUS, NO_RATING } from './constants/constants'
 import { GameList } from './components/gameList/GameList';
 import { GameResult } from './components/gameResult/GameResult';
 import { Modal } from './components/modal/Modal';
+import { NavBar } from './components/navBar/NavBar';
 import { Rating } from './components/rating/Rating';
 import { StatusSelector } from './components/statusSelector/StatusSelector';
 import { Input } from './components/input/Input';
@@ -95,6 +96,25 @@ const App = () => {
     setCurrentGame(DEFAULT_GAME);
   }
 
+  const renderGameResults = () => {
+    const result = loading
+      ? <p style={{ textAlign: "center", color: "white" }}>Loading...</p>
+      : <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", }}>
+        {gameSearchResults?.map(game => {
+          const timestamp = game.first_release_date;
+          const date = new Date(timestamp * 1000); // Multiply by 1000 since the timestamp is in seconds
+          const options = { year: 'numeric', month: 'long', day: 'numeric' };
+          const dateStr = date.toLocaleDateString('en-US', options);
+
+          return <GameResult key={game.name} game={{ url: game.url, title: game.name, releaseDate: dateStr }} />
+        }
+
+        )}
+      </div>
+      
+    return result;
+  }
+
   const gameStatusOptions = [
     WANT_TO_PLAY,
     PLAYING,
@@ -104,7 +124,7 @@ const App = () => {
 
   return (
     <div className="app">
-      <Modal
+       <Modal
         title={"ADD GAME"}
         visible={addGameModal.isVisible}
         onSave={saveNewGame}
@@ -125,41 +145,21 @@ const App = () => {
         <StatusSelector options={gameStatusOptions} value={currentGame.status} handleValueChange={handleCurrentGameStatusChange} />
         <Rating value={currentGame.rating} handleValueChange={handleCurrentGameRatingChange} />
       </Modal>
-
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <input placeholder='Search game...' style={{
-          backgroundColor: "#000",
-          color: "white",
-          border: "none",
-          borderRadius: "3px",
-          fontSize: "15px",
-          fontFamily: "'Roboto', sans-serif",
-          padding: "8px 16px",
-          margin: "5px",
-          width: "400px",
-        }} value={inputSearchGame} onChange={(evt) => { setInputSearchGame(evt.target.value); }} />
-        <button onClick={() => {
+      
+      <NavBar
+        value={inputSearchGame}
+        onEnter={() => {
           setLoading(true);
           searchGame(inputSearchGame).then(gameList => {
             setGameSearchResults(gameList)
             setLoading(false);
           })
-        }}>Search</button>
-      </div>
+        }}
+        onChange={(evt) => setInputSearchGame(evt.target.value)}
+        onResetField={() => setInputSearchGame("")}
+      />
 
-      {loading && <p style={{ textAlign: "center", color: "white" }}>Loading...</p>}
-      {!loading && <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", }}>
-        {gameSearchResults?.map(game => {
-          const timestamp = game.first_release_date;
-          const date = new Date(timestamp * 1000); // Multiply by 1000 since the timestamp is in seconds
-          const options = { year: 'numeric', month: 'long', day: 'numeric' };
-          const dateStr = date.toLocaleDateString('en-US', options);
-
-          return <GameResult key={game.name} game={{url: game.url, title: game.name, releaseDate: dateStr}} />
-        }
-
-        )}
-      </div>}
+      {renderGameResults()}
 
       <div style={{ display: "flex" }}>
         <GameList

@@ -18,9 +18,11 @@ export const GameResult = ({ game }) => {
       onDragStart={handleDragStart}
     >
       <img className={styles.game_image} src={game.url} alt={game.title} />
-      <div>
-        <p className={styles.game_title}>{game.title}</p>
-        <p className={styles.release_date}>{game.releaseDate}</p>
+      <div className={styles.game_wrapper}>
+        <div style={{ padding: "5px 5px 5px 0px" }}>
+          <p className={styles.game_title}>{game.title}</p>
+          <p className={styles.release_date}>{game.releaseDate}</p>
+        </div>
       </div>
     </div>
   );

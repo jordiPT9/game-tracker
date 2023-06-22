@@ -1,34 +1,41 @@
 .game {
   display: flex;
-  align-items: center;
+  /* align-items: center; */
   font-size: 15px;
   color: white;
-  padding: 10px;
-  margin: 10px;
-  border-radius: 5px;
+  border-radius: 10px;
   min-height: 23px;
   cursor: grab;
-  width: 330px;
+  width: 20%;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.game_wrapper {
+  width: 265px;
+  background-color: #1b1c20;
+  border-radius: 0px 10px 10px 0px;
   transition: background-color 0.3s ease;
 }
 
-.game:hover {
-  background-color: #1E1F21;
+.game_wrapper:hover {
+  background-color: #24252b;
 }
 
 .game_title {
   margin: 0px;
   margin-left: 10px;
-  padding: 5px;
+  margin-top: 5px;
+  padding: 0px;
 }
 
 .release_date {
   margin: 0px;
   margin-left: 10px;
-  padding: 5px;
+  padding: 0px;
   color: #888;
 }
 
 .game_image {
-  border-radius: 5px;
+  border-radius: 10px 0 0 10px;
 }

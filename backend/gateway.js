@@ -16,10 +16,10 @@ async function getCover(id) {
   }
 }
 
-async function searchGame(word) {
+async function searchGame(keyword) {
   const url = 'https://api.igdb.com/v4/games';
   const headers = { 'Client-ID': clientId, 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'text/plain' };
-  const body = `fields *; search "${word}"; limit 500;`;
+  const body = `fields *; search "${keyword}"; limit 500;`;
 
   try {
     const response = await axios.post(url, body, { headers });

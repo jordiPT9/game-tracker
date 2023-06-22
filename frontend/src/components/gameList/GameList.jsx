@@ -11,6 +11,7 @@ export const GameList = ({ title, data, listStatus, updateGameStatus, deleteGame
 
   const handleDragOver = (evt) => {
     evt.preventDefault();
+    console.log("HOLA")
   }
 
   const renderGames = () => {
