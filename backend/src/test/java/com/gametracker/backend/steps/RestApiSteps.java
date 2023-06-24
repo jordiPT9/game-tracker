@@ -1,9 +1,10 @@
 package com.gametracker.backend.steps;
 
-import com.gametracker.backend.contexts.ApiContext;
+import com.gametracker.backend.game.domain.Game;
+import com.gametracker.backend.game.domain.GameService;
 import com.gametracker.backend.libraryGame.domain.LibraryGameRepository;
-import com.gametracker.backend.user.domain.RoleName;
-import com.gametracker.backend.user.domain.RoleRepository;
+import com.gametracker.backend.role.domain.RoleName;
+import com.gametracker.backend.role.domain.RoleRepository;
 import com.gametracker.backend.user.domain.User;
 import com.gametracker.backend.user.domain.UserRepository;
 import io.cucumber.java.Before;
@@ -20,30 +21,35 @@ import org.springframework.web.client.RestTemplate;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
 
 public class RestApiSteps {
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
     private final LibraryGameRepository libraryGameRepository;
-    private final ApiContext apiContext;
+    private final GameService gameService;
 
     private final String BASE_URL = "http://localhost:5000";
     private final RestTemplate restTemplate = new RestTemplate();
 
+    private String currentJwt;
+    private ResponseEntity<String> latestResponse;
+
     public RestApiSteps(RoleRepository roleRepository,
                         UserRepository userRepository,
                         LibraryGameRepository libraryGameRepository,
-                        ApiContext apiContext) {
+                        GameService gameService) {
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
         this.libraryGameRepository = libraryGameRepository;
-        this.apiContext = apiContext;
+        this.gameService = gameService;
     }
 
     private HttpHeaders getHttpHeaders() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(apiContext.getCurrentJwt());
+        headers.setBearerAuth(currentJwt);
         return headers;
     }
 
@@ -52,6 +58,16 @@ public class RestApiSteps {
         libraryGameRepository.deleteAll();
         userRepository.deleteAll();
         roleRepository.deleteAll();
+    }
+
+    @Given("the game exists")
+    public void theGameExists() {
+        when(gameService.searchGame(anyString())).thenReturn(new Game("random_title", 5, "random_release_date"));
+    }
+
+    @Given("the game does not exist")
+    public void theGameDoesNotExist() {
+        when(gameService.searchGame(anyString())).thenReturn(null);
     }
 
     @Given("an authenticated user with username {string} and role {string}")
@@ -75,16 +91,14 @@ public class RestApiSteps {
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> requestEntity = new HttpEntity<>(requestBody.toString(), headers);
 
-        ResponseEntity<String> response = restTemplate.exchange(
+        latestResponse = restTemplate.exchange(
                 BASE_URL + "/api/authenticate",
                 HttpMethod.POST,
                 requestEntity,
                 String.class
         );
-        JSONObject responseBody = new JSONObject(response.getBody());
-        String token = responseBody.getString("jwt");
-
-        apiContext.setCurrentJwt(token);
+        JSONObject responseBody = new JSONObject(latestResponse.getBody());
+        currentJwt = responseBody.getString("jwt");
     }
 
     @When("the unauthenticated user sends a {string} request to {string} with the following JSON body:")
@@ -94,16 +108,31 @@ public class RestApiSteps {
         HttpEntity<String> requestEntity = new HttpEntity<>(jsonBody, headers);
 
         try {
-            ResponseEntity<String> response = restTemplate.exchange(
+            latestResponse = restTemplate.exchange(
                     BASE_URL + uri,
                     HttpMethod.valueOf(method),
                     requestEntity,
                     String.class
             );
-            apiContext.setLatestResponse(response);
         } catch (HttpClientErrorException e) {
-            ResponseEntity<String> response = new ResponseEntity<>(e.getStatusCode());
-            apiContext.setLatestResponse(response);
+            latestResponse = new ResponseEntity<>(e.getStatusCode());
+        }
+    }
+
+    @When("the authenticated user sends a {string} request to {string}:")
+    public void theAuthenticatedUserSendsARequestTo(String httpMethod, String uri) {
+        HttpHeaders headers = getHttpHeaders();
+        HttpEntity<String> requestEntity = new HttpEntity<>(headers);
+
+        try {
+            latestResponse = restTemplate.exchange(
+                    BASE_URL + uri,
+                    HttpMethod.valueOf(httpMethod),
+                    requestEntity,
+                    String.class
+            );
+        } catch (HttpClientErrorException e) {
+            latestResponse = new ResponseEntity<>(e.getResponseBodyAsString(), e.getStatusCode());
         }
     }
 
@@ -113,28 +142,26 @@ public class RestApiSteps {
         HttpEntity<String> requestEntity = new HttpEntity<>(jsonBody, headers);
 
         try {
-            ResponseEntity<String> response = restTemplate.exchange(
+            latestResponse = restTemplate.exchange(
                     BASE_URL + uri,
                     HttpMethod.valueOf(httpMethod),
                     requestEntity,
                     String.class
             );
-            apiContext.setLatestResponse(response);
         } catch (HttpClientErrorException e) {
-            ResponseEntity<String> response = new ResponseEntity<>(e.getResponseBodyAsString(), e.getStatusCode());
-            apiContext.setLatestResponse(response);
+            latestResponse = new ResponseEntity<>(e.getResponseBodyAsString(), e.getStatusCode());
         }
     }
 
     @Then("the server responds with a {int} status code")
     public void serverRespondsWithACreatedStatusCode(int expectedStatusCode) {
-        HttpStatusCode statusCode = apiContext.getLatestResponse().getStatusCode();
+        HttpStatusCode statusCode = latestResponse.getStatusCode();
         assertEquals(expectedStatusCode, statusCode.value());
     }
 
     @And("the response body should have the following JSON format:")
     public void theResponseBodyShouldHaveTheFollowingJSONFormat(String jsonSchema) {
-        JSONObject jsonObject = new JSONObject(apiContext.getLatestResponse().getBody());
+        JSONObject jsonObject = new JSONObject(latestResponse.getBody());
         JSONObject schemaObject = new JSONObject(jsonSchema);
         Schema schema = SchemaLoader.load(schemaObject);
 

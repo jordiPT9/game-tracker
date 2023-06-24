@@ -1,6 +1,6 @@
 package com.gametracker.backend.libraryGame.infrastructure.persistence;
 
-import com.gametracker.backend.libraryGame.domain.GameStatus;
+import com.gametracker.backend.libraryGame.domain.LibraryGameStatus;
 import com.gametracker.backend.user.infrastructure.persistence.UserJpaEntity;
 import jakarta.persistence.*;
 
@@ -17,7 +17,7 @@ public class LibraryGameJpaEntity {
 
     private double rating;
 
-    private GameStatus status;
+    private LibraryGameStatus status;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_id")
@@ -26,7 +26,7 @@ public class LibraryGameJpaEntity {
     public LibraryGameJpaEntity() {
     }
 
-    public LibraryGameJpaEntity(String id, String title, double rating, GameStatus status, UserJpaEntity user) {
+    public LibraryGameJpaEntity(String id, String title, double rating, LibraryGameStatus status, UserJpaEntity user) {
         this.id = id;
         this.title = title;
         this.rating = rating;
@@ -58,11 +58,11 @@ public class LibraryGameJpaEntity {
         this.rating = rating;
     }
 
-    public GameStatus getStatus() {
+    public LibraryGameStatus getStatus() {
         return status;
     }
 
-    public void setStatus(GameStatus status) {
+    public void setStatus(LibraryGameStatus status) {
         this.status = status;
     }
 

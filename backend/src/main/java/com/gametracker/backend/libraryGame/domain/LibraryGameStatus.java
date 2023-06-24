@@ -1,6 +1,6 @@
 package com.gametracker.backend.libraryGame.domain;
 
-public enum GameStatus {
+public enum LibraryGameStatus {
     WANT_TO_PLAY,
     PLAYING,
     PLAYED,

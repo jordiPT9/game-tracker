@@ -1,6 +1,6 @@
-package com.gametracker.backend.user.infrastructure.persistence;
+package com.gametracker.backend.role.infrastructure;
 
-import com.gametracker.backend.user.domain.RoleName;
+import com.gametracker.backend.role.domain.RoleName;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

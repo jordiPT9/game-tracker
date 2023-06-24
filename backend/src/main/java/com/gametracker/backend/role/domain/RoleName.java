@@ -1,4 +1,4 @@
-package com.gametracker.backend.user.domain;
+package com.gametracker.backend.role.domain;
 
 public enum RoleName {
     USER,

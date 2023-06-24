@@ -19,6 +19,14 @@
         <cucumber.version>7.5.0</cucumber.version>
     </properties>
     <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>5.4.0</version>
+            <scope>test</scope>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/org.everit.json/org.everit.json.schema -->
         <dependency>
             <groupId>org.everit.json</groupId>

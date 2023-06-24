@@ -35,11 +35,10 @@ public class SecurityConfigurer {
                 .csrf(csrf -> csrf.disable())
                 .exceptionHandling(exceptionHandlingConfigurer -> exceptionHandlingConfigurer.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(sessionManagementConfigurer -> sessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(
-                        auth -> auth
-                                .requestMatchers(HttpMethod.POST, "/api/authenticate").permitAll()
-                                .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
-                                .anyRequest().authenticated()
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.POST, "/api/authenticate").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
+                        .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

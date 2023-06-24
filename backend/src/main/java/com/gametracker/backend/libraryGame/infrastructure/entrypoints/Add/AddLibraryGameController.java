@@ -1,7 +1,7 @@
-package com.gametracker.backend.libraryGame.infrastructure.entrypoints.AddLibraryGame;
+package com.gametracker.backend.libraryGame.infrastructure.entrypoints.Add;
 
-import com.gametracker.backend.libraryGame.application.AddLibraryGame.AddLibraryGameCommand;
-import com.gametracker.backend.libraryGame.application.AddLibraryGame.AddLibraryGameUseCaseImpl;
+import com.gametracker.backend.libraryGame.application.Add.AddLibraryGameCommand;
+import com.gametracker.backend.libraryGame.application.Add.AddLibraryGameUseCase;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,10 +14,10 @@ import java.security.Principal;
 @RestController
 @RequestMapping("/api")
 public class AddLibraryGameController {
-    private final AddLibraryGameUseCaseImpl addLibraryGameUseCaseImpl;
+    private final AddLibraryGameUseCase addLibraryGameUseCase;
 
-    public AddLibraryGameController(AddLibraryGameUseCaseImpl addLibraryGameUseCaseImpl) {
-        this.addLibraryGameUseCaseImpl = addLibraryGameUseCaseImpl;
+    public AddLibraryGameController(AddLibraryGameUseCase addLibraryGameUseCase) {
+        this.addLibraryGameUseCase = addLibraryGameUseCase;
     }
 
     @PostMapping("/library-games")
@@ -29,7 +29,7 @@ public class AddLibraryGameController {
                 request.status(),
                 principal.getName()
         );
-        addLibraryGameUseCaseImpl.execute(command);
+        addLibraryGameUseCase.execute(command);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

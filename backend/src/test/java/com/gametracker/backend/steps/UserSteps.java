@@ -1,7 +1,7 @@
 package com.gametracker.backend.steps;
 
-import com.gametracker.backend.user.domain.RoleName;
-import com.gametracker.backend.user.domain.RoleRepository;
+import com.gametracker.backend.role.domain.RoleName;
+import com.gametracker.backend.role.domain.RoleRepository;
 import com.gametracker.backend.user.domain.User;
 import com.gametracker.backend.user.domain.UserRepository;
 import io.cucumber.java.DataTableType;

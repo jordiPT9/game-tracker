@@ -1,4 +1,4 @@
-package com.gametracker.backend.user.domain;
+package com.gametracker.backend.role.domain;
 
 public interface RoleRepository {
     void save(RoleName roleName);

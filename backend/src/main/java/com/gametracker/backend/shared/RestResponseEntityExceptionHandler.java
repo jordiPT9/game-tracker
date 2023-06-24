@@ -1,5 +1,7 @@
-package com.gametracker.backend.shared.domain;
+package com.gametracker.backend.shared;
 
+import com.gametracker.backend.game.domain.GameDoesNotExist;
+import com.gametracker.backend.libraryGame.domain.LibraryGameAccessDenied;
 import com.gametracker.backend.libraryGame.domain.LibraryGameAlreadyAdded;
 import com.gametracker.backend.libraryGame.domain.LibraryGameNotFound;
 import com.gametracker.backend.user.domain.BadCredentials;
@@ -33,5 +35,14 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     @ExceptionHandler(value = {LibraryGameAlreadyAdded.class})
     protected ResponseEntity<Object> handleLibraryGameAlreadyAdded(Exception ex, WebRequest request) {
         return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(), HttpStatus.CONFLICT, request);
+    }
+
+    @ExceptionHandler(value = {GameDoesNotExist.class})
+    protected ResponseEntity<Object> handleGameDoesNotExist(Exception ex, WebRequest request) {
+        return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+    }
+    @ExceptionHandler(value = {LibraryGameAccessDenied.class})
+    protected ResponseEntity<Object> handleLibraryGameAccessDenied(Exception ex, WebRequest request) {
+        return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(), HttpStatus.FORBIDDEN, request);
     }
 }

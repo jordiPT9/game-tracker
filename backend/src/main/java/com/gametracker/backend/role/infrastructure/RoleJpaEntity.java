@@ -1,6 +1,7 @@
-package com.gametracker.backend.user.infrastructure.persistence;
+package com.gametracker.backend.role.infrastructure;
 
-import com.gametracker.backend.user.domain.RoleName;
+import com.gametracker.backend.role.domain.RoleName;
+import com.gametracker.backend.user.infrastructure.persistence.UserJpaEntity;
 import jakarta.persistence.*;
 import org.hibernate.annotations.NaturalId;
 

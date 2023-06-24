@@ -8,4 +8,6 @@ public interface LibraryGameRepository {
     void deleteAll();
 
     LibraryGame findByTitleAndUsername(String title, String username);
+
+    void deleteById(String id);
 }
