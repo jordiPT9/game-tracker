@@ -1,9 +1,9 @@
 package com.gametracker.backend.steps;
 
-import com.gametracker.backend.libraryGame.domain.LibraryGameStatus;
+import com.gametracker.backend.game.domain.GameService;
 import com.gametracker.backend.libraryGame.domain.LibraryGame;
 import com.gametracker.backend.libraryGame.domain.LibraryGameRepository;
-import com.gametracker.backend.game.domain.GameService;
+import com.gametracker.backend.libraryGame.domain.LibraryGameStatus;
 import io.cucumber.java.DataTableType;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -13,7 +13,6 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.mockito.ArgumentMatchers.any;
 
 public class LibraryGameSteps {
     private final LibraryGameRepository libraryGameRepository;

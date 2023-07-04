@@ -3,11 +3,11 @@ package com.gametracker.backend.libraryGame.domain;
 import java.util.Objects;
 
 public class LibraryGame {
-   private final String id;
-   private final String title;
-   private final double rating;
-   private final LibraryGameStatus status;
-   private final String username;
+    private final String id;
+    private final String title;
+    private final double rating;
+    private final LibraryGameStatus status;
+    private final String username;
 
     public LibraryGame(String id, String title, double rating, LibraryGameStatus status, String username) {
         this.id = id;

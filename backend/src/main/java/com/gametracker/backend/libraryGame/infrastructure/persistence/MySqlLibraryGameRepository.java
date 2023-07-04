@@ -4,6 +4,9 @@ import com.gametracker.backend.libraryGame.domain.LibraryGame;
 import com.gametracker.backend.libraryGame.domain.LibraryGameRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class MySqlLibraryGameRepository implements LibraryGameRepository {
     private final LibraryGameJpaRepository libraryGameJpaRepository;
@@ -39,6 +42,16 @@ public class MySqlLibraryGameRepository implements LibraryGameRepository {
     @Override
     public void deleteById(String id) {
         libraryGameJpaRepository.deleteById(id);
+    }
+
+    @Override
+    public List<LibraryGame> findByUsername(String username) {
+        List<LibraryGameJpaEntity> libraryGameJpaEntities = libraryGameJpaRepository.findByUser_Username(username);
+
+        return libraryGameJpaEntities
+                .stream()
+                .map(libraryGameMapper::mapToDomainEntity)
+                .collect(Collectors.toList());
     }
 
     @Override

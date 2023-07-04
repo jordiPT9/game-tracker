@@ -1,7 +1,9 @@
 package com.gametracker.backend.libraryGame.infrastructure.entrypoints.Add;
 
+import com.gametracker.backend.game.domain.GameDoesNotExistException;
 import com.gametracker.backend.libraryGame.application.Add.AddLibraryGameCommand;
 import com.gametracker.backend.libraryGame.application.Add.AddLibraryGameUseCase;
+import com.gametracker.backend.libraryGame.domain.LibraryGameAlreadyAddedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,7 +23,7 @@ public class AddLibraryGameController {
     }
 
     @PostMapping("/library-games")
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody AddLibraryGameRequest request, Principal principal) {
+    public ResponseEntity<?> execute(@RequestBody AddLibraryGameRequest request, Principal principal) {
         AddLibraryGameCommand command = new AddLibraryGameCommand(
                 request.id(),
                 request.title(),
@@ -29,7 +31,16 @@ public class AddLibraryGameController {
                 request.status(),
                 principal.getName()
         );
-        addLibraryGameUseCase.execute(command);
+
+        try {
+            addLibraryGameUseCase.execute(command);
+        } catch (GameDoesNotExistException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (LibraryGameAlreadyAddedException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

@@ -29,6 +29,7 @@ public class GameServiceImpl implements GameService {
         HttpEntity<String> requestEntity = new HttpEntity<>(body, headers);
 
         ResponseEntity<String> response = restTemplate.exchange(BASE_URL + "/games", HttpMethod.POST, requestEntity, String.class);
+        System.out.println(response.getBody());
         JSONObject gameJson = new JSONObject(response.getBody());
 
         return new Game(

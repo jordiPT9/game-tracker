@@ -1,7 +1,6 @@
 package com.gametracker.backend.steps;
 
 import com.gametracker.backend.role.domain.RoleName;
-import com.gametracker.backend.role.domain.RoleRepository;
 import com.gametracker.backend.user.domain.User;
 import com.gametracker.backend.user.domain.UserRepository;
 import io.cucumber.java.DataTableType;
@@ -12,11 +11,9 @@ import java.util.Map;
 
 public class UserSteps {
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
 
-    public UserSteps(UserRepository userRepository, RoleRepository roleRepository) {
+    public UserSteps(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
     }
 
     @DataTableType
@@ -32,11 +29,6 @@ public class UserSteps {
 
     @Given("the following users exist:")
     public void theFollowingUsersExist(List<User> users) {
-        roleRepository.save(RoleName.USER);
-        roleRepository.save(RoleName.ADMIN);
-
-        users.forEach(user -> {
-            userRepository.save(user);
-        });
+        users.forEach(userRepository::save);
     }
 }

@@ -1,8 +1,8 @@
 package com.gametracker.backend.libraryGame.application.Delete;
 
 import com.gametracker.backend.libraryGame.domain.LibraryGame;
-import com.gametracker.backend.libraryGame.domain.LibraryGameAccessDenied;
-import com.gametracker.backend.libraryGame.domain.LibraryGameNotFound;
+import com.gametracker.backend.libraryGame.domain.LibraryGameAccessDeniedException;
+import com.gametracker.backend.libraryGame.domain.LibraryGameNotFoundException;
 import com.gametracker.backend.libraryGame.domain.LibraryGameRepository;
 import org.springframework.stereotype.Service;
 
@@ -19,11 +19,11 @@ public class DeleteLibraryGameUseCaseImpl implements DeleteLibraryGameUseCase {
         LibraryGame libraryGame = libraryGameRepository.findById(command.id());
 
         if (libraryGame == null) {
-            throw new LibraryGameNotFound(command.id());
+            throw new LibraryGameNotFoundException(command.id());
         }
 
         if (!libraryGame.getUsername().equals(command.username())) {
-            throw new LibraryGameAccessDenied(command.id());
+            throw new LibraryGameAccessDeniedException(command.id());
         }
 
         libraryGameRepository.deleteById(command.id());

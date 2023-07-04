@@ -6,4 +6,6 @@ public interface RoleRepository {
     void delete(RoleName roleName);
 
     void deleteAll();
+
+    RoleName findByRoleName(RoleName roleName);
 }

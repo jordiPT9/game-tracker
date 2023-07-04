@@ -1,7 +1,7 @@
 package com.gametracker.backend.libraryGame.infrastructure.persistence;
 
 import com.gametracker.backend.libraryGame.domain.LibraryGame;
-import com.gametracker.backend.user.domain.UserNotFound;
+import com.gametracker.backend.user.domain.UserNotFoundException;
 import com.gametracker.backend.user.infrastructure.persistence.UserJpaRepository;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +21,7 @@ public class LibraryGameMapper {
                 libraryGame.getTitle(),
                 libraryGame.getRating(),
                 libraryGame.getStatus(),
-                userJpaRepository.findByUsername(username).orElseThrow(() -> new UserNotFound(username))
+                userJpaRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username))
         );
     }
 

@@ -1,0 +1,31 @@
+{
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "string",
+        "nullable": false
+      },
+      "title": {
+        "type": "string",
+        "nullable": false
+      },
+      "rating": {
+        "type": "number",
+        "format": "double",
+        "nullable": false
+      },
+      "status": {
+        "type": "string",
+        "nullable": false
+      }
+    },
+    "required": [
+      "id",
+      "title",
+      "rating",
+      "status"
+    ]
+  }
+}

@@ -29,5 +29,12 @@ public class RoleMySqlRepository implements RoleRepository {
     public void deleteAll() {
         roleJpaRepository.deleteAll();
     }
+
+    @Override
+    public RoleName findByRoleName(RoleName roleName) {
+        RoleJpaEntity roleJpaEntity = roleJpaRepository.findByName(roleName);
+
+        return RoleName.valueOf(roleJpaEntity.getName().name());
+    }
 }
 

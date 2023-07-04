@@ -1,10 +1,9 @@
 package com.gametracker.backend.steps;
 
-import com.gametracker.backend.game.domain.Game;
-import com.gametracker.backend.game.domain.GameService;
 import com.gametracker.backend.libraryGame.domain.LibraryGameRepository;
 import com.gametracker.backend.role.domain.RoleName;
 import com.gametracker.backend.role.domain.RoleRepository;
+import com.gametracker.backend.security.domain.UnauthorizedException;
 import com.gametracker.backend.user.domain.User;
 import com.gametracker.backend.user.domain.UserRepository;
 import io.cucumber.java.Before;
@@ -14,43 +13,38 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.everit.json.schema.Schema;
 import org.everit.json.schema.loader.SchemaLoader;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.http.*;
+import org.springframework.http.client.BufferingClientHttpRequestFactory;
+import org.springframework.http.client.ClientHttpRequestFactory;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
 
 public class RestApiSteps {
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
     private final LibraryGameRepository libraryGameRepository;
-    private final GameService gameService;
-
-    private final String BASE_URL = "http://localhost:5000";
-    private final RestTemplate restTemplate = new RestTemplate();
+    private final RestTemplate restTemplate;
 
     private String currentJwt;
     private ResponseEntity<String> latestResponse;
 
+    private final String BASE_URL = "http://localhost:5000";
+
     public RestApiSteps(RoleRepository roleRepository,
                         UserRepository userRepository,
-                        LibraryGameRepository libraryGameRepository,
-                        GameService gameService) {
+                        LibraryGameRepository libraryGameRepository) {
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
         this.libraryGameRepository = libraryGameRepository;
-        this.gameService = gameService;
-    }
 
-    private HttpHeaders getHttpHeaders() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(currentJwt);
-        return headers;
+        ClientHttpRequestFactory factory = new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory());
+        restTemplate = new RestTemplate(factory);
     }
 
     @Before
@@ -60,26 +54,10 @@ public class RestApiSteps {
         roleRepository.deleteAll();
     }
 
-    @Given("the game exists")
-    public void theGameExists() {
-        when(gameService.searchGame(anyString())).thenReturn(new Game("random_title", 5, "random_release_date"));
-    }
-
-    @Given("the game does not exist")
-    public void theGameDoesNotExist() {
-        when(gameService.searchGame(anyString())).thenReturn(null);
-    }
-
     @Given("an authenticated user with username {string} and role {string}")
     public void anAuthenticatedUserWithUsernameAndRole(String username, String role) {
         RoleName roleName = RoleName.valueOf(role);
-        User user = new User(
-                "random id",
-                username,
-                "random password",
-                "johnsmith@mail.com",
-                roleName
-        );
+        User user = new User("random id", username, "random password", "johnsmith@mail.com", roleName);
         roleRepository.save(roleName);
         userRepository.save(user);
 
@@ -115,7 +93,7 @@ public class RestApiSteps {
                     String.class
             );
         } catch (HttpClientErrorException e) {
-            latestResponse = new ResponseEntity<>(e.getStatusCode());
+            latestResponse = new ResponseEntity<>(e.getResponseBodyAsString(), e.getStatusCode());
         }
     }
 
@@ -159,12 +137,42 @@ public class RestApiSteps {
         assertEquals(expectedStatusCode, statusCode.value());
     }
 
-    @And("the response body should have the following JSON format:")
-    public void theResponseBodyShouldHaveTheFollowingJSONFormat(String jsonSchema) {
-        JSONObject jsonObject = new JSONObject(latestResponse.getBody());
-        JSONObject schemaObject = new JSONObject(jsonSchema);
-        Schema schema = SchemaLoader.load(schemaObject);
+    @And("the response body should have the following JSON format {string}:")
+    public void theResponseBodyShouldHaveTheFollowingJSONFormat(String schemaPath) {
+        assertDoesNotThrow(() -> {
+            String schemaString = new String(getClass().getResourceAsStream(schemaPath).readAllBytes());
+            JSONObject schemaJson = new JSONObject(schemaString);
+            String schemaType = schemaJson.getString("type");
 
-        assertDoesNotThrow(() -> schema.validate(jsonObject));
+            if (schemaType.equals("object")) {
+                validateResponseAsJsonObject(schemaJson);
+            } else if (schemaType.equals("array")) {
+                validateResponseAsJsonArray(schemaJson);
+            }
+        });
+    }
+
+    @And("the response body should contain the error message {string}")
+    public void theMessageBodyShouldBe(String expectedMessage) {
+        assertEquals(expectedMessage, latestResponse.getBody());
+    }
+
+    private HttpHeaders getHttpHeaders() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(currentJwt);
+        return headers;
+    }
+
+    private void validateResponseAsJsonArray(JSONObject schemaJson) {
+        JSONArray responseBodyJson = new JSONArray(latestResponse.getBody());
+        Schema schema = SchemaLoader.load(schemaJson);
+        schema.validate(responseBodyJson);
+    }
+
+    private void validateResponseAsJsonObject(JSONObject schemaJson) {
+        JSONObject responseBodyJson = new JSONObject(latestResponse.getBody());
+        Schema schema = SchemaLoader.load(schemaJson);
+        schema.validate(responseBodyJson);
     }
 }
