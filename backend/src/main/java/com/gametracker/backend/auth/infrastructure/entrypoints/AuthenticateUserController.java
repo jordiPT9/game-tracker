@@ -1,10 +1,9 @@
-package com.gametracker.backend.security.infrastructure.entrypoints;
+package com.gametracker.backend.auth.infrastructure.entrypoints;
 
-import com.gametracker.backend.security.application.AuthenticateUserCommand;
-import com.gametracker.backend.security.application.AuthenticateUserUseCaseImpl;
-import com.gametracker.backend.security.domain.UnauthorizedException;
+import com.gametracker.backend.auth.application.AuthenticateUserCommand;
+import com.gametracker.backend.auth.application.AuthenticateUserUseCaseImpl;
+import com.gametracker.backend.auth.domain.UnauthorizedException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

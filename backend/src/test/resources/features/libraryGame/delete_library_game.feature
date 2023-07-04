@@ -4,7 +4,11 @@ Feature: Delete library game
   So I can manage my library and keep it up to date with my preferences
 
   Background:
-    Given an authenticated user with username "johnsmith" and role "USER"
+    Given the following roles exist:
+      | USER |
+    And the following user successfully logs in:
+      | id        | username  | password      | email               | role |
+      | random_id | johnsmith | johnsmith1234 | johnsmith@email.com | USER |
 
   Scenario: User removes a game of their library successfully
     Given the following library-games exist:

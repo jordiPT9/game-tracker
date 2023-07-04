@@ -19,7 +19,7 @@ public class UserSteps {
     @DataTableType
     public User userTransformer(Map<String, String> entry) {
         return new User(
-                entry.get("uuid"),
+                entry.get("id"),
                 entry.get("username"),
                 entry.get("password"),
                 entry.get("email"),

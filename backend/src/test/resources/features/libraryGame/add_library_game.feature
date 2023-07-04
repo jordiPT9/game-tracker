@@ -4,7 +4,11 @@ Feature: Add library game
   So i can keep track of its status and personal rating
 
   Background:
-    Given an authenticated user with username "johnsmith" and role "USER"
+    Given the following roles exist:
+      | USER |
+    And the following user successfully logs in:
+      | id        | username  | password      | email               | role |
+      | random_id | johnsmith | johnsmith1234 | johnsmith@email.com | USER |
 
   Scenario: User adds an existing game to their library successfully
     Given the game exists
@@ -24,7 +28,7 @@ Feature: Add library game
 
   Scenario: User fails to add an already existing game in their library
     Given the game exists
-    Given the following library-games exist:
+    And the following library-games exist:
       | id                                   | title             | rating | status | username  |
       | da1e846d-25e1-44e7-91f8-3cca9348d1b6 | Random game title | 4.5    | PLAYED | johnsmith |
     When the authenticated user sends a "POST" request to "/api/library-games" with the following JSON body:

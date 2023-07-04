@@ -1,8 +1,8 @@
-package com.gametracker.backend.security.application;
+package com.gametracker.backend.auth.application;
 
-import com.gametracker.backend.security.domain.JwtUtil;
-import com.gametracker.backend.security.domain.UnauthorizedException;
-import com.gametracker.backend.security.infrastructure.entrypoints.AuthenticateUserResponse;
+import com.gametracker.backend.auth.domain.UnauthorizedException;
+import com.gametracker.backend.security.infrastructure.configuration.JwtService;
+import com.gametracker.backend.auth.infrastructure.entrypoints.AuthenticateUserResponse;
 import com.gametracker.backend.user.domain.User;
 import com.gametracker.backend.user.domain.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,12 +13,12 @@ import org.springframework.stereotype.Service;
 public class AuthenticateUserUseCaseImpl implements AuthenticateUserUseCase {
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
-    private final JwtUtil jwtUtil;
+    private final JwtService jwtService;
 
-    public AuthenticateUserUseCaseImpl(AuthenticationManager authenticationManager, UserRepository userRepository, JwtUtil jwtUtil) {
+    public AuthenticateUserUseCaseImpl(AuthenticationManager authenticationManager, UserRepository userRepository, JwtService jwtService) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
-        this.jwtUtil = jwtUtil;
+        this.jwtService = jwtService;
     }
 
     @Override
@@ -30,7 +30,7 @@ public class AuthenticateUserUseCaseImpl implements AuthenticateUserUseCase {
         }
 
         final User user = userRepository.findByUsername(command.username());
-        final String jwt = jwtUtil.generateToken(user);
+        final String jwt = jwtService.generateToken(user);
 
         return new AuthenticateUserResponse(jwt);
     }

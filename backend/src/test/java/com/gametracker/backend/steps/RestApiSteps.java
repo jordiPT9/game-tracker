@@ -1,9 +1,6 @@
 package com.gametracker.backend.steps;
 
-import com.gametracker.backend.libraryGame.domain.LibraryGameRepository;
-import com.gametracker.backend.role.domain.RoleName;
-import com.gametracker.backend.role.domain.RoleRepository;
-import com.gametracker.backend.security.domain.UnauthorizedException;
+import com.gametracker.backend.shared.infrastructure.DatabaseTruncator;
 import com.gametracker.backend.user.domain.User;
 import com.gametracker.backend.user.domain.UserRepository;
 import io.cucumber.java.Before;
@@ -16,9 +13,6 @@ import org.everit.json.schema.loader.SchemaLoader;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.http.*;
-import org.springframework.http.client.BufferingClientHttpRequestFactory;
-import org.springframework.http.client.ClientHttpRequestFactory;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
@@ -26,39 +20,27 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RestApiSteps {
-    private final RoleRepository roleRepository;
     private final UserRepository userRepository;
-    private final LibraryGameRepository libraryGameRepository;
+    private final DatabaseTruncator databaseTruncator;
     private final RestTemplate restTemplate;
 
+    private final String BASE_URL = "http://localhost:5000";
     private String currentJwt;
     private ResponseEntity<String> latestResponse;
 
-    private final String BASE_URL = "http://localhost:5000";
-
-    public RestApiSteps(RoleRepository roleRepository,
-                        UserRepository userRepository,
-                        LibraryGameRepository libraryGameRepository) {
-        this.roleRepository = roleRepository;
+    public RestApiSteps(UserRepository userRepository, DatabaseTruncator databaseTruncator) {
         this.userRepository = userRepository;
-        this.libraryGameRepository = libraryGameRepository;
-
-        ClientHttpRequestFactory factory = new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory());
-        restTemplate = new RestTemplate(factory);
+        this.databaseTruncator = databaseTruncator;
+        restTemplate = new RestTemplate();
     }
 
     @Before
     public void beforeEachScenario() {
-        libraryGameRepository.deleteAll();
-        userRepository.deleteAll();
-        roleRepository.deleteAll();
+        databaseTruncator.truncateAllTables();
     }
 
-    @Given("an authenticated user with username {string} and role {string}")
-    public void anAuthenticatedUserWithUsernameAndRole(String username, String role) {
-        RoleName roleName = RoleName.valueOf(role);
-        User user = new User("random id", username, "random password", "johnsmith@mail.com", roleName);
-        roleRepository.save(roleName);
+    @Given("the following user successfully logs in:")
+    public void theFollowingUserLogsIn(User user) {
         userRepository.save(user);
 
         JSONObject requestBody = new JSONObject()

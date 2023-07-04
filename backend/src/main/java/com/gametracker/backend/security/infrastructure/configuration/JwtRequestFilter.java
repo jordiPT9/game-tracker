@@ -1,6 +1,5 @@
 package com.gametracker.backend.security.infrastructure.configuration;
 
-import com.gametracker.backend.security.domain.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,11 +15,11 @@ import java.io.IOException;
 
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
-    private final JwtUtil jwtUtil;
+    private final JwtService jwtService;
     private final MyUserDetailsService myUserDetailsService;
 
-    public JwtRequestFilter(JwtUtil jwtUtil, MyUserDetailsService myUserDetailsService) {
-        this.jwtUtil = jwtUtil;
+    public JwtRequestFilter(JwtService jwtService, MyUserDetailsService myUserDetailsService) {
+        this.jwtService = jwtService;
         this.myUserDetailsService = myUserDetailsService;
     }
 
@@ -34,12 +33,12 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             jwt = authorizationHeader.substring(7);
-            username = jwtUtil.getUsernameFromToken(jwt);
+            username = jwtService.getUsernameFromToken(jwt);
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = myUserDetailsService.loadUserByUsername(username);
-            if (jwtUtil.validateToken(jwt)) {
+            if (jwtService.validateToken(jwt)) {
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authentication);

@@ -1,4 +1,4 @@
-package com.gametracker.backend.security.domain;
+package com.gametracker.backend.security.infrastructure.configuration;
 
 import com.gametracker.backend.user.domain.User;
 import io.jsonwebtoken.*;
@@ -10,9 +10,9 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 
 @Component
-public class JwtUtil {
+public class JwtService {
 
-    private static final Logger logger = LoggerFactory.getLogger(JwtUtil.class);
+    private static final Logger logger = LoggerFactory.getLogger(JwtService.class);
 
     @Value("${app.jwtSecretKey}")
     private String JWT_SECRET_KEY;

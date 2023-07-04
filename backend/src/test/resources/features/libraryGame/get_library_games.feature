@@ -4,7 +4,11 @@ Feature: Get library games
   So i can see all of its information
 
   Background:
-    Given an authenticated user with username "johnsmith" and role "USER"
+    Given the following roles exist:
+      | USER |
+    And the following user successfully logs in:
+      | id        | username  | password      | email               | role |
+      | random_id | johnsmith | johnsmith1234 | johnsmith@email.com | USER |
 
   Scenario: User gets an existing game of their library successfully
     Given the following library-games exist:
@@ -20,8 +24,8 @@ Feature: Get library games
 
   Scenario: User fails to get a game of another users library
     Given the following users exist:
-      | uuid      | username     | password        | email                  | role |
-      | random_id | marcgonzalez | marcgonzalez123 | marcgonzalez@email.com | USER |
+      | id      | username     | password        | email                  | role |
+      | random_id_2 | marcgonzalez | marcgonzalez123 | marcgonzalez@email.com | USER |
     Given the following library-games exist:
       | id                                   | title             | rating | status | username     |
       | da1e846d-25e1-44e7-91f8-3cca9348d1b6 | Random game title | 4.5    | PLAYED | marcgonzalez |

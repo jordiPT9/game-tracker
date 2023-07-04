@@ -7,7 +7,7 @@ Feature: User authentication
     Given the following roles exist:
       | USER |
     And the following users exist:
-      | uuid      | username | password    | email              | role |
+      | id        | username | password    | email              | role |
       | random_id | johnsnow | johnsnow123 | johnsnow@email.com | USER |
 
   Scenario: User authenticates successfully
