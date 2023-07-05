@@ -2,7 +2,7 @@ package com.gametracker.backend.libraryGame.infrastructure.entrypoints.Get;
 
 import com.gametracker.backend.libraryGame.application.Get.GetLibraryGamesQuery;
 import com.gametracker.backend.libraryGame.application.Get.GetLibraryGamesUseCase;
-import com.gametracker.backend.libraryGame.application.Get.LibraryGameDTO;
+import com.gametracker.backend.libraryGame.application.Get.LibraryGameResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,11 +23,11 @@ public class GetLibraryGamesController {
 
     @GetMapping("/library-games")
     public ResponseEntity<?> execute(Principal principal) {
-        GetLibraryGamesQuery command = new GetLibraryGamesQuery(
+        GetLibraryGamesQuery query = new GetLibraryGamesQuery(
                 principal.getName()
         );
-        List<LibraryGameDTO> libraryGameDTOs = getLibraryGamesUseCase.execute(command);
+        List<LibraryGameResponse> libraryGameResponses = getLibraryGamesUseCase.execute(query);
 
-        return new ResponseEntity<>(libraryGameDTOs, HttpStatus.OK);
+        return new ResponseEntity<>(libraryGameResponses, HttpStatus.OK);
     }
 }

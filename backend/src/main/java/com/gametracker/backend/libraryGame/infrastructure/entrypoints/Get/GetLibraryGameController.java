@@ -2,7 +2,7 @@ package com.gametracker.backend.libraryGame.infrastructure.entrypoints.Get;
 
 import com.gametracker.backend.libraryGame.application.Get.GetLibraryGameQuery;
 import com.gametracker.backend.libraryGame.application.Get.GetLibraryGameUseCase;
-import com.gametracker.backend.libraryGame.application.Get.LibraryGameDTO;
+import com.gametracker.backend.libraryGame.application.Get.LibraryGameResponse;
 import com.gametracker.backend.libraryGame.domain.LibraryGameAccessDeniedException;
 import com.gametracker.backend.libraryGame.domain.LibraryGameNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -25,20 +25,20 @@ public class GetLibraryGameController {
 
     @GetMapping("/library-games/{libraryGameId}")
     public ResponseEntity<?> execute(@PathVariable String libraryGameId, Principal principal) {
-        GetLibraryGameQuery command = new GetLibraryGameQuery(
+        GetLibraryGameQuery query = new GetLibraryGameQuery(
                 libraryGameId,
                 principal.getName()
         );
 
-        LibraryGameDTO libraryGameDTO;
+        LibraryGameResponse libraryGameResponse;
         try {
-            libraryGameDTO = getLibraryGameUseCase.execute(command);
+            libraryGameResponse = getLibraryGameUseCase.execute(query);
         } catch (LibraryGameNotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (LibraryGameAccessDeniedException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
         }
 
-        return new ResponseEntity<>(libraryGameDTO, HttpStatus.OK);
+        return new ResponseEntity<>(libraryGameResponse, HttpStatus.OK);
     }
 }

@@ -24,11 +24,6 @@ public class MySqlLibraryGameRepository implements LibraryGameRepository {
     }
 
     @Override
-    public void deleteAll() {
-        libraryGameJpaRepository.deleteAll();
-    }
-
-    @Override
     public LibraryGame findByTitleAndUsername(String title, String username) {
         LibraryGameJpaEntity libraryGameJpaEntity = libraryGameJpaRepository.findByTitleAndUser_Username(title, username);
 

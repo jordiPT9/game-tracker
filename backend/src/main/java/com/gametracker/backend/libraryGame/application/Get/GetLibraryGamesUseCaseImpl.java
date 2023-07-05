@@ -16,12 +16,12 @@ public class GetLibraryGamesUseCaseImpl implements GetLibraryGamesUseCase {
     }
 
     @Override
-    public List<LibraryGameDTO> execute(GetLibraryGamesQuery command) {
+    public List<LibraryGameResponse> execute(GetLibraryGamesQuery command) {
         List<LibraryGame> libraryGames = libraryGameRepository.findByUsername(command.username());
 
         return libraryGames
                 .stream()
-                .map(libraryGame -> new LibraryGameDTO(
+                .map(libraryGame -> new LibraryGameResponse(
                         libraryGame.getId(),
                         libraryGame.getTitle(),
                         libraryGame.getStatus().name(),

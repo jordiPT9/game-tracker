@@ -15,7 +15,7 @@ public class GetLibraryGameUseCaseImpl implements GetLibraryGameUseCase {
     }
 
     @Override
-    public LibraryGameDTO execute(GetLibraryGameQuery query) {
+    public LibraryGameResponse execute(GetLibraryGameQuery query) {
         LibraryGame libraryGame = libraryGameRepository.findById(query.id());
 
         if (libraryGame == null) {
@@ -26,7 +26,7 @@ public class GetLibraryGameUseCaseImpl implements GetLibraryGameUseCase {
             throw new LibraryGameAccessDeniedException(query.id());
         }
 
-        return new LibraryGameDTO(
+        return new LibraryGameResponse(
                 libraryGame.getTitle(),
                 libraryGame.getId(),
                 libraryGame.getStatus().name(),
