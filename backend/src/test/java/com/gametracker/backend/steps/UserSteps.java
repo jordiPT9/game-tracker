@@ -4,10 +4,13 @@ import com.gametracker.backend.role.domain.RoleName;
 import com.gametracker.backend.user.domain.User;
 import com.gametracker.backend.user.domain.UserRepository;
 import io.cucumber.java.DataTableType;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 
 import java.util.List;
 import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class UserSteps {
     private final UserRepository userRepository;
@@ -30,5 +33,13 @@ public class UserSteps {
     @Given("the following users exist:")
     public void theFollowingUsersExist(List<User> users) {
         users.forEach(userRepository::save);
+    }
+
+    @And("users with the following usernames should be in the database:")
+    public void aUserWithIdShouldBeInTheDatabase(List<String> usernames) {
+        usernames.forEach(username -> {
+            User user = userRepository.findByUsername(username);
+            assertNotNull(user);
+        });
     }
 }
