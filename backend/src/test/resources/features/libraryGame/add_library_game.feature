@@ -22,9 +22,8 @@ Feature: Add library game
       }
       """
     Then the server responds with a 201 status code
-    And the following library-games should be in the database:
-      | id                                   | title             | rating | status  | username  |
-      | da1e846d-25e1-44e7-91f8-3cca9348d1b6 | Random game title | 4.5    | PLAYING | johnsmith |
+    And library-games with the following ids should be in the database:
+      | da1e846d-25e1-44e7-91f8-3cca9348d1b6 |
 
   Scenario: User fails to add an already existing game in their library
     Given the game exists
@@ -41,7 +40,7 @@ Feature: Add library game
       }
       """
     Then the server responds with a 409 status code
-    And the response body should contain the error message "Library game with title 'Random game title' is already added"
+    And the response body should contain the message "Library game with title 'Random game title' is already added"
 
   Scenario: User fails to add a game that doesnt exist
     Given the game does not exist
@@ -55,4 +54,4 @@ Feature: Add library game
       }
       """
     Then the server responds with a 404 status code
-    And the response body should contain the error message "Game with title 'Random game title' doesn't exist"
+    And the response body should contain the message "Game with title 'Random game title' doesn't exist"

@@ -134,8 +134,8 @@ public class RestApiSteps {
         });
     }
 
-    @And("the response body should contain the error message {string}")
-    public void theMessageBodyShouldBe(String expectedMessage) {
+    @And("the response body should contain the message {string}")
+    public void theResponseBodyShouldContainTheMessage(String expectedMessage) {
         assertEquals(expectedMessage, latestResponse.getBody());
     }
 

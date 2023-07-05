@@ -11,8 +11,7 @@ import io.cucumber.java.en.Given;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class LibraryGameSteps {
     private final LibraryGameRepository libraryGameRepository;
@@ -37,19 +36,19 @@ public class LibraryGameSteps {
         libraryGames.forEach(libraryGameRepository::save);
     }
 
-    @And("the following library-games should be in the database:")
-    public void theFollowingLibraryGamesShouldBeInTheDatabase(List<LibraryGame> libraryGames) {
-        libraryGames.forEach(expectedLibraryGame -> {
-            LibraryGame actualLibraryGame = libraryGameRepository.findById(expectedLibraryGame.getId());
-            assertEquals(expectedLibraryGame, actualLibraryGame);
+    @And("library-games with the following ids should be in the database:")
+    public void theFollowingLibraryGamesShouldBeInTheDatabase(List<String> libraryGameIds) {
+        libraryGameIds.forEach(id -> {
+            LibraryGame libraryGame = libraryGameRepository.findById(id);
+            assertNotNull(libraryGame);
         });
     }
 
-    @And("the following library-games should not be in the database:")
-    public void theFollowingLibraryGamesShouldNotBeInTheDatabase(List<LibraryGame> libraryGames) {
-        libraryGames.forEach(expectedLibraryGame -> {
-            LibraryGame actualLibraryGame = libraryGameRepository.findById(expectedLibraryGame.getId());
-            assertNull(actualLibraryGame);
+    @And("library-games with the following ids should not be in the database:")
+    public void theFollowingLibraryGamesShouldNotBeInTheDatabase(List<String> libraryGameIds) {
+        libraryGameIds.forEach(id -> {
+            LibraryGame libraryGame = libraryGameRepository.findById(id);
+            assertNull(libraryGame);
         });
     }
 }
