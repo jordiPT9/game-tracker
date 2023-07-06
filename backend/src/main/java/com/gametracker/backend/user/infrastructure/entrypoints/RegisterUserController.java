@@ -31,7 +31,6 @@ public class RegisterUserController {
 
         registerUserUseCase.execute(command);
 
-
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }

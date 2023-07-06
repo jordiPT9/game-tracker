@@ -26,7 +26,7 @@ public class AddLibraryGameUseCaseImpl implements AddLibraryGameUseCase {
             throw new GameDoesNotExistException(command.title());
         }
 
-        LibraryGame libraryGame = new LibraryGame(
+        LibraryGame newLibraryGame = new LibraryGame(
                 command.id(),
                 command.title(),
                 command.rating(),
@@ -34,11 +34,12 @@ public class AddLibraryGameUseCaseImpl implements AddLibraryGameUseCase {
                 command.username()
         );
 
-        LibraryGame l = libraryGameRepository.findByTitleAndUsername(libraryGame.getTitle(), libraryGame.getUsername());
-        if (l != null) {
-            throw new LibraryGameAlreadyAddedException(l.getTitle());
+        LibraryGame libraryGame = libraryGameRepository.findByTitleAndUsername(newLibraryGame.getTitle(), newLibraryGame.getUsername());
+
+        if (libraryGame != null) {
+            throw new LibraryGameAlreadyAddedException(libraryGame.getTitle());
         }
 
-        libraryGameRepository.save(libraryGame);
+        libraryGameRepository.save(newLibraryGame);
     }
 }

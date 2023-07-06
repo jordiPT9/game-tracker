@@ -2,10 +2,13 @@ package com.gametracker.backend.game.infrastructure;
 
 import com.gametracker.backend.game.domain.Game;
 import com.gametracker.backend.game.domain.GameService;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import java.sql.Timestamp;
 
 @Service
 public class GameServiceImpl implements GameService {
@@ -29,13 +32,18 @@ public class GameServiceImpl implements GameService {
         HttpEntity<String> requestEntity = new HttpEntity<>(body, headers);
 
         ResponseEntity<String> response = restTemplate.exchange(BASE_URL + "/games", HttpMethod.POST, requestEntity, String.class);
-        System.out.println(response.getBody());
-        JSONObject gameJson = new JSONObject(response.getBody());
+        JSONArray gamesArray = new JSONArray(response.getBody());
+
+        if (gamesArray.length() == 0) {
+            return null;
+        }
+
+        JSONObject gameJson = gamesArray.getJSONObject(0);
 
         return new Game(
-                gameJson.getString("title"),
+                gameJson.getString("name"),
                 gameJson.getInt("follows"),
-                gameJson.getString("release_date")
+                new Timestamp(gameJson.getLong("first_release_date")).toString()
         );
     }
 }
