@@ -20,7 +20,7 @@ public class AddLibraryGameUseCaseImpl implements AddLibraryGameUseCase {
 
     @Override
     public void execute(AddLibraryGameCommand command) {
-        Game game = gameService.searchGame(command.title());
+        Game game = gameService.getGame(command.title());
 
         if (game == null) {
             throw new GameDoesNotExistException(command.title());

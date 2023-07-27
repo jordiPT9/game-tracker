@@ -16,11 +16,11 @@ public class GameSteps {
 
     @Given("the game exists")
     public void theGameExists() {
-        when(gameService.searchGame(anyString())).thenReturn(new Game("random_title", 5, "random_release_date"));
+        when(gameService.getGame(anyString())).thenReturn(new Game("random_title", 5, "random_release_date"));
     }
 
     @Given("the game does not exist")
     public void theGameDoesNotExist() {
-        when(gameService.searchGame(anyString())).thenReturn(null);
+        when(gameService.getGame(anyString())).thenReturn(null);
     }
 }

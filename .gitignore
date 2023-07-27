@@ -24,3 +24,4 @@ Thumbs.db
 # Ignore dependencies lock files
 package-lock.json
 yarn.lock
+backend/cucumber-reports.html

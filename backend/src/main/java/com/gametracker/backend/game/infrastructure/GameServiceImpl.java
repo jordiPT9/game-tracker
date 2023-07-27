@@ -23,7 +23,7 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public Game searchGame(String title) {
+    public Game getGame(String title) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Client-ID", CLIENT_ID);
         headers.setBearerAuth(ACCESS_TOKEN);
