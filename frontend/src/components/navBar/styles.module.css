@@ -1,0 +1,71 @@
+.topNav {
+  background-color: rgb(25, 25, 32);
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.4);
+  position: sticky;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px 50px;
+  margin-bottom: 10px;
+}
+
+.logo {
+  font-size: 20px;
+  font-weight: bold;
+  padding: 20px 0px;
+  color: #ff6e6e;
+  font-style: italic;
+  text-shadow: 0px 0px 10px rgba(255, 110, 110, 0.1);
+}
+
+.logo span.whiteText {
+  color: rgb(255, 255, 255);
+  text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1);
+}
+
+.inputWrapper {
+  display: flex;
+  align-items: center;
+  background-color: rgb(41, 41, 54);
+  padding: 5px 20px 5px 5px;
+  border-radius: 50px;
+  gap: 5px;
+  box-shadow: inset 0px 0px 15px rgba(0, 0, 0, 0.3);
+}
+
+.inputWrapper input {
+  background-color: rgba(0, 0, 0, 0);
+  border: none;
+  width: 300px;
+  font-size: 17px;
+  font-family: 'Poppins', sans-serif;
+  color: white;
+  outline: none;
+}
+
+.inputWrapper input:focus {
+  border: 0px;
+  box-shadow: 0;
+  width: 300px;
+}
+
+.profileWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.profile {
+  border-radius: 100%;
+  width: 40px;
+  height: 40px;
+  overflow: hidden;
+}
+
+.profile img {
+  width: 70px;
+  height: 40px;
+}

@@ -2,19 +2,20 @@
   padding: 10px;
   margin: 10px;
   width: 25%;
-  background-color: #1E1F21;
+  background-color: rgb(25, 25, 30);
   border-radius: 25px;
   box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.3);
 }
 
-.list_title {
+.title {
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0px 0px 20px 0px;
   font-size: 18px;
   padding: 5px;
-  background-color: rgb(241, 220, 122);
+  background-color: #424242;
+  background-color: #ff5e5e;
   color: #1E1F21;
   text-align: center;
   border-radius: 20px;
@@ -22,6 +23,6 @@
   cursor: pointer;
   text-transform: uppercase;
   font-family: 'Poppins', sans-serif;
-  box-shadow: inset 0px 0px 35px rgba(248, 182, 0, 1);
-  text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  /* box-shadow: inset 0px 0px 25px #ff4b4b; */
+  /* text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); */
 }

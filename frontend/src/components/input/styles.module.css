@@ -1,8 +1,8 @@
-.game_title_input {
+.titleInput {
   background-color: #000;
   color: white;
   border: none;
-  border-radius: 3px;
+  border-radius: 50px;
   font-size: 15px;
   font-family: 'Roboto', sans-serif;
   padding: 8px 16px;

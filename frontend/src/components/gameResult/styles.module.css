@@ -11,31 +11,31 @@
   margin-bottom: 10px;
 }
 
-.game_wrapper {
+.wrapper {
   width: 265px;
   background-color: #1b1c20;
   border-radius: 0px 10px 10px 0px;
   transition: background-color 0.3s ease;
 }
 
-.game_wrapper:hover {
+.wrapper:hover {
   background-color: #24252b;
 }
 
-.game_title {
+.title {
   margin: 0px;
   margin-left: 10px;
   margin-top: 5px;
   padding: 0px;
 }
 
-.release_date {
+.releaseDate {
   margin: 0px;
   margin-left: 10px;
   padding: 0px;
   color: #888;
 }
 
-.game_image {
+.coverImage {
   border-radius: 10px 0 0 10px;
 }

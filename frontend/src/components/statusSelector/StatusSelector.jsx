@@ -1,5 +1,4 @@
-import React from 'react';
-import styles from './StatusSelector.module.css';
+import styles from './styles.module.css';
 
 export const StatusSelector = ({ options, value, handleValueChange }) => {
   const statusSelectorStyle = {

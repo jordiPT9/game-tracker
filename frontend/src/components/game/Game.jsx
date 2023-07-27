@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import styles from './Game.module.css';
+import { useState } from 'react';
+import styles from './styles.module.css';
 import { STATUS, NO_RATING } from '../../constants/constants';
 import { MdModeEditOutline, MdOutlineDragIndicator } from "react-icons/md";
 
@@ -74,7 +74,7 @@ export const Game = ({ game, deleteGame, onClick }) => {
     >
       <MdOutlineDragIndicator style={{ marginRight: "5px", color: "rgba(255, 255, 255, 0.2)", fontSize: "20px" }} />
       {title}
-      {isHovered && <MdModeEditOutline className={styles.edit_icon} onClick={handleClick} />}
+      {isHovered && <MdModeEditOutline className={styles.editIcon} onClick={handleClick} />}
       <div className={styles.rating} style={{ color: getRatingColor() }} onClick={handleClick}>
         {rating === NO_RATING ? "" : rating/10}
       </div>

@@ -1,21 +1,20 @@
-const BASE_URL = 'http://localhost:9000'
+const API_BASE_URL = 'http://localhost:9000';
 
-export const searchGame = async (word) => {
-  const response = await fetch(`${BASE_URL}/games/search?word=${word}`);
-  const gameResults = await response.json();
-
-  return gameResults;
+export const searchGame = async (searchTerm) => {
+  const response = await fetch(`${API_BASE_URL}/games/search?word=${searchTerm}`);
+  const searchResults = await response.json();
+  return searchResults;
 }
 
 export const getAllGames = async () => {
-  const response = await fetch(`${BASE_URL}/games`);
+  const response = await fetch(`${API_BASE_URL}/games`);
   const games = await response.json();
   return games;
 }
 
 export const createGame = async ({ id, title, rating, status }) => {
   try {
-    const response = await fetch(`${BASE_URL}/games`, {
+    const response = await fetch(`${API_BASE_URL}/games`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id, title, rating, status }),
@@ -33,7 +32,7 @@ export const createGame = async ({ id, title, rating, status }) => {
 
 export const updateGame = async ({ id, title, rating, status }) => {
   try {
-    const response = await fetch(`${BASE_URL}/games`, {
+    const response = await fetch(`${API_BASE_URL}/games`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id, title, rating, status }),
@@ -49,9 +48,9 @@ export const updateGame = async ({ id, title, rating, status }) => {
   }
 }
 
-export const deleteGame = async (id) => {
+export const deleteGame = async (gameId) => {
   try {
-    const response = await fetch(`${BASE_URL}/games?id=${id}`, { method: 'DELETE' });
+    const response = await fetch(`${API_BASE_URL}/games?id=${gameId}`, { method: 'DELETE' });
 
     if (response.ok) {
       console.log('Game deleted successfully');

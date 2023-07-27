@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   font-size: 15px;
-  background-color: #25282C;
+  background-color: rgb(33, 33, 44);
   color: white;
   padding: 5px;
   margin-bottom: 8px;
@@ -15,10 +15,10 @@
 }
 
 .game:hover {
-  background-color: #2f3338;
+  background-color: rgb(44, 44, 58);
 }
 
-.edit_icon {
+.editIcon {
   margin: 0px 5px 0px 5px;
   color: rgb(90, 90, 90);
   cursor: pointer;

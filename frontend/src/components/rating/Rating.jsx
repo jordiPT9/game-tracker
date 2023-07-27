@@ -1,5 +1,4 @@
-import React from "react";
-import styles from "./Rating.module.css";
+import styles from "./styles.module.css";
 import { NO_RATING } from '../../constants/constants'
 
 export const Rating = ({ value, handleValueChange }) => {

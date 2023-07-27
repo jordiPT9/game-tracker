@@ -1,10 +1,8 @@
-import React, { useEffect } from 'react';
-import styles from './GameResult.module.css';
-import { MdOutlineDragIndicator } from "react-icons/md";
+import styles from './styles.module.css';
 
 export const GameResult = ({ game }) => {
 
-  useEffect(() => { console.log(game) }, [])
+  // useEffect(() => { console.log(game) }, [])
 
   const handleDragStart = (evt) => {
     //evt.dataTransfer.setData("gameId", id)
@@ -17,11 +15,11 @@ export const GameResult = ({ game }) => {
       draggable
       onDragStart={handleDragStart}
     >
-      <img className={styles.game_image} src={game.url} alt={game.title} />
-      <div className={styles.game_wrapper}>
+      <img className={styles.coverImage} src={game.url} alt={game.title} />
+      <div className={styles.wrapper}>
         <div style={{ padding: "5px 5px 5px 0px" }}>
-          <p className={styles.game_title}>{game.title}</p>
-          <p className={styles.release_date}>{game.releaseDate}</p>
+          <p className={styles.title}>{game.title}</p>
+          <p className={styles.releaseDate}>{game.releaseDate}</p>
         </div>
       </div>
     </div>

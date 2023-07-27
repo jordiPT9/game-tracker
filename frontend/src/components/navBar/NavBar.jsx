@@ -1,20 +1,27 @@
-import React from 'react';
-import styles from './NavBar.module.css';
-// import { RxCross2 } from 'react-icons/rx'
+import styles from './styles.module.css';
+import { AiOutlineSearch } from 'react-icons/ai'
 
-export const NavBar = ({ value, onChange, onEnter, onResetField }) => {
+export const NavBar = ({ value, onChange, onEnter }) => {
   return (
-    <nav className={styles.navbar}>
-      <input
-        className={styles.search_input}
-        placeholder='Search game'
-        value={value}
-        onChange={onChange}
-        onKeyDown={(evt) => {
-          if (evt.key === 'Enter') onEnter();
-        }}
-      />
-      {/* <button className={styles.search_button} onClick={onResetField}><RxCross2/></button> */}
-    </nav>
+    <div className={styles.topNav}>
+      <div className={styles.logo}>Game<span className={styles.whiteText}>tracker_</span></div>
+      <div className={styles.inputWrapper}>
+        <AiOutlineSearch style={{fontSize: 20, marginLeft: 7, color: "#888"}}/>
+        <input
+          placeholder=" Search game"
+          value={value}
+          onChange={onChange}
+          onKeyDown={(evt) => {
+            if (evt.key === 'Enter') onEnter();
+          }}
+        />
+      </div>
+      <div className={styles.profileWrapper}>
+        <div>Alviin</div>
+        <div className={styles.profile}>
+          <img src="/profile.jpg" alt="Profile logo" />
+        </div>
+      </div>
+    </div >
   );
 };

@@ -1,5 +1,4 @@
-import React from 'react';
-import styles from './GameList.module.css';
+import styles from './styles.module.css';
 import { Game } from '../game/Game';
 
 export const GameList = ({ title, data, listStatus, updateGameStatus, deleteGame, onClickTitle, onClickGame }) => {
@@ -11,7 +10,6 @@ export const GameList = ({ title, data, listStatus, updateGameStatus, deleteGame
 
   const handleDragOver = (evt) => {
     evt.preventDefault();
-    console.log("HOLA")
   }
 
   const renderGames = () => {
@@ -27,7 +25,7 @@ export const GameList = ({ title, data, listStatus, updateGameStatus, deleteGame
 
   return (
     <div className={styles.list} onDrop={handleDrop} onDragOver={handleDragOver} type={listStatus}>
-      <div className={styles.list_title} onClick={() => onClickTitle(listStatus)}>{title}</div>
+      <div className={styles.title} onClick={() => onClickTitle(listStatus)}>{title}</div>
       {renderGames()}
     </div>
   );
