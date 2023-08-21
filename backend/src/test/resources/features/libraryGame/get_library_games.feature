@@ -24,7 +24,7 @@ Feature: Get library games
 
   Scenario: User fails to get a game of another users library
     Given the following users exist:
-      | id      | username     | password        | email                  | role |
+      | id          | username     | password        | email                  | role |
       | random_id_2 | marcgonzalez | marcgonzalez123 | marcgonzalez@email.com | USER |
     Given the following library-games exist:
       | id                                   | title             | rating | status | username     |
