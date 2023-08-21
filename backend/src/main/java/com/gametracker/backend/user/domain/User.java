@@ -11,12 +11,11 @@ public class User {
     private String email;
     private RoleName role;
 
-    public User(String id, String username, String password, String email, RoleName role) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.role = role;
+    private User() {
+    }
+
+    public static UserBuilder builder() {
+        return new UserBuilder();
     }
 
     public String getId() {
@@ -82,5 +81,41 @@ public class User {
                 ", email='" + email + '\'' +
                 ", role=" + role +
                 '}';
+    }
+
+    public static class UserBuilder {
+        private final User user = new User();
+
+        private UserBuilder() {
+        }
+
+        public UserBuilder id(String id) {
+            user.setId(id);
+            return this;
+        }
+
+        public UserBuilder username(String username) {
+            user.setUsername(username);
+            return this;
+        }
+
+        public UserBuilder password(String password) {
+            user.setPassword(password);
+            return this;
+        }
+
+        public UserBuilder email(String email) {
+            user.setEmail(email);
+            return this;
+        }
+
+        public UserBuilder role(RoleName role) {
+            user.setRole(role);
+            return this;
+        }
+
+        public User build() {
+            return user;
+        }
     }
 }

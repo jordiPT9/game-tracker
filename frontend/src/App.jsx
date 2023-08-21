@@ -99,19 +99,29 @@ const App = () => {
   const renderGameResults = () => {
     const result = loading
       ? <p style={{ textAlign: "center", color: "white" }}>Loading...</p>
-      : <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", }}>
+      : <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          alignItems: "center",
+          gap: 14,
+          backgroundColor: "rgb(25, 25, 32)",
+          boxShadow: "inset 0px 0px 10px rgba(0, 0, 0, 0.3)",
+          borderRadius: 10,
+          margin: 20,
+          padding: 14
+        }}
+      >
         {gameSearchResults?.map(game => {
           const timestamp = game.first_release_date;
-          const date = new Date(timestamp * 1000); // Multiply by 1000 since the timestamp is in seconds
+          const date = new Date(timestamp * 1000);
           const options = { year: 'numeric', month: 'long', day: 'numeric' };
           const dateStr = date.toLocaleDateString('en-US', options);
 
           return <GameResult key={game.name} game={{ url: game.url, title: game.name, releaseDate: dateStr }} />
-        }
-
-        )}
+        })}
       </div>
-      
+
     return result;
   }
 
@@ -124,7 +134,7 @@ const App = () => {
 
   return (
     <div className="app">
-       <Modal
+      <Modal
         title={"ADD GAME"}
         visible={addGameModal.isVisible}
         onSave={saveNewGame}
@@ -145,7 +155,7 @@ const App = () => {
         <StatusSelector options={gameStatusOptions} value={currentGame.status} handleValueChange={handleCurrentGameStatusChange} />
         <Rating value={currentGame.rating} handleValueChange={handleCurrentGameRatingChange} />
       </Modal>
-      
+
       <NavBar
         value={inputSearchGame}
         onEnter={() => {

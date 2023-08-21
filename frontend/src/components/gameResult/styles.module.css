@@ -1,25 +1,22 @@
 .game {
   display: flex;
-  /* align-items: center; */
   font-size: 15px;
   color: white;
   border-radius: 10px;
   min-height: 23px;
   cursor: grab;
-  width: 20%;
-  margin-top: 20px;
-  margin-bottom: 10px;
 }
 
 .wrapper {
   width: 265px;
-  background-color: #1b1c20;
+  background-color: rgb(33, 33, 44);
   border-radius: 0px 10px 10px 0px;
   transition: background-color 0.3s ease;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
 }
 
 .wrapper:hover {
-  background-color: #24252b;
+  background-color: rgb(44, 44, 58);
 }
 
 .title {

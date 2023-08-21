@@ -23,12 +23,12 @@ public class UserMapper {
     }
 
     public User mapToDomainEntity(UserJpaEntity userJpaEntity) {
-        return new User(
-                userJpaEntity.getId(),
-                userJpaEntity.getUsername(),
-                userJpaEntity.getPassword(),
-                userJpaEntity.getEmail(),
-                userJpaEntity.getRole().getName()
-        );
+        return User.builder()
+                .id(userJpaEntity.getId())
+                .username(userJpaEntity.getUsername())
+                .password(userJpaEntity.getPassword())
+                .email(userJpaEntity.getEmail())
+                .role(userJpaEntity.getRole().getName())
+                .build();
     }
 }

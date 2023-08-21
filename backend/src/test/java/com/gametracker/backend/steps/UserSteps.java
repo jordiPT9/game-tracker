@@ -21,13 +21,13 @@ public class UserSteps {
 
     @DataTableType
     public User userTransformer(Map<String, String> entry) {
-        return new User(
-                entry.get("id"),
-                entry.get("username"),
-                entry.get("password"),
-                entry.get("email"),
-                RoleName.valueOf(entry.get("role"))
-        );
+        return User.builder()
+                .id(entry.get("id"))
+                .username(entry.get("username"))
+                .password(entry.get("password"))
+                .email(entry.get("email"))
+                .role(RoleName.valueOf(entry.get("role")))
+                .build();
     }
 
     @Given("the following users exist:")

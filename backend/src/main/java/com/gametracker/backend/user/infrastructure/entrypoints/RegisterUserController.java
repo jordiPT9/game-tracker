@@ -2,7 +2,6 @@ package com.gametracker.backend.user.infrastructure.entrypoints;
 
 import com.gametracker.backend.user.application.RegisterUserCommand;
 import com.gametracker.backend.user.application.RegisterUserUseCase;
-import com.gametracker.backend.user.domain.UserAlreadyExistsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,15 +19,13 @@ public class RegisterUserController {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<?> execute(@RequestBody RegisterUserRequest request) {
+    public ResponseEntity<HttpStatus> execute(@RequestBody RegisterUserRequest request) {
         RegisterUserCommand command = new RegisterUserCommand(
                 request.id(),
                 request.username(),
                 request.password(),
                 request.email(),
-                request.role()
-        );
-
+                request.role());
         registerUserUseCase.execute(command);
 
         return new ResponseEntity<>(HttpStatus.CREATED);

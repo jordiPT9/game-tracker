@@ -1,9 +1,9 @@
 package com.gametracker.backend.steps;
 
 import com.gametracker.backend.game.domain.GameService;
-import com.gametracker.backend.libraryGame.domain.LibraryGame;
-import com.gametracker.backend.libraryGame.domain.LibraryGameRepository;
-import com.gametracker.backend.libraryGame.domain.LibraryGameStatus;
+import com.gametracker.backend.library_game.domain.LibraryGame;
+import com.gametracker.backend.library_game.domain.LibraryGameRepository;
+import com.gametracker.backend.library_game.domain.LibraryGameStatus;
 import io.cucumber.java.DataTableType;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -11,7 +11,8 @@ import io.cucumber.java.en.Given;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class LibraryGameSteps {
     private final LibraryGameRepository libraryGameRepository;
@@ -22,13 +23,13 @@ public class LibraryGameSteps {
 
     @DataTableType
     public LibraryGame showTransformer(Map<String, String> entry) {
-        return new LibraryGame(
-                entry.get("id"),
-                entry.get("title"),
-                Double.parseDouble(entry.get("rating")),
-                LibraryGameStatus.valueOf(entry.get("status")),
-                entry.get("username")
-        );
+        return LibraryGame.builder()
+                .id(entry.get("id"))
+                .title(entry.get("title"))
+                .rating(Double.parseDouble(entry.get("rating")))
+                .status(LibraryGameStatus.valueOf(entry.get("status")))
+                .username(entry.get("username"))
+                .build();
     }
 
     @Given("the following library-games exist:")

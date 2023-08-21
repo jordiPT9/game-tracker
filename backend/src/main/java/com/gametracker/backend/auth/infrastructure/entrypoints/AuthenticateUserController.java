@@ -2,7 +2,6 @@ package com.gametracker.backend.auth.infrastructure.entrypoints;
 
 import com.gametracker.backend.auth.application.AuthenticateUserCommand;
 import com.gametracker.backend.auth.application.AuthenticateUserUseCaseImpl;
-import com.gametracker.backend.auth.domain.UnauthorizedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,15 +19,9 @@ public class AuthenticateUserController {
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<?> execute(@RequestBody AuthenticateUserRequest authenticateUserRequest) {
+    public ResponseEntity<AuthenticateUserResponse> execute(@RequestBody AuthenticateUserRequest authenticateUserRequest) {
         AuthenticateUserCommand command = new AuthenticateUserCommand(authenticateUserRequest.username(), authenticateUserRequest.password());
-
-        AuthenticateUserResponse response;
-        try {
-            response = authenticationUseCaseImpl.execute(command);
-        } catch (UnauthorizedException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
-        }
+        AuthenticateUserResponse response = authenticationUseCaseImpl.execute(command);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
