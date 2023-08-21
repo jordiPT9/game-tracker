@@ -16,6 +16,8 @@ import org.springframework.http.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Objects;
+
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -122,7 +124,7 @@ public class ApiSteps {
     @And("the response body should have the following JSON format {string}:")
     public void theResponseBodyShouldHaveTheFollowingJSONFormat(String schemaPath) {
         assertDoesNotThrow(() -> {
-            String schemaString = new String(getClass().getResourceAsStream(schemaPath).readAllBytes());
+            String schemaString = new String(Objects.requireNonNull(getClass().getResourceAsStream(schemaPath)).readAllBytes());
             JSONObject schemaJson = new JSONObject(schemaString);
             String schemaType = schemaJson.getString("type");
 
