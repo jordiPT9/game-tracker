@@ -1,11 +1,11 @@
 {
   "type": "object",
   "properties": {
-    "jwt": {
+    "accessToken": {
       "type": "string"
     }
   },
   "required": [
-    "jwt"
+    "accessToken"
   ]
 }

@@ -21,7 +21,7 @@ public class LibraryGameMapper {
                 libraryGame.getTitle(),
                 libraryGame.getRating(),
                 libraryGame.getStatus(),
-                userJpaRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username))
+                userJpaRepository.findByUsername(username)
         );
     }
 

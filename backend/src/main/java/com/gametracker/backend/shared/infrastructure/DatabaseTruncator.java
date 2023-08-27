@@ -40,13 +40,17 @@ public class DatabaseTruncator {
     }
 
     private List<String> getTruncateQueries() {
-        Query query = entityManager.createNativeQuery("SELECT CONCAT('TRUNCATE TABLE ',table_schema,'.',TABLE_NAME, ';') FROM INFORMATION_SCHEMA.TABLES WHERE table_schema IN ('game_tracker_bdd')");
-        List<?> resultList = query.getResultList();
+        String query = """
+                SELECT CONCAT('TRUNCATE TABLE ',table_schema,'.',TABLE_NAME, ';') 
+                FROM INFORMATION_SCHEMA.TABLES 
+                WHERE table_schema IN ('game_tracker_bdd')
+                """;
+        List<?> resultList = entityManager.createNativeQuery(query).getResultList();
 
         return resultList
                 .stream()
-                .map(result -> (String) result)
-                .collect(Collectors.toList());
+                .map(String.class::cast)
+                .toList();
     }
 
     private void enableForeignKeyChecks() {

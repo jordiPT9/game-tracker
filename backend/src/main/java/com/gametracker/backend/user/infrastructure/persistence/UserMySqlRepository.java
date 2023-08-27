@@ -4,6 +4,8 @@ import com.gametracker.backend.user.domain.User;
 import com.gametracker.backend.user.domain.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 
 @Service
 public class UserMySqlRepository implements UserRepository {
@@ -17,14 +19,12 @@ public class UserMySqlRepository implements UserRepository {
     }
 
     @Override
-    public User findByUsername(String username) {
-        UserJpaEntity userJpaEntity = userJpaRepository.findByUsername(username).orElse(null);
+    public Optional<User> findByUsername(String username) {
+        UserJpaEntity userJpaEntity = userJpaRepository.findByUsername(username);
 
-        if (userJpaEntity == null) {
-            return null;
-        }
-
-        return userMapper.mapToDomainEntity(userJpaEntity);
+        return userJpaEntity == null
+                ? Optional.empty()
+                : Optional.of(userMapper.mapToDomainEntity(userJpaEntity));
     }
 
     @Override

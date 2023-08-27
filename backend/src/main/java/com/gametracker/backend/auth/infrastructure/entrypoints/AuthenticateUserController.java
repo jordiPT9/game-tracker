@@ -1,6 +1,8 @@
 package com.gametracker.backend.auth.infrastructure.entrypoints;
 
 import com.gametracker.backend.auth.application.AuthenticateUserCommand;
+import com.gametracker.backend.auth.application.AuthenticateUserRequest;
+import com.gametracker.backend.auth.application.AuthenticateUserResponse;
 import com.gametracker.backend.auth.application.AuthenticateUserUseCaseImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +22,7 @@ public class AuthenticateUserController {
 
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticateUserResponse> execute(@RequestBody AuthenticateUserRequest authenticateUserRequest) {
-        AuthenticateUserCommand command = new AuthenticateUserCommand(authenticateUserRequest.username(), authenticateUserRequest.password());
-        AuthenticateUserResponse response = authenticationUseCaseImpl.execute(command);
+        AuthenticateUserResponse response = authenticationUseCaseImpl.execute(authenticateUserRequest);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

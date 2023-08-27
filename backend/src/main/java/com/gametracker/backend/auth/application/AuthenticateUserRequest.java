@@ -1,4 +1,4 @@
-package com.gametracker.backend.auth.infrastructure.entrypoints;
+package com.gametracker.backend.auth.application;
 
 public record AuthenticateUserRequest(
         String username,

@@ -1,4 +1,4 @@
-package com.gametracker.backend.security.infrastructure.configuration;
+package com.gametracker.backend.security;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -11,9 +11,9 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 @Component
-public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
+public class JWTAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
-    private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationEntryPoint.class);
+    private static final Logger logger = LoggerFactory.getLogger(JWTAuthenticationEntryPoint.class);
 
     @Override
     public void commence(HttpServletRequest request,

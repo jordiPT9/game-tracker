@@ -1,4 +1,4 @@
-package com.gametracker.backend.security.infrastructure.configuration;
+package com.gametracker.backend.security;
 
 import com.gametracker.backend.user.domain.User;
 import com.gametracker.backend.user.domain.UserNotFoundException;
@@ -11,20 +11,17 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 
 @Service
-public class MyUserDetailsService implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
     private final UserRepository userRepository;
 
-    public MyUserDetailsService(UserRepository userRepository) {
+    public UserDetailsServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
-
-        if (user == null) {
-            throw new UserNotFoundException(username);
-        }
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException(username));
 
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),

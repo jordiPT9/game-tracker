@@ -1,39 +1,44 @@
 package com.gametracker.backend.steps;
 
+import com.gametracker.backend.role.domain.RoleName;
 import com.gametracker.backend.shared.infrastructure.DatabaseTruncator;
 import com.gametracker.backend.user.domain.User;
 import com.gametracker.backend.user.domain.UserRepository;
+import com.github.javafaker.Faker;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import okhttp3.*;
 import org.everit.json.schema.Schema;
+import org.everit.json.schema.ValidationException;
 import org.everit.json.schema.loader.SchemaLoader;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.springframework.http.*;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ApiSteps {
+    private final String BASE_URL = "http://localhost:5000";
+
     private final UserRepository userRepository;
     private final DatabaseTruncator databaseTruncator;
-    private final RestTemplate restTemplate;
+    private final OkHttpClient okHttpClient;
 
-    private final String BASE_URL = "http://localhost:5000";
     private String currentJwt;
-    private ResponseEntity<String> latestResponse;
+    private Response latestResponse;
 
     public ApiSteps(UserRepository userRepository, DatabaseTruncator databaseTruncator) {
         this.userRepository = userRepository;
         this.databaseTruncator = databaseTruncator;
-        restTemplate = new RestTemplate();
+        this.okHttpClient = new OkHttpClient().newBuilder().build();
     }
 
     @Before
@@ -41,122 +46,135 @@ public class ApiSteps {
         databaseTruncator.truncateAllTables();
     }
 
-    @Given("the following user successfully logs in:")
-    public void theFollowingUserLogsIn(User user) {
+    @Given("a user with username {string} and role {string} is logged in")
+    public void theFollowingUserLogsIn(String username, String role) throws IOException {
+        Faker faker = new Faker();
+        User user = User.builder()
+                .id(faker.internet().uuid())
+                .username(username)
+                .password(faker.internet().password())
+                .email(faker.internet().emailAddress())
+                .role(RoleName.valueOf(role))
+                .build();
         userRepository.save(user);
 
-        JSONObject requestBody = new JSONObject()
-                .put("username", user.getUsername())
-                .put("password", user.getPassword());
+        currentJwt = loginAndGetAccessToken(user.getUsername(), user.getPassword());
+    }
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<String> requestEntity = new HttpEntity<>(requestBody.toString(), headers);
+    private String loginAndGetAccessToken(String username, String password) throws IOException {
+        var requestBody = new JSONObject()
+                .put("username", username)
+                .put("password", password);
 
-        latestResponse = restTemplate.exchange(
-                BASE_URL + "/api/authenticate",
-                HttpMethod.POST,
-                requestEntity,
-                String.class
-        );
-        JSONObject responseBody = new JSONObject(latestResponse.getBody());
-        currentJwt = responseBody.getString("jwt");
+        var mediaType = okhttp3.MediaType.parse("application/json");
+        var body = RequestBody.create(requestBody.toString(), mediaType);
+        var request = new Request.Builder()
+                .url(BASE_URL + "/api/authenticate")
+                .method("POST", body)
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json")
+                .build();
+
+        var response = okHttpClient.newCall(request).execute();
+        return new JSONObject(response.body().string()).getString("accessToken");
     }
 
     @When("the unauthenticated user sends a {string} request to {string} with the following JSON body:")
-    public void unauthenticatedUserSendsRequestWithBody(String method, String uri, String jsonBody) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<String> requestEntity = new HttpEntity<>(jsonBody, headers);
-
-        try {
-            latestResponse = restTemplate.exchange(
-                    BASE_URL + uri,
-                    HttpMethod.valueOf(method),
-                    requestEntity,
-                    String.class
-            );
-        } catch (HttpClientErrorException e) {
-            latestResponse = new ResponseEntity<>(e.getResponseBodyAsString(), e.getStatusCode());
-        }
+    public void unauthenticatedUserSendsRequestWithBody(String method, String uri, String jsonBody) throws IOException {
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(jsonBody, mediaType);
+        Request request = new Request.Builder()
+                .url(BASE_URL + uri)
+                .method(method, body)
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json")
+                .build();
+        latestResponse = okHttpClient.newCall(request).execute();
     }
 
-    @When("the authenticated user sends a {string} request to {string}:")
-    public void theAuthenticatedUserSendsARequestTo(String httpMethod, String uri) {
-        HttpHeaders headers = getHttpHeaders();
-        HttpEntity<String> requestEntity = new HttpEntity<>(headers);
+    @When("the authenticated user sends a {string} request to {string}")
+    public void authenticatedUserSendsRequest(String method, String uri) throws IOException {
+        Request.Builder requestBuilder = new Request.Builder()
+                .url(BASE_URL + uri)
+                .addHeader("Authorization", "Bearer " + currentJwt)
+                .addHeader("Accept", "application/json")
+                .addHeader("Content-Type", "application/json");
 
-        try {
-            latestResponse = restTemplate.exchange(
-                    BASE_URL + uri,
-                    HttpMethod.valueOf(httpMethod),
-                    requestEntity,
-                    String.class
-            );
-        } catch (HttpClientErrorException e) {
-            latestResponse = new ResponseEntity<>(e.getResponseBodyAsString(), e.getStatusCode());
+        if (!method.equals("GET")) {
+            MediaType mediaType = MediaType.parse("application/json");
+            RequestBody body = RequestBody.create("", mediaType);
+            requestBuilder.method(method, body);
         }
+
+        Request request = requestBuilder.build();
+        latestResponse = okHttpClient.newCall(request).execute();
     }
 
     @When("the authenticated user sends a {string} request to {string} with the following JSON body:")
-    public void authenticatedUserSendsRequestWithBody(String httpMethod, String uri, String jsonBody) {
-        HttpHeaders headers = getHttpHeaders();
-        HttpEntity<String> requestEntity = new HttpEntity<>(jsonBody, headers);
-
-        try {
-            latestResponse = restTemplate.exchange(
-                    BASE_URL + uri,
-                    HttpMethod.valueOf(httpMethod),
-                    requestEntity,
-                    String.class
-            );
-        } catch (HttpClientErrorException e) {
-            latestResponse = new ResponseEntity<>(e.getResponseBodyAsString(), e.getStatusCode());
-        }
+    public void authenticatedUserSendsRequestWithJsonBody(String method, String uri, String jsonBody) throws IOException {
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(jsonBody, mediaType);
+        Request request = new Request.Builder()
+                .url(BASE_URL + uri)
+                .method(method, body)
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json")
+                .addHeader("Authorization", "Bearer " + currentJwt)
+                .build();
+        latestResponse = okHttpClient.newCall(request).execute();
     }
 
     @Then("the server responds with a {int} status code")
-    public void serverRespondsWithACreatedStatusCode(int expectedStatusCode) {
-        HttpStatusCode statusCode = latestResponse.getStatusCode();
-        assertEquals(expectedStatusCode, statusCode.value());
+    public void serverRespondsWithStatusCode(int expectedStatusCode) {
+        assertEquals(expectedStatusCode, latestResponse.code());
     }
 
-    @And("the response body should have the following JSON format {string}:")
-    public void theResponseBodyShouldHaveTheFollowingJSONFormat(String schemaPath) {
-        assertDoesNotThrow(() -> {
-            String schemaString = new String(Objects.requireNonNull(getClass().getResourceAsStream(schemaPath)).readAllBytes());
-            JSONObject schemaJson = new JSONObject(schemaString);
-            String schemaType = schemaJson.getString("type");
+    @And("the response body should have the following JSON format {string}")
+    public void responseBodyShouldHaveTheFollowingJSONFormat(String schemaPath) throws IOException {
+        String body = latestResponse.body().string();
+        System.out.printf("Response body: %s", body);
 
-            if (schemaType.equals("object")) {
-                validateResponseAsJsonObject(schemaJson);
-            } else if (schemaType.equals("array")) {
-                validateResponseAsJsonArray(schemaJson);
+        String schemaString = new String(getClass().getResourceAsStream(schemaPath).readAllBytes());
+        JSONObject schemaJson = new JSONObject(schemaString);
+        String schemaType = schemaJson.getString("type");
+
+        assertDoesNotThrow(() -> {
+            try {
+                if (schemaType.equals("object")) {
+                    validateResponseAsJsonObject(schemaJson, body);
+                } else if (schemaType.equals("array")) {
+                    validateResponseAsJsonArray(schemaJson, body);
+                }
+            } catch (ValidationException validationException) {
+                printValidationErrors(validationException);
+                throw validationException;
             }
         });
     }
 
+    private void validateResponseAsJsonArray(JSONObject schemaJson, String body) {
+        JSONArray responseBodyJson = new JSONArray(body);
+        Schema schema = SchemaLoader.load(schemaJson);
+        schema.validate(responseBodyJson);
+    }
+
+    private void validateResponseAsJsonObject(JSONObject schemaJson, String body) {
+        JSONObject responseBodyJson = new JSONObject(body);
+        Schema schema = SchemaLoader.load(schemaJson);
+        schema.validate(responseBodyJson);
+    }
+
+    private void printValidationErrors(ValidationException e) {
+        List<String> errorMessages = e.getAllMessages();
+        System.err.println("Schema validation failed with the following errors:");
+        System.err.println(e.getMessage());
+        for (String errorMessage : errorMessages) {
+            System.err.println("- " + errorMessage);
+        }
+    }
+
     @And("the response body should contain the message {string}")
-    public void theResponseBodyShouldContainTheMessage(String expectedMessage) {
-        assertEquals(expectedMessage, latestResponse.getBody());
-    }
-
-    private HttpHeaders getHttpHeaders() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(currentJwt);
-        return headers;
-    }
-
-    private void validateResponseAsJsonArray(JSONObject schemaJson) {
-        JSONArray responseBodyJson = new JSONArray(latestResponse.getBody());
-        Schema schema = SchemaLoader.load(schemaJson);
-        schema.validate(responseBodyJson);
-    }
-
-    private void validateResponseAsJsonObject(JSONObject schemaJson) {
-        JSONObject responseBodyJson = new JSONObject(latestResponse.getBody());
-        Schema schema = SchemaLoader.load(schemaJson);
-        schema.validate(responseBodyJson);
+    public void responseShouldContainTheMessage(String expectedMessage) throws IOException {
+        assertEquals(expectedMessage, latestResponse.body().string());
     }
 }

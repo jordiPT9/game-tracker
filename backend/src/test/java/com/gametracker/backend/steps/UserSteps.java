@@ -9,8 +9,9 @@ import io.cucumber.java.en.Given;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class UserSteps {
     private final UserRepository userRepository;
@@ -38,8 +39,8 @@ public class UserSteps {
     @And("users with the following usernames should be in the database:")
     public void aUserWithIdShouldBeInTheDatabase(List<String> usernames) {
         usernames.forEach(username -> {
-            User user = userRepository.findByUsername(username);
-            assertNotNull(user);
+            Optional<User> user = userRepository.findByUsername(username);
+            assertTrue(user.isPresent());
         });
     }
 }

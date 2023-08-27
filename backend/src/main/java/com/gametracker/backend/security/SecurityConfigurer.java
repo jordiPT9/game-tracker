@@ -1,4 +1,4 @@
-package com.gametracker.backend.security.infrastructure.configuration;
+package com.gametracker.backend.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,12 +17,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 public class SecurityConfigurer {
-    private final MyUserDetailsService myUserDetailsService;
-    private final JwtAuthenticationEntryPoint unauthorizedHandler;
-    private final JwtRequestFilter jwtRequestFilter;
+    private final UserDetailsServiceImpl userDetailsServiceImpl;
+    private final JWTAuthenticationEntryPoint unauthorizedHandler;
+    private final JWTRequestFilter jwtRequestFilter;
 
-    public SecurityConfigurer(MyUserDetailsService myUserDetailsService, JwtAuthenticationEntryPoint unauthorizedHandler, JwtRequestFilter jwtRequestFilter) {
-        this.myUserDetailsService = myUserDetailsService;
+    public SecurityConfigurer(UserDetailsServiceImpl userDetailsServiceImpl, JWTAuthenticationEntryPoint unauthorizedHandler, JWTRequestFilter jwtRequestFilter) {
+        this.userDetailsServiceImpl = userDetailsServiceImpl;
         this.unauthorizedHandler = unauthorizedHandler;
         this.jwtRequestFilter = jwtRequestFilter;
     }
@@ -46,7 +46,7 @@ public class SecurityConfigurer {
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
         AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
-        authenticationManagerBuilder.userDetailsService(myUserDetailsService);
+        authenticationManagerBuilder.userDetailsService(userDetailsServiceImpl);
 
         return authenticationManagerBuilder.build();
     }

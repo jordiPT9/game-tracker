@@ -6,9 +6,8 @@ Feature: Add library game
   Background:
     Given the following roles exist:
       | USER |
-    And the following user successfully logs in:
-      | id        | username  | password      | email               | role |
-      | random_id | johnsmith | johnsmith1234 | johnsmith@email.com | USER |
+    And a user with username "johnsmith" and role "USER" is logged in
+
 
   Scenario: User adds an existing game to their library successfully
     Given the game exists
