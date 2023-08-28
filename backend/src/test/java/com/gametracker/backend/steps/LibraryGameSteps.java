@@ -1,6 +1,6 @@
 package com.gametracker.backend.steps;
 
-import com.gametracker.backend.game.domain.GameService;
+import com.gametracker.backend.game.domain.GameRepository;
 import com.gametracker.backend.library_game.domain.LibraryGame;
 import com.gametracker.backend.library_game.domain.LibraryGameRepository;
 import com.gametracker.backend.library_game.domain.LibraryGameStatus;
@@ -17,12 +17,12 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 public class LibraryGameSteps {
     private final LibraryGameRepository libraryGameRepository;
 
-    public LibraryGameSteps(LibraryGameRepository libraryGameRepository, GameService igdbService) {
+    public LibraryGameSteps(LibraryGameRepository libraryGameRepository, GameRepository igdbService) {
         this.libraryGameRepository = libraryGameRepository;
     }
 
     @DataTableType
-    public LibraryGame showTransformer(Map<String, String> entry) {
+    public LibraryGame libraryGameTransformer(Map<String, String> entry) {
         return LibraryGame.builder()
                 .id(entry.get("id"))
                 .title(entry.get("title"))

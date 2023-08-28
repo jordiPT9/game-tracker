@@ -1,7 +1,7 @@
 package com.gametracker.backend.steps;
 
 import com.gametracker.backend.role.domain.RoleName;
-import com.gametracker.backend.shared.infrastructure.DatabaseTruncator;
+import com.gametracker.backend.shared.infrastructure.persistence.DatabaseTruncator;
 import com.gametracker.backend.user.domain.User;
 import com.gametracker.backend.user.domain.UserRepository;
 import com.github.javafaker.Faker;
@@ -16,11 +16,9 @@ import org.everit.json.schema.ValidationException;
 import org.everit.json.schema.loader.SchemaLoader;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.springframework.web.client.HttpClientErrorException;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -69,7 +67,7 @@ public class ApiSteps {
         var mediaType = okhttp3.MediaType.parse("application/json");
         var body = RequestBody.create(requestBody.toString(), mediaType);
         var request = new Request.Builder()
-                .url(BASE_URL + "/api/authenticate")
+                .url(BASE_URL + "/api/auth/login")
                 .method("POST", body)
                 .addHeader("Content-Type", "application/json")
                 .addHeader("Accept", "application/json")

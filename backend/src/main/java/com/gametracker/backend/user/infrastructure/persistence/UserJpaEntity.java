@@ -1,7 +1,7 @@
 package com.gametracker.backend.user.infrastructure.persistence;
 
 import com.gametracker.backend.library_game.infrastructure.persistence.LibraryGameJpaEntity;
-import com.gametracker.backend.role.infrastructure.RoleJpaEntity;
+import com.gametracker.backend.role.infrastructure.persistence.RoleJpaEntity;
 import jakarta.persistence.*;
 
 import java.util.Set;
