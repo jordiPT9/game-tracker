@@ -19,7 +19,7 @@ Feature: User login
       }
       """
     Then the server responds with a 200 status code
-    And the response body should have the following JSON format "/schemas/authenticate_user_schema.json"
+    And the response body should have the following JSON format "/schemas/user_login_schema.json"
 
   Scenario: User fails to login when user is not found
     When the unauthenticated user sends a "POST" request to "/api/auth/login" with the following JSON body:
