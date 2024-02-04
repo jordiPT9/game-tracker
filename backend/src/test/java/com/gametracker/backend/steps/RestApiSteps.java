@@ -23,7 +23,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ApiSteps {
+public class RestApiSteps {
     private final String BASE_URL = "http://localhost:5000";
 
     private final UserRepository userRepository;
@@ -33,7 +33,7 @@ public class ApiSteps {
     private String currentJwt;
     private Response latestResponse;
 
-    public ApiSteps(UserRepository userRepository, DatabaseTruncator databaseTruncator) {
+    public RestApiSteps(UserRepository userRepository, DatabaseTruncator databaseTruncator) {
         this.userRepository = userRepository;
         this.databaseTruncator = databaseTruncator;
         this.okHttpClient = new OkHttpClient().newBuilder().build();

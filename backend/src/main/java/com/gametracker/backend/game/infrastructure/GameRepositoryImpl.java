@@ -14,6 +14,8 @@ import java.util.Optional;
 @Service
 public class GameRepositoryImpl implements GameRepository {
     private static final String BASE_URL = "https://api.igdb.com/v4";
+
+    // TODO: move this to env variables
     private static final String CLIENT_ID = "3w9bxydpqm8mukoc9c8h1qo62lx6ci";
     private static final String ACCESS_TOKEN = "nd1zylrs3n4dom0zoutrdlgt754s1g";
 

@@ -14,7 +14,7 @@ Feature: Get library games
       | da1e846d-25e1-44e7-91f8-3cca9348d1b6 | Random game title | 4.5    | PLAYED | johnsmith |
     When the authenticated user sends a "GET" request to "/api/library-games/da1e846d-25e1-44e7-91f8-3cca9348d1b6"
     Then the server responds with a 200 status code
-    And the response body should have the following JSON format "/schemas/get_library_game_schema.json"
+    And the response body should have the following JSON format "/response_schemas/get_library_game_schema.json"
 
   Scenario: User fails to get a non existing game of their library
     When the authenticated user sends a "GET" request to "/api/library-games/random_nonexistent_id"
@@ -37,4 +37,4 @@ Feature: Get library games
       | ef227608-ec18-40e7-b93f-714c8af40fc2 | Another game title | 0      | ABANDONED | johnsmith |
     When the authenticated user sends a "GET" request to "/api/library-games"
     Then the server responds with a 200 status code
-    And the response body should have the following JSON format "/schemas/get_library_games_schema.json"
+    And the response body should have the following JSON format "/response_schemas/get_library_games_schema.json"
