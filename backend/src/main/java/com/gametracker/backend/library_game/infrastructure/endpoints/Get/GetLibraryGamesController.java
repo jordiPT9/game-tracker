@@ -1,16 +1,15 @@
 package com.gametracker.backend.library_game.infrastructure.endpoints.Get;
 
-import com.gametracker.backend.library_game.application.get_library_games.GetLibraryGamesQuery;
 import com.gametracker.backend.library_game.application.LibraryGameResponse;
+import com.gametracker.backend.library_game.application.get_library_games.GetLibraryGamesQuery;
 import com.gametracker.backend.library_game.application.get_library_games.GetLibraryGamesUseCase;
+import java.security.Principal;
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.security.Principal;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api")

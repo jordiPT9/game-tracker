@@ -3,10 +3,9 @@ package com.gametracker.backend.library_game.application.get_library_games;
 import com.gametracker.backend.library_game.application.LibraryGameResponse;
 import com.gametracker.backend.library_game.domain.LibraryGame;
 import com.gametracker.backend.library_game.domain.LibraryGameRepository;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.stereotype.Service;
 
 @Service
 public class GetLibraryGamesUseCase {

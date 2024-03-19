@@ -2,9 +2,8 @@ package com.gametracker.backend.library_game.infrastructure.persistence;
 
 import com.gametracker.backend.library_game.domain.LibraryGame;
 import com.gametracker.backend.library_game.domain.LibraryGameRepository;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
+import org.springframework.stereotype.Service;
 
 @Service
 public class MySqlLibraryGameRepository implements LibraryGameRepository {

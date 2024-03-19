@@ -2,9 +2,8 @@ package com.gametracker.backend.user.infrastructure.persistence;
 
 import com.gametracker.backend.user.domain.User;
 import com.gametracker.backend.user.domain.UserRepository;
-import org.springframework.stereotype.Service;
-
 import java.util.Optional;
+import org.springframework.stereotype.Service;
 
 @Service
 public class UserMySqlRepository implements UserRepository {

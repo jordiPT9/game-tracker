@@ -1,19 +1,17 @@
 package com.gametracker.backend.steps;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import com.gametracker.backend.game.domain.GameRepository;
 import com.gametracker.backend.library_game.domain.LibraryGame;
 import com.gametracker.backend.library_game.domain.LibraryGameRepository;
 import com.gametracker.backend.library_game.domain.LibraryGameStatus;
 import io.cucumber.java.DataTableType;
-import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
-
 import java.util.List;
 import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class LibraryGameSteps {
     private final LibraryGameRepository libraryGameRepository;

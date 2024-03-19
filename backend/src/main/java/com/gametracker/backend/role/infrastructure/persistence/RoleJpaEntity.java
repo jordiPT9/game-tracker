@@ -3,9 +3,8 @@ package com.gametracker.backend.role.infrastructure.persistence;
 import com.gametracker.backend.role.domain.RoleName;
 import com.gametracker.backend.user.infrastructure.persistence.UserJpaEntity;
 import jakarta.persistence.*;
-import org.hibernate.annotations.NaturalId;
-
 import java.util.Set;
+import org.hibernate.annotations.NaturalId;
 
 @Entity
 @Table(name = "roles")

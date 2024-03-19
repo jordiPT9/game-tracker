@@ -3,11 +3,9 @@ package com.gametracker.backend.shared.infrastructure.persistence;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class DatabaseTruncator {
@@ -43,10 +41,10 @@ public class DatabaseTruncator {
   private List<String> getTruncateQueries() {
     String query =
         """
-                SELECT CONCAT('TRUNCATE TABLE ',table_schema,'.',TABLE_NAME, ';')
-                FROM INFORMATION_SCHEMA.TABLES
-                WHERE table_schema IN ('game_tracker_bdd')
-                """;
+        SELECT CONCAT('TRUNCATE TABLE ',table_schema,'.',TABLE_NAME, ';')
+        FROM INFORMATION_SCHEMA.TABLES
+        WHERE table_schema IN ('game_tracker_bdd')
+        """;
     List<?> resultList = entityManager.createNativeQuery(query).getResultList();
 
     return resultList.stream().map(String.class::cast).toList();

@@ -23,7 +23,7 @@ public class LoginUseCase {
   }
 
   public LoginResponse execute(LoginRequest request) {
-    final User user =
+    User user =
         userRepository
             .findByUsername(request.username())
             .orElseThrow(() -> new UserNotFoundException(request.username()));

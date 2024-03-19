@@ -15,33 +15,34 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class UserSteps {
-    private final UserRepository userRepository;
+  private final UserRepository userRepository;
 
-    public UserSteps(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+  public UserSteps(UserRepository userRepository) {
+    this.userRepository = userRepository;
+  }
 
-    @DataTableType
-    public User userTransformer(Map<String, String> entry) {
-        return User.builder()
-                .id(entry.get("id"))
-                .username(entry.get("username"))
-                .password(entry.get("password"))
-                .email(entry.get("email"))
-                .role(RoleName.valueOf(entry.get("role")))
-                .build();
-    }
+  @DataTableType
+  public User userTransformer(Map<String, String> entry) {
+    return User.builder()
+        .id(entry.get("id"))
+        .username(entry.get("username"))
+        .password(entry.get("password"))
+        .email(entry.get("email"))
+        .role(RoleName.valueOf(entry.get("role")))
+        .build();
+  }
 
-    @Given("the following users exist:")
-    public void theFollowingUsersExist(List<User> users) {
-        users.forEach(userRepository::save);
-    }
+  @Given("the following users exist:")
+  public void theFollowingUsersExist(List<User> users) {
+    users.forEach(userRepository::save);
+  }
 
-    @Then("users with the following usernames should be in the database:")
-    public void aUserWithIdShouldBeInTheDatabase(List<String> usernames) {
-        usernames.forEach(username -> {
-            Optional<User> user = userRepository.findByUsername(username);
-            assertTrue(user.isPresent());
+  @Then("users with the following usernames should be in the database:")
+  public void aUserWithIdShouldBeInTheDatabase(List<String> usernames) {
+    usernames.forEach(
+        username -> {
+          Optional<User> user = userRepository.findByUsername(username);
+          assertTrue(user.isPresent());
         });
-    }
+  }
 }

@@ -1,15 +1,14 @@
 package com.gametracker.backend.security;
 
+import static java.time.temporal.ChronoUnit.DAYS;
+
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
 import java.security.Key;
 import java.time.Instant;
 import java.util.Date;
-
-import static java.time.temporal.ChronoUnit.DAYS;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 @Component
 public class JWTUtil {

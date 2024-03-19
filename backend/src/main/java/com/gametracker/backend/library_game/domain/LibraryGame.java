@@ -19,36 +19,36 @@ public class LibraryGame {
     return id;
   }
 
-  public String getTitle() {
-    return title;
-  }
-
-  public double getRating() {
-    return rating;
-  }
-
-  public LibraryGameStatus getStatus() {
-    return status;
-  }
-
-  public String getUsername() {
-    return username;
-  }
-
   private void setId(String id) {
     this.id = id;
+  }
+
+  public String getTitle() {
+    return title;
   }
 
   private void setTitle(String title) {
     this.title = title;
   }
 
+  public double getRating() {
+    return rating;
+  }
+
   private void setRating(double rating) {
     this.rating = rating;
   }
 
+  public LibraryGameStatus getStatus() {
+    return status;
+  }
+
   private void setStatus(LibraryGameStatus status) {
     this.status = status;
+  }
+
+  public String getUsername() {
+    return username;
   }
 
   private void setUsername(String username) {

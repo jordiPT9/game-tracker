@@ -3,7 +3,6 @@ package com.gametracker.backend.library_game.infrastructure.persistence;
 import com.gametracker.backend.library_game.domain.LibraryGameStatus;
 import com.gametracker.backend.user.infrastructure.persistence.UserJpaEntity;
 import jakarta.persistence.*;
-
 import java.util.Objects;
 
 @Entity

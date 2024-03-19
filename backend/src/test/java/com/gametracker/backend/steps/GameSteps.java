@@ -1,14 +1,13 @@
 package com.gametracker.backend.steps;
 
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
+
 import com.gametracker.backend.game.domain.Game;
 import com.gametracker.backend.game.domain.GameRepository;
 import com.github.javafaker.Faker;
 import io.cucumber.java.en.Given;
-
 import java.util.Optional;
-
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
 
 public class GameSteps {
   private final GameRepository gameRepository;

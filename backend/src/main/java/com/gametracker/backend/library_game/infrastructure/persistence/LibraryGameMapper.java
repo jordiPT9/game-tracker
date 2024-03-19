@@ -1,7 +1,6 @@
 package com.gametracker.backend.library_game.infrastructure.persistence;
 
 import com.gametracker.backend.library_game.domain.LibraryGame;
-import com.gametracker.backend.user.domain.UserNotFoundException;
 import com.gametracker.backend.user.infrastructure.persistence.UserJpaRepository;
 import org.springframework.stereotype.Component;
 

@@ -12,46 +12,44 @@ import org.springframework.web.client.RestTemplate;
 
 @Service
 public class GameRepositoryImpl implements GameRepository {
-    private static final String BASE_URL = "https://api.igdb.com/v4";
+  private static final String BASE_URL = "https://api.igdb.com/v4";
 
-    // TODO: move this to env variables
-    private static final String CLIENT_ID = "3w9bxydpqm8mukoc9c8h1qo62lx6ci";
-    private static final String ACCESS_TOKEN = "nd1zylrs3n4dom0zoutrdlgt754s1g";
+  // TODO: move this to env variables
+  private static final String CLIENT_ID = "3w9bxydpqm8mukoc9c8h1qo62lx6ci";
+  private static final String ACCESS_TOKEN = "nd1zylrs3n4dom0zoutrdlgt754s1g";
 
-    private final RestTemplate restTemplate;
+  private final RestTemplate restTemplate;
 
-    public GameRepositoryImpl() {
-        this.restTemplate = new RestTemplate();
+  public GameRepositoryImpl() {
+    this.restTemplate = new RestTemplate();
+  }
+
+  @Override
+  public Optional<Game> findGame(String title) {
+    HttpHeaders headers = new HttpHeaders();
+    headers.set("Client-ID", CLIENT_ID);
+    headers.setBearerAuth(ACCESS_TOKEN);
+    headers.setContentType(MediaType.TEXT_PLAIN);
+
+    String body = "fields *; where name = \"" + title + "\";";
+    HttpEntity<String> requestEntity = new HttpEntity<>(body, headers);
+
+    ResponseEntity<String> response =
+        restTemplate.exchange(BASE_URL + "/games", HttpMethod.POST, requestEntity, String.class);
+    JSONArray gamesJsonArray = new JSONArray(response.getBody());
+
+    if (gamesJsonArray.length() == 0) {
+      return Optional.empty();
     }
 
-    @Override
-    public Optional<Game> findGame(String title) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Client-ID", CLIENT_ID);
-        headers.setBearerAuth(ACCESS_TOKEN);
-        headers.setContentType(MediaType.TEXT_PLAIN);
+    JSONObject gameJsonObject = gamesJsonArray.getJSONObject(0);
+    Game game =
+        Game.builder()
+            .title(gameJsonObject.getString("name"))
+            .follows(gameJsonObject.getInt("follows"))
+            .releaseDate(new Timestamp(gameJsonObject.getLong("first_release_date")).toString())
+            .build();
 
-        String body = "fields *; where name = \"" + title + "\";";
-        HttpEntity<String> requestEntity = new HttpEntity<>(body, headers);
-
-        ResponseEntity<String> response = restTemplate.exchange(
-                BASE_URL + "/games",
-                HttpMethod.POST,
-                requestEntity,
-                String.class);
-        JSONArray gamesJsonArray = new JSONArray(response.getBody());
-
-        if (gamesJsonArray.length() == 0) {
-            return Optional.empty();
-        }
-
-        JSONObject gameJsonObject = gamesJsonArray.getJSONObject(0);
-        Game game = Game.builder()
-                .title(gameJsonObject.getString("name"))
-                .follows(gameJsonObject.getInt("follows"))
-                .releaseDate(new Timestamp(gameJsonObject.getLong("first_release_date")).toString())
-                .build();
-
-        return Optional.of(game);
-    }
+    return Optional.of(game);
+  }
 }

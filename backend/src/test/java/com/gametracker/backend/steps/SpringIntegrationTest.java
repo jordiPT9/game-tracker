@@ -9,6 +9,5 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 @CucumberContextConfiguration
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
 public class SpringIntegrationTest {
-    @MockBean
-    private GameRepository gameRepository;
+  @MockBean private GameRepository gameRepository;
 }

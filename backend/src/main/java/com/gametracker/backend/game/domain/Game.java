@@ -17,20 +17,20 @@ public class Game {
     return title;
   }
 
-  public int getFollows() {
-    return follows;
-  }
-
-  public String getReleaseDate() {
-    return releaseDate;
-  }
-
   private void setTitle(String title) {
     this.title = title;
   }
 
+  public int getFollows() {
+    return follows;
+  }
+
   private void setFollows(int follows) {
     this.follows = follows;
+  }
+
+  public String getReleaseDate() {
+    return releaseDate;
   }
 
   private void setReleaseDate(String releaseDate) {

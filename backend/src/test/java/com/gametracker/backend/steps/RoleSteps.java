@@ -3,7 +3,6 @@ package com.gametracker.backend.steps;
 import com.gametracker.backend.role.domain.RoleName;
 import com.gametracker.backend.role.domain.RoleRepository;
 import io.cucumber.java.en.Given;
-
 import java.util.List;
 
 public class RoleSteps {
