@@ -1,12 +1,12 @@
-package com.gametracker.backend.steps;
+package com.gametracker.backend.acceptance.steps;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.gametracker.backend.role.domain.RoleName;
-import com.gametracker.backend.shared.infrastructure.persistence.DatabaseTruncator;
 import com.gametracker.backend.user.domain.User;
 import com.gametracker.backend.user.domain.UserRepository;
+import com.gametracker.backend.util.DatabaseTruncator;
 import com.github.javafaker.Faker;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;

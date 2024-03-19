@@ -1,4 +1,4 @@
-package com.gametracker.backend.shared.infrastructure.persistence;
+package com.gametracker.backend.util;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
@@ -43,7 +43,7 @@ public class DatabaseTruncator {
         """
         SELECT CONCAT('TRUNCATE TABLE ',table_schema,'.',TABLE_NAME, ';')
         FROM INFORMATION_SCHEMA.TABLES
-        WHERE table_schema IN ('game_tracker_bdd')
+        WHERE table_schema IN ('gametracker')
         """;
     List<?> resultList = entityManager.createNativeQuery(query).getResultList();
 

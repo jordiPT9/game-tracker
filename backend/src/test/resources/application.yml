@@ -8,10 +8,6 @@ cors:
   exposed-headers: "*"
 
 spring:
-  datasource:
-    url: jdbc:mysql://localhost:3306/game_tracker_bdd?useSSL=false&serverTimezone=Europe/Madrid&useLegacyDatetimeCode=false
-    username: root
-    password:
   jpa:
     properties:
       hibernate:

@@ -1,4 +1,4 @@
-package com.gametracker.backend.steps;
+package com.gametracker.backend.acceptance.steps;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;

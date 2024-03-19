@@ -24,6 +24,14 @@
     </properties>
 
     <dependencies>
+        <!-- Test containers -->
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>mysql</artifactId>
+            <version>1.19.3</version>
+            <scope>test</scope>
+        </dependency>
+
         <!-- SnakeYaml https://mvnrepository.com/artifact/org.yaml/snakeyaml -->
         <dependency>
             <groupId>org.yaml</groupId>
@@ -87,7 +95,6 @@
         </dependency>
 
         <!-- Cucumber -->
-        <!-- Cucumber -->
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-junit-platform-engine</artifactId>
@@ -113,7 +120,6 @@
             <version>${cucumber.version}</version>
             <scope>test</scope>
         </dependency>
-
 
         <!-- JSONObject -->
         <dependency>

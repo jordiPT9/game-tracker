@@ -1,4 +1,4 @@
-package com.gametracker.backend.steps;
+package com.gametracker.backend.acceptance.steps;
 
 import com.gametracker.backend.role.domain.RoleName;
 import com.gametracker.backend.role.domain.RoleRepository;

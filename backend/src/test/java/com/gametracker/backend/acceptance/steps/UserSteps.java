@@ -1,10 +1,9 @@
-package com.gametracker.backend.steps;
+package com.gametracker.backend.acceptance.steps;
 
 import com.gametracker.backend.role.domain.RoleName;
 import com.gametracker.backend.user.domain.User;
 import com.gametracker.backend.user.domain.UserRepository;
 import io.cucumber.java.DataTableType;
-import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 

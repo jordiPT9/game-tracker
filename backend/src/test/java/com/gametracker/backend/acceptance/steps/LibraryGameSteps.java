@@ -1,4 +1,4 @@
-package com.gametracker.backend.steps;
+package com.gametracker.backend.acceptance.steps;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
