@@ -6,14 +6,13 @@ import com.gametracker.backend.user.domain.UserRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-public class RegisterUserUseCase implements RegisterUserUseCase {
+public class RegisterUserUseCase {
     private final UserRepository userRepository;
 
     public RegisterUserUseCase(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    @Override
     public void execute(RegisterUserCommand command) {
         User user = User.builder()
                 .id(command.id())

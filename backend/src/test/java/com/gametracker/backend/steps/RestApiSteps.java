@@ -109,7 +109,8 @@ public class RestApiSteps {
     }
 
     @When("the authenticated user sends a {string} request to {string} with the following JSON body:")
-    public void authenticatedUserSendsRequestWithJsonBody(String method, String uri, String jsonBody) throws IOException {
+    public void authenticatedUserSendsRequestWithJsonBody(String method, String uri, String jsonBody)
+            throws IOException {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(jsonBody, mediaType);
         Request request = new Request.Builder()
@@ -127,7 +128,7 @@ public class RestApiSteps {
         assertEquals(expectedStatusCode, latestResponse.code());
     }
 
-    @And("the response body should have the following JSON format {string}")
+    @Then("the response body should have the following JSON format {string}")
     public void responseBodyShouldHaveTheFollowingJSONFormat(String schemaPath) throws IOException {
         String body = latestResponse.body().string();
         System.out.printf("Response body: %s", body);
@@ -171,7 +172,7 @@ public class RestApiSteps {
         }
     }
 
-    @And("the response body should contain the message {string}")
+    @Then("the response body should contain the message {string}")
     public void responseShouldContainTheMessage(String expectedMessage) throws IOException {
         assertEquals(expectedMessage, latestResponse.body().string());
     }

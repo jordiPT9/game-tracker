@@ -25,4 +25,5 @@ logging:
       hibernate:
         SQL: DEBUG
 
-jwt-secret: c9b9e4230a788ad821ecc921731c9a75b6ff5c5a4724643433bdbcf9150ff9b9
+jwt:
+  secret: c9b9e4230a788ad821ecc921731c9a75b6ff5c5a4724643433bdbcf9150ff9b9
