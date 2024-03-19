@@ -14,17 +14,19 @@ import java.security.Principal;
 @RestController
 @RequestMapping("/api")
 public class DeleteLibraryGameController {
-    private final DeleteLibraryGameUseCase deleteLibraryGameUseCase;
+  private final DeleteLibraryGameUseCase deleteLibraryGameUseCase;
 
-    public DeleteLibraryGameController(DeleteLibraryGameUseCase deleteLibraryGameUseCase) {
-        this.deleteLibraryGameUseCase = deleteLibraryGameUseCase;
-    }
+  public DeleteLibraryGameController(DeleteLibraryGameUseCase deleteLibraryGameUseCase) {
+    this.deleteLibraryGameUseCase = deleteLibraryGameUseCase;
+  }
 
-    @DeleteMapping("/library-games/{libraryGameId}")
-    public ResponseEntity<HttpStatus> execute(@PathVariable String libraryGameId, Principal principal) {
-        DeleteLibraryGameCommand command = new DeleteLibraryGameCommand(libraryGameId, principal.getName());
-        deleteLibraryGameUseCase.execute(command);
+  @DeleteMapping("/library-games/{libraryGameId}")
+  public ResponseEntity<HttpStatus> execute(
+      @PathVariable String libraryGameId, Principal principal) {
+    DeleteLibraryGameCommand command =
+        new DeleteLibraryGameCommand(libraryGameId, principal.getName());
+    deleteLibraryGameUseCase.execute(command);
 
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
+    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+  }
 }

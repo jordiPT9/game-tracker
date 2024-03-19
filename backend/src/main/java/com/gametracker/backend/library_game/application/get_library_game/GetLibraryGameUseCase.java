@@ -9,29 +9,27 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class GetLibraryGameUseCase {
-    private final LibraryGameRepository libraryGameRepository;
+  private final LibraryGameRepository libraryGameRepository;
 
-    public GetLibraryGameUseCase(LibraryGameRepository libraryGameRepository) {
-        this.libraryGameRepository = libraryGameRepository;
+  public GetLibraryGameUseCase(LibraryGameRepository libraryGameRepository) {
+    this.libraryGameRepository = libraryGameRepository;
+  }
+
+  public LibraryGameResponse execute(GetLibraryGameQuery query) {
+    LibraryGame libraryGame = libraryGameRepository.findById(query.id());
+
+    if (libraryGame == null) {
+      throw new LibraryGameNotFoundException(query.id());
     }
 
-
-    public LibraryGameResponse execute(GetLibraryGameQuery query) {
-        LibraryGame libraryGame = libraryGameRepository.findById(query.id());
-
-        if (libraryGame == null) {
-            throw new LibraryGameNotFoundException(query.id());
-        }
-
-        if (!libraryGame.getUsername().equals(query.username())) {
-            throw new LibraryGameAccessDeniedException(query.id());
-        }
-
-        return new LibraryGameResponse(
-                libraryGame.getTitle(),
-                libraryGame.getId(),
-                libraryGame.getStatus().name(),
-                libraryGame.getRating()
-        );
+    if (!libraryGame.getUsername().equals(query.username())) {
+      throw new LibraryGameAccessDeniedException(query.id());
     }
+
+    return new LibraryGameResponse(
+        libraryGame.getTitle(),
+        libraryGame.getId(),
+        libraryGame.getStatus().name(),
+        libraryGame.getRating());
+  }
 }

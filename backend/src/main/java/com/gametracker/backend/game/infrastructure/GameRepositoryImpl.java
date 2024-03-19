@@ -2,14 +2,13 @@ package com.gametracker.backend.game.infrastructure;
 
 import com.gametracker.backend.game.domain.Game;
 import com.gametracker.backend.game.domain.GameRepository;
+import java.sql.Timestamp;
+import java.util.Optional;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
-import java.sql.Timestamp;
-import java.util.Optional;
 
 @Service
 public class GameRepositoryImpl implements GameRepository {

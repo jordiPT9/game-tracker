@@ -10,45 +10,44 @@ import java.util.Set;
 @Entity
 @Table(name = "roles")
 public class RoleJpaEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private int id;
 
-    @Enumerated(EnumType.STRING)
-    @NaturalId
-    private RoleName name;
+  @Enumerated(EnumType.STRING)
+  @NaturalId
+  private RoleName name;
 
-    @OneToMany(mappedBy = "role", cascade = CascadeType.DETACH)
-    private Set<UserJpaEntity> userJpaEntities;
+  @OneToMany(mappedBy = "role", cascade = CascadeType.DETACH)
+  private Set<UserJpaEntity> userJpaEntities;
 
-    public RoleJpaEntity() {
-    }
+  public RoleJpaEntity() {}
 
-    public RoleJpaEntity(RoleName name) {
-        this.name = name;
-    }
+  public RoleJpaEntity(RoleName name) {
+    this.name = name;
+  }
 
-    public int getId() {
-        return id;
-    }
+  public int getId() {
+    return id;
+  }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+  public void setId(int id) {
+    this.id = id;
+  }
 
-    public RoleName getName() {
-        return name;
-    }
+  public RoleName getName() {
+    return name;
+  }
 
-    public void setName(RoleName name) {
-        this.name = name;
-    }
+  public void setName(RoleName name) {
+    this.name = name;
+  }
 
-    public Set<UserJpaEntity> getUserJpaEntities() {
-        return userJpaEntities;
-    }
+  public Set<UserJpaEntity> getUserJpaEntities() {
+    return userJpaEntities;
+  }
 
-    public void setUserJpaEntities(Set<UserJpaEntity> userJpaEntities) {
-        this.userJpaEntities = userJpaEntities;
-    }
+  public void setUserJpaEntities(Set<UserJpaEntity> userJpaEntities) {
+    this.userJpaEntities = userJpaEntities;
+  }
 }

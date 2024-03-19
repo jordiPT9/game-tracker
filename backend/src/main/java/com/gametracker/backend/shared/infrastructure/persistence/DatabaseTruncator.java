@@ -12,49 +12,48 @@ import java.util.stream.Collectors;
 @Component
 public class DatabaseTruncator {
 
-    private final EntityManager entityManager;
+  private final EntityManager entityManager;
 
-    @Autowired
-    public DatabaseTruncator(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
+  @Autowired
+  public DatabaseTruncator(EntityManager entityManager) {
+    this.entityManager = entityManager;
+  }
 
-    @Transactional
-    public void truncateAllTables() {
-        disableForeignKeyChecks();
-        executeTruncateQueries();
-        enableForeignKeyChecks();
-    }
+  @Transactional
+  public void truncateAllTables() {
+    disableForeignKeyChecks();
+    executeTruncateQueries();
+    enableForeignKeyChecks();
+  }
 
-    private void disableForeignKeyChecks() {
-        Query query = entityManager.createNativeQuery("SET FOREIGN_KEY_CHECKS = 0;");
-        query.executeUpdate();
-    }
+  private void disableForeignKeyChecks() {
+    Query query = entityManager.createNativeQuery("SET FOREIGN_KEY_CHECKS = 0;");
+    query.executeUpdate();
+  }
 
-    private void executeTruncateQueries() {
-        List<String> queryStrings = getTruncateQueries();
-        queryStrings.forEach(queryString -> {
-            Query query = entityManager.createNativeQuery(queryString);
-            query.executeUpdate();
+  private void executeTruncateQueries() {
+    List<String> queryStrings = getTruncateQueries();
+    queryStrings.forEach(
+        queryString -> {
+          Query query = entityManager.createNativeQuery(queryString);
+          query.executeUpdate();
         });
-    }
+  }
 
-    private List<String> getTruncateQueries() {
-        String query = """
-                SELECT CONCAT('TRUNCATE TABLE ',table_schema,'.',TABLE_NAME, ';') 
-                FROM INFORMATION_SCHEMA.TABLES 
+  private List<String> getTruncateQueries() {
+    String query =
+        """
+                SELECT CONCAT('TRUNCATE TABLE ',table_schema,'.',TABLE_NAME, ';')
+                FROM INFORMATION_SCHEMA.TABLES
                 WHERE table_schema IN ('game_tracker_bdd')
                 """;
-        List<?> resultList = entityManager.createNativeQuery(query).getResultList();
+    List<?> resultList = entityManager.createNativeQuery(query).getResultList();
 
-        return resultList
-                .stream()
-                .map(String.class::cast)
-                .toList();
-    }
+    return resultList.stream().map(String.class::cast).toList();
+  }
 
-    private void enableForeignKeyChecks() {
-        Query query = entityManager.createNativeQuery("SET FOREIGN_KEY_CHECKS = 1;");
-        query.executeUpdate();
-    }
+  private void enableForeignKeyChecks() {
+    Query query = entityManager.createNativeQuery("SET FOREIGN_KEY_CHECKS = 1;");
+    query.executeUpdate();
+  }
 }

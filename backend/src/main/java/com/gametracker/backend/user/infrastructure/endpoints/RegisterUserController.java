@@ -12,22 +12,19 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api")
 public class RegisterUserController {
-    private final RegisterUserUseCase registerUserUseCase;
+  private final RegisterUserUseCase registerUserUseCase;
 
-    public RegisterUserController(RegisterUserUseCase registerUserUseCase) {
-        this.registerUserUseCase = registerUserUseCase;
-    }
+  public RegisterUserController(RegisterUserUseCase registerUserUseCase) {
+    this.registerUserUseCase = registerUserUseCase;
+  }
 
-    @PostMapping("/users")
-    public ResponseEntity<HttpStatus> execute(@RequestBody RegisterUserRequest request) {
-        RegisterUserCommand command = new RegisterUserCommand(
-                request.id(),
-                request.username(),
-                request.password(),
-                request.email(),
-                request.role());
-        registerUserUseCase.execute(command);
+  @PostMapping("/users")
+  public ResponseEntity<HttpStatus> execute(@RequestBody RegisterUserRequest request) {
+    RegisterUserCommand command =
+        new RegisterUserCommand(
+            request.id(), request.username(), request.password(), request.email(), request.role());
+    registerUserUseCase.execute(command);
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
-    }
+    return new ResponseEntity<>(HttpStatus.CREATED);
+  }
 }

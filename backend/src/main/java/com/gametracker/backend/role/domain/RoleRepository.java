@@ -1,11 +1,11 @@
 package com.gametracker.backend.role.domain;
 
 public interface RoleRepository {
-    void save(RoleName roleName);
+  void save(RoleName roleName);
 
-    void delete(RoleName roleName);
+  void delete(RoleName roleName);
 
-    void deleteAll();
+  void deleteAll();
 
-    RoleName findByRoleName(RoleName roleName);
+  RoleName findByRoleName(RoleName roleName);
 }

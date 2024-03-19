@@ -13,16 +13,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/auth/login")
 public class LoginController {
-    private final LoginUseCase logInUseCase;
+  private final LoginUseCase logInUseCase;
 
-    public LoginController(LoginUseCase logInUseCase) {
-        this.logInUseCase = logInUseCase;
-    }
+  public LoginController(LoginUseCase logInUseCase) {
+    this.logInUseCase = logInUseCase;
+  }
 
-    @PostMapping
-    public ResponseEntity<LoginResponse> execute(@RequestBody LoginRequest loginRequest) {
-        LoginResponse response = logInUseCase.execute(loginRequest);
+  @PostMapping
+  public ResponseEntity<LoginResponse> execute(@RequestBody LoginRequest loginRequest) {
+    LoginResponse response = logInUseCase.execute(loginRequest);
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
+    return new ResponseEntity<>(response, HttpStatus.OK);
+  }
 }

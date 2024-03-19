@@ -7,21 +7,22 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class RegisterUserUseCase {
-    private final UserRepository userRepository;
+  private final UserRepository userRepository;
 
-    public RegisterUserUseCase(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+  public RegisterUserUseCase(UserRepository userRepository) {
+    this.userRepository = userRepository;
+  }
 
-    public void execute(RegisterUserCommand command) {
-        User user = User.builder()
-                .id(command.id())
-                .username(command.username())
-                .password(command.password())
-                .email(command.email())
-                .role(RoleName.valueOf(command.role()))
-                .build();
+  public void execute(RegisterUserCommand command) {
+    User user =
+        User.builder()
+            .id(command.id())
+            .username(command.username())
+            .password(command.password())
+            .email(command.email())
+            .role(RoleName.valueOf(command.role()))
+            .build();
 
-        userRepository.save(user);
-    }
+    userRepository.save(user);
+  }
 }

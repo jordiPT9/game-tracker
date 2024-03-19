@@ -15,17 +15,17 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class GetLibraryGamesController {
-    private final GetLibraryGamesUseCase getLibraryGamesUseCase;
+  private final GetLibraryGamesUseCase getLibraryGamesUseCase;
 
-    public GetLibraryGamesController(GetLibraryGamesUseCase getLibraryGamesUseCase) {
-        this.getLibraryGamesUseCase = getLibraryGamesUseCase;
-    }
+  public GetLibraryGamesController(GetLibraryGamesUseCase getLibraryGamesUseCase) {
+    this.getLibraryGamesUseCase = getLibraryGamesUseCase;
+  }
 
-    @GetMapping("/library-games")
-    public ResponseEntity<List<LibraryGameResponse>> execute(Principal principal) {
-        GetLibraryGamesQuery query = new GetLibraryGamesQuery(principal.getName());
-        List<LibraryGameResponse> libraryGameResponses = getLibraryGamesUseCase.execute(query);
+  @GetMapping("/library-games")
+  public ResponseEntity<List<LibraryGameResponse>> execute(Principal principal) {
+    GetLibraryGamesQuery query = new GetLibraryGamesQuery(principal.getName());
+    List<LibraryGameResponse> libraryGameResponses = getLibraryGamesUseCase.execute(query);
 
-        return new ResponseEntity<>(libraryGameResponses, HttpStatus.OK);
-    }
+    return new ResponseEntity<>(libraryGameResponses, HttpStatus.OK);
+  }
 }

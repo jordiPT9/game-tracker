@@ -15,28 +15,37 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @ControllerAdvice
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
-    @ExceptionHandler(value = {GameDoesNotExistException.class})
-    protected ResponseEntity<Object> handleGameDoesNotExistException(Exception ex, WebRequest request) {
-        return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(), HttpStatus.NOT_FOUND, request);
-    }
+  @ExceptionHandler(value = {GameDoesNotExistException.class})
+  protected ResponseEntity<Object> handleGameDoesNotExistException(
+      Exception ex, WebRequest request) {
+    return handleExceptionInternal(
+        ex, ex.getMessage(), new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+  }
 
-    @ExceptionHandler(value = {LibraryGameAlreadyAddedException.class})
-    protected ResponseEntity<Object> handleLibraryGameAlreadyAddedException(Exception ex, WebRequest request) {
-        return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(), HttpStatus.CONFLICT, request);
-    }
+  @ExceptionHandler(value = {LibraryGameAlreadyAddedException.class})
+  protected ResponseEntity<Object> handleLibraryGameAlreadyAddedException(
+      Exception ex, WebRequest request) {
+    return handleExceptionInternal(
+        ex, ex.getMessage(), new HttpHeaders(), HttpStatus.CONFLICT, request);
+  }
 
-    @ExceptionHandler(value = {LibraryGameNotFoundException.class})
-    protected ResponseEntity<Object> handleLibraryGameNotFoundException(Exception ex, WebRequest request) {
-        return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(), HttpStatus.NOT_FOUND, request);
-    }
+  @ExceptionHandler(value = {LibraryGameNotFoundException.class})
+  protected ResponseEntity<Object> handleLibraryGameNotFoundException(
+      Exception ex, WebRequest request) {
+    return handleExceptionInternal(
+        ex, ex.getMessage(), new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+  }
 
-    @ExceptionHandler(value = {LibraryGameAccessDeniedException.class})
-    protected ResponseEntity<Object> handleLibraryGameAccessDeniedException(Exception ex, WebRequest request) {
-        return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(), HttpStatus.FORBIDDEN, request);
-    }
+  @ExceptionHandler(value = {LibraryGameAccessDeniedException.class})
+  protected ResponseEntity<Object> handleLibraryGameAccessDeniedException(
+      Exception ex, WebRequest request) {
+    return handleExceptionInternal(
+        ex, ex.getMessage(), new HttpHeaders(), HttpStatus.FORBIDDEN, request);
+  }
 
-    @ExceptionHandler(value = {UnauthorizedException.class})
-    protected ResponseEntity<Object> handleUnauthorizedException(Exception ex, WebRequest request) {
-        return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(), HttpStatus.UNAUTHORIZED, request);
-    }
+  @ExceptionHandler(value = {UnauthorizedException.class})
+  protected ResponseEntity<Object> handleUnauthorizedException(Exception ex, WebRequest request) {
+    return handleExceptionInternal(
+        ex, ex.getMessage(), new HttpHeaders(), HttpStatus.UNAUTHORIZED, request);
+  }
 }

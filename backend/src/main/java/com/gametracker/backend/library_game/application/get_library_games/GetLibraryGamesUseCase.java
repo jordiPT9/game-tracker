@@ -10,23 +10,23 @@ import java.util.stream.Collectors;
 
 @Service
 public class GetLibraryGamesUseCase {
-    private final LibraryGameRepository libraryGameRepository;
+  private final LibraryGameRepository libraryGameRepository;
 
-    public GetLibraryGamesUseCase(LibraryGameRepository libraryGameRepository) {
-        this.libraryGameRepository = libraryGameRepository;
-    }
+  public GetLibraryGamesUseCase(LibraryGameRepository libraryGameRepository) {
+    this.libraryGameRepository = libraryGameRepository;
+  }
 
-    public List<LibraryGameResponse> execute(GetLibraryGamesQuery command) {
-        List<LibraryGame> libraryGames = libraryGameRepository.findByUsername(command.username());
+  public List<LibraryGameResponse> execute(GetLibraryGamesQuery command) {
+    List<LibraryGame> libraryGames = libraryGameRepository.findByUsername(command.username());
 
-        return libraryGames
-                .stream()
-                .map(libraryGame -> new LibraryGameResponse(
-                        libraryGame.getId(),
-                        libraryGame.getTitle(),
-                        libraryGame.getStatus().name(),
-                        libraryGame.getRating()
-                ))
-                .collect(Collectors.toList());
-    }
+    return libraryGames.stream()
+        .map(
+            libraryGame ->
+                new LibraryGameResponse(
+                    libraryGame.getId(),
+                    libraryGame.getTitle(),
+                    libraryGame.getStatus().name(),
+                    libraryGame.getRating()))
+        .collect(Collectors.toList());
+  }
 }

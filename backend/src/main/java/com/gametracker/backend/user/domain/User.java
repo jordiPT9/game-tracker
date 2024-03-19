@@ -1,7 +1,6 @@
 package com.gametracker.backend.user.domain;
 
 import com.gametracker.backend.role.domain.RoleName;
-
 import java.util.Objects;
 
 public class User {

@@ -15,17 +15,18 @@ import java.security.Principal;
 @RestController
 @RequestMapping("/api")
 public class GetLibraryGameController {
-    private final GetLibraryGameUseCase getLibraryGameUseCase;
+  private final GetLibraryGameUseCase getLibraryGameUseCase;
 
-    public GetLibraryGameController(GetLibraryGameUseCase getLibraryGameUseCase) {
-        this.getLibraryGameUseCase = getLibraryGameUseCase;
-    }
+  public GetLibraryGameController(GetLibraryGameUseCase getLibraryGameUseCase) {
+    this.getLibraryGameUseCase = getLibraryGameUseCase;
+  }
 
-    @GetMapping("/library-games/{libraryGameId}")
-    public ResponseEntity<LibraryGameResponse> execute(@PathVariable String libraryGameId, Principal principal) {
-        GetLibraryGameQuery query = new GetLibraryGameQuery(libraryGameId, principal.getName());
-        LibraryGameResponse libraryGameResponse = getLibraryGameUseCase.execute(query);
+  @GetMapping("/library-games/{libraryGameId}")
+  public ResponseEntity<LibraryGameResponse> execute(
+      @PathVariable String libraryGameId, Principal principal) {
+    GetLibraryGameQuery query = new GetLibraryGameQuery(libraryGameId, principal.getName());
+    LibraryGameResponse libraryGameResponse = getLibraryGameUseCase.execute(query);
 
-        return new ResponseEntity<>(libraryGameResponse, HttpStatus.OK);
-    }
+    return new ResponseEntity<>(libraryGameResponse, HttpStatus.OK);
+  }
 }

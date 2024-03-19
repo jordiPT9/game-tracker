@@ -13,43 +13,41 @@ import static java.time.temporal.ChronoUnit.DAYS;
 
 @Component
 public class JWTUtil {
-    @Value("${jwt.secret}")
-    private String secretKey;
+  @Value("${jwt.secret}")
+  private String secretKey;
 
-    public String issueToken(String subject) {
-        return Jwts
-                .builder()
-                .setSubject(subject)
-                .setIssuedAt(Date.from(Instant.now()))
-                .setExpiration(Date.from(Instant.now().plus(7, DAYS)))
-                .signWith(getSigningKey(), SignatureAlgorithm.HS512)
-                .compact();
-    }
+  public String issueToken(String subject) {
+    return Jwts.builder()
+        .setSubject(subject)
+        .setIssuedAt(Date.from(Instant.now()))
+        .setExpiration(Date.from(Instant.now().plus(7, DAYS)))
+        .signWith(getSigningKey(), SignatureAlgorithm.HS512)
+        .compact();
+  }
 
-    public String getSubject(String token) {
-        return getClaims(token).getSubject();
-    }
+  public String getSubject(String token) {
+    return getClaims(token).getSubject();
+  }
 
-    private Claims getClaims(String token) {
-        return Jwts
-                .parserBuilder()
-                .setSigningKey(getSigningKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-    }
+  private Claims getClaims(String token) {
+    return Jwts.parserBuilder()
+        .setSigningKey(getSigningKey())
+        .build()
+        .parseClaimsJws(token)
+        .getBody();
+  }
 
-    private Key getSigningKey() {
-        return Keys.hmacShaKeyFor(secretKey.getBytes());
-    }
+  private Key getSigningKey() {
+    return Keys.hmacShaKeyFor(secretKey.getBytes());
+  }
 
-    public boolean isTokenValid(String token, String username) {
-        String subject = getSubject(token);
-        return subject.equals(username) && !isTokenExpired(token);
-    }
+  public boolean isTokenValid(String token, String username) {
+    String subject = getSubject(token);
+    return subject.equals(username) && !isTokenExpired(token);
+  }
 
-    private boolean isTokenExpired(String token) {
-        Date today = Date.from(Instant.now());
-        return getClaims(token).getExpiration().before(today);
-    }
+  private boolean isTokenExpired(String token) {
+    Date today = Date.from(Instant.now());
+    return getClaims(token).getExpiration().before(today);
+  }
 }

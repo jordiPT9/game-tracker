@@ -14,22 +14,20 @@ import java.security.Principal;
 @RestController
 @RequestMapping("/api")
 public class AddLibraryGameController {
-    private final AddLibraryGameUseCase addLibraryGameUseCase;
+  private final AddLibraryGameUseCase addLibraryGameUseCase;
 
-    public AddLibraryGameController(AddLibraryGameUseCase addLibraryGameUseCase) {
-        this.addLibraryGameUseCase = addLibraryGameUseCase;
-    }
+  public AddLibraryGameController(AddLibraryGameUseCase addLibraryGameUseCase) {
+    this.addLibraryGameUseCase = addLibraryGameUseCase;
+  }
 
-    @PostMapping("/library-games")
-    public ResponseEntity<HttpStatus> execute(@RequestBody AddLibraryGameRequest request, Principal principal) {
-        AddLibraryGameCommand command = new AddLibraryGameCommand(
-                request.id(),
-                request.title(),
-                request.rating(),
-                request.status(),
-                principal.getName());
-        addLibraryGameUseCase.execute(command);
+  @PostMapping("/library-games")
+  public ResponseEntity<HttpStatus> execute(
+      @RequestBody AddLibraryGameRequest request, Principal principal) {
+    AddLibraryGameCommand command =
+        new AddLibraryGameCommand(
+            request.id(), request.title(), request.rating(), request.status(), principal.getName());
+    addLibraryGameUseCase.execute(command);
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
-    }
+    return new ResponseEntity<>(HttpStatus.CREATED);
+  }
 }
