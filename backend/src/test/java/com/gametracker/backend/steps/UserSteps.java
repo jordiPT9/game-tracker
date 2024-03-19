@@ -6,6 +6,7 @@ import com.gametracker.backend.user.domain.UserRepository;
 import io.cucumber.java.DataTableType;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
 
 import java.util.List;
 import java.util.Map;
@@ -36,7 +37,7 @@ public class UserSteps {
         users.forEach(userRepository::save);
     }
 
-    @And("users with the following usernames should be in the database:")
+    @Then("users with the following usernames should be in the database:")
     public void aUserWithIdShouldBeInTheDatabase(List<String> usernames) {
         usernames.forEach(username -> {
             Optional<User> user = userRepository.findByUsername(username);

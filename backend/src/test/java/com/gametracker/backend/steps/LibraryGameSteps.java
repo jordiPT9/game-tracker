@@ -7,6 +7,7 @@ import com.gametracker.backend.library_game.domain.LibraryGameStatus;
 import io.cucumber.java.DataTableType;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
 
 import java.util.List;
 import java.util.Map;
@@ -37,7 +38,7 @@ public class LibraryGameSteps {
         libraryGames.forEach(libraryGameRepository::save);
     }
 
-    @And("library-games with the following ids should be in the database:")
+    @Then("library-games with the following ids should be in the database:")
     public void theFollowingLibraryGamesShouldBeInTheDatabase(List<String> libraryGameIds) {
         libraryGameIds.forEach(id -> {
             LibraryGame libraryGame = libraryGameRepository.findById(id);
@@ -45,7 +46,7 @@ public class LibraryGameSteps {
         });
     }
 
-    @And("library-games with the following ids should not be in the database:")
+    @Then("library-games with the following ids should not be in the database:")
     public void theFollowingLibraryGamesShouldNotBeInTheDatabase(List<String> libraryGameIds) {
         libraryGameIds.forEach(id -> {
             LibraryGame libraryGame = libraryGameRepository.findById(id);

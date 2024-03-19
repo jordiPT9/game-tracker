@@ -13,8 +13,8 @@ import static java.time.temporal.ChronoUnit.DAYS;
 
 @Component
 public class JWTUtil {
-    @Value("${jwt-secret}")
-    private String SECRET_KEY;
+    @Value("${jwt.secret}")
+    private String secretKey;
 
     public String issueToken(String subject) {
         return Jwts
@@ -40,7 +40,7 @@ public class JWTUtil {
     }
 
     private Key getSigningKey() {
-        return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
+        return Keys.hmacShaKeyFor(secretKey.getBytes());
     }
 
     public boolean isTokenValid(String token, String username) {
