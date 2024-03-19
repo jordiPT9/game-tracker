@@ -1,9 +1,7 @@
 package com.gametracker.backend.util;
 
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,39 +17,20 @@ public class DatabaseTruncator {
 
   @Transactional
   public void truncateAllTables() {
-    disableForeignKeyChecks();
-    executeTruncateQueries();
-    enableForeignKeyChecks();
-  }
+    // disable foreign checks
+    entityManager.createNativeQuery("SET FOREIGN_KEY_CHECKS = 0").executeUpdate();
 
-  private void disableForeignKeyChecks() {
-    Query query = entityManager.createNativeQuery("SET FOREIGN_KEY_CHECKS = 0;");
-    query.executeUpdate();
-  }
+    // truncate all tables
+    entityManager
+        .createNativeQuery("SHOW TABLES")
+        .getResultList()
+        .forEach(
+            tableName -> {
+              String truncateQuery = "TRUNCATE TABLE " + tableName;
+              entityManager.createNativeQuery(truncateQuery).executeUpdate();
+            });
 
-  private void executeTruncateQueries() {
-    List<String> queryStrings = getTruncateQueries();
-    queryStrings.forEach(
-        queryString -> {
-          Query query = entityManager.createNativeQuery(queryString);
-          query.executeUpdate();
-        });
-  }
-
-  private List<String> getTruncateQueries() {
-    String query =
-        """
-        SELECT CONCAT('TRUNCATE TABLE ',table_schema,'.',TABLE_NAME, ';')
-        FROM INFORMATION_SCHEMA.TABLES
-        WHERE table_schema IN ('gametracker')
-        """;
-    List<?> resultList = entityManager.createNativeQuery(query).getResultList();
-
-    return resultList.stream().map(String.class::cast).toList();
-  }
-
-  private void enableForeignKeyChecks() {
-    Query query = entityManager.createNativeQuery("SET FOREIGN_KEY_CHECKS = 1;");
-    query.executeUpdate();
+    // enable foreign checks again
+    entityManager.createNativeQuery("SET FOREIGN_KEY_CHECKS = 1").executeUpdate();
   }
 }
