@@ -33,6 +33,6 @@ public class GameSteps {
     @Given("the game does not exist")
     public void theGameDoesNotExist() {
         when(gameRepository.findGame(anyString()))
-                .thenReturn(null);
+                .thenReturn(Optional.empty());
     }
 }
