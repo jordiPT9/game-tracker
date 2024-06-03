@@ -14,7 +14,7 @@ public class DeleteLibraryGameUseCase {
     this.libraryGameRepository = libraryGameRepository;
   }
 
-  public void execute(DeleteLibraryGameCommand command) {
+  public void execute(DeleteLibraryGameRequest command) {
     LibraryGame libraryGame = libraryGameRepository.findById(command.id());
 
     if (libraryGame == null) {

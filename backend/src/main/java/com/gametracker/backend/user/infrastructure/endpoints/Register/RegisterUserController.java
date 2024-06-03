@@ -1,6 +1,6 @@
-package com.gametracker.backend.user.infrastructure.endpoints;
+package com.gametracker.backend.user.infrastructure.endpoints.Register;
 
-import com.gametracker.backend.user.application.register_user.RegisterUserCommand;
+import com.gametracker.backend.user.application.register_user.RegisterUserRequest;
 import com.gametracker.backend.user.application.register_user.RegisterUserUseCase;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,11 +19,11 @@ public class RegisterUserController {
   }
 
   @PostMapping("/users")
-  public ResponseEntity<HttpStatus> execute(@RequestBody RegisterUserRequest request) {
-    RegisterUserCommand command =
-        new RegisterUserCommand(
-            request.id(), request.username(), request.password(), request.email(), request.role());
-    registerUserUseCase.execute(command);
+  public ResponseEntity<HttpStatus> execute(@RequestBody RegisterUserRequestBody requestBody) {
+    RegisterUserRequest request =
+        new RegisterUserRequest(
+            requestBody.id(), requestBody.username(), requestBody.password(), requestBody.email(), requestBody.role());
+    registerUserUseCase.execute(request);
 
     return new ResponseEntity<>(HttpStatus.CREATED);
   }

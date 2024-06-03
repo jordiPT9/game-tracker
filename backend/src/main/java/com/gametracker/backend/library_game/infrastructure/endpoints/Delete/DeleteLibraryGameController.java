@@ -1,6 +1,6 @@
 package com.gametracker.backend.library_game.infrastructure.endpoints.Delete;
 
-import com.gametracker.backend.library_game.application.delete_library_game.DeleteLibraryGameCommand;
+import com.gametracker.backend.library_game.application.delete_library_game.DeleteLibraryGameRequest;
 import com.gametracker.backend.library_game.application.delete_library_game.DeleteLibraryGameUseCase;
 import java.security.Principal;
 import org.springframework.http.HttpStatus;
@@ -22,9 +22,9 @@ public class DeleteLibraryGameController {
   @DeleteMapping("/library-games/{libraryGameId}")
   public ResponseEntity<HttpStatus> execute(
       @PathVariable String libraryGameId, Principal principal) {
-    DeleteLibraryGameCommand command =
-        new DeleteLibraryGameCommand(libraryGameId, principal.getName());
-    deleteLibraryGameUseCase.execute(command);
+    DeleteLibraryGameRequest request =
+        new DeleteLibraryGameRequest(libraryGameId, principal.getName());
+    deleteLibraryGameUseCase.execute(request);
 
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }

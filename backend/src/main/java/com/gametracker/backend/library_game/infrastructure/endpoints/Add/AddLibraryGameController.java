@@ -1,6 +1,6 @@
 package com.gametracker.backend.library_game.infrastructure.endpoints.Add;
 
-import com.gametracker.backend.library_game.application.add_library_game.AddLibraryGameCommand;
+import com.gametracker.backend.library_game.application.add_library_game.AddLibraryGameRequest;
 import com.gametracker.backend.library_game.application.add_library_game.AddLibraryGameUseCase;
 import java.security.Principal;
 import org.springframework.http.HttpStatus;
@@ -21,11 +21,11 @@ public class AddLibraryGameController {
 
   @PostMapping("/library-games")
   public ResponseEntity<HttpStatus> execute(
-      @RequestBody AddLibraryGameRequest request, Principal principal) {
-    AddLibraryGameCommand command =
-        new AddLibraryGameCommand(
-            request.id(), request.title(), request.rating(), request.status(), principal.getName());
-    addLibraryGameUseCase.execute(command);
+          @RequestBody AddLibraryGameRequestBody requestBody, Principal principal) {
+    AddLibraryGameRequest request =
+        new AddLibraryGameRequest(
+            requestBody.id(), requestBody.title(), requestBody.rating(), requestBody.status(), principal.getName());
+    addLibraryGameUseCase.execute(request);
 
     return new ResponseEntity<>(HttpStatus.CREATED);
   }

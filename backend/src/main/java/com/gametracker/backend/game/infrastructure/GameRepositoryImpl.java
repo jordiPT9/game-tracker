@@ -38,7 +38,7 @@ public class GameRepositoryImpl implements GameRepository {
         restTemplate.exchange(BASE_URL + "/games", HttpMethod.POST, requestEntity, String.class);
     JSONArray gamesJsonArray = new JSONArray(response.getBody());
 
-    if (gamesJsonArray.length() == 0) {
+    if (gamesJsonArray.isEmpty()) {
       return Optional.empty();
     }
 

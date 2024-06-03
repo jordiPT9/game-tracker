@@ -1,7 +1,7 @@
 package com.gametracker.backend.library_game.infrastructure.endpoints.Get;
 
 import com.gametracker.backend.library_game.application.LibraryGameResponse;
-import com.gametracker.backend.library_game.application.get_library_games.GetLibraryGamesQuery;
+import com.gametracker.backend.library_game.application.get_library_games.GetLibraryGamesRequest;
 import com.gametracker.backend.library_game.application.get_library_games.GetLibraryGamesUseCase;
 import java.security.Principal;
 import java.util.List;
@@ -22,8 +22,8 @@ public class GetLibraryGamesController {
 
   @GetMapping("/library-games")
   public ResponseEntity<List<LibraryGameResponse>> execute(Principal principal) {
-    GetLibraryGamesQuery query = new GetLibraryGamesQuery(principal.getName());
-    List<LibraryGameResponse> libraryGameResponses = getLibraryGamesUseCase.execute(query);
+    GetLibraryGamesRequest request = new GetLibraryGamesRequest(principal.getName());
+    List<LibraryGameResponse> libraryGameResponses = getLibraryGamesUseCase.execute(request);
 
     return new ResponseEntity<>(libraryGameResponses, HttpStatus.OK);
   }

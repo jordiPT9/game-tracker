@@ -18,7 +18,7 @@ public class AddLibraryGameUseCase {
     this.gameRepository = gameRepository;
   }
 
-  public void execute(AddLibraryGameCommand command) {
+  public void execute(AddLibraryGameRequest command) {
     gameRepository
         .findGame(command.title())
         .orElseThrow(() -> new GameDoesNotExistException(command.title()));

@@ -13,14 +13,14 @@ public class RegisterUserUseCase {
     this.userRepository = userRepository;
   }
 
-  public void execute(RegisterUserCommand command) {
+  public void execute(RegisterUserRequest request) {
     User user =
         User.builder()
-            .id(command.id())
-            .username(command.username())
-            .password(command.password())
-            .email(command.email())
-            .role(RoleName.valueOf(command.role()))
+            .id(request.id())
+            .username(request.username())
+            .password(request.password())
+            .email(request.email())
+            .role(RoleName.valueOf(request.role()))
             .build();
 
     userRepository.save(user);

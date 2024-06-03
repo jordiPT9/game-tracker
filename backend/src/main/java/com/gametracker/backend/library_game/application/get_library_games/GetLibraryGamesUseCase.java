@@ -15,7 +15,7 @@ public class GetLibraryGamesUseCase {
     this.libraryGameRepository = libraryGameRepository;
   }
 
-  public List<LibraryGameResponse> execute(GetLibraryGamesQuery command) {
+  public List<LibraryGameResponse> execute(GetLibraryGamesRequest command) {
     List<LibraryGame> libraryGames = libraryGameRepository.findByUsername(command.username());
 
     return libraryGames.stream()

@@ -15,7 +15,7 @@ public class GetLibraryGameUseCase {
     this.libraryGameRepository = libraryGameRepository;
   }
 
-  public LibraryGameResponse execute(GetLibraryGameQuery query) {
+  public LibraryGameResponse execute(GetLibraryGameRequest query) {
     LibraryGame libraryGame = libraryGameRepository.findById(query.id());
 
     if (libraryGame == null) {

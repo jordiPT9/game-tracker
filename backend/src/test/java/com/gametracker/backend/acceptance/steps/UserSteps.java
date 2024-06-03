@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class UserSteps {
@@ -34,6 +35,15 @@ public class UserSteps {
   @Given("the following users exist:")
   public void theFollowingUsersExist(List<User> users) {
     users.forEach(userRepository::save);
+  }
+
+  @Then("users with the following usernames should not be in the database:")
+  public void aUserWithIdShouldNotBeInTheDatabase(List<String> usernames) {
+    usernames.forEach(
+            username -> {
+              Optional<User> user = userRepository.findByUsername(username);
+              assertFalse(user.isPresent());
+            });
   }
 
   @Then("users with the following usernames should be in the database:")
