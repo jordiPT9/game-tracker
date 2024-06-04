@@ -1,0 +1,11 @@
+{
+  "type": "object",
+  "properties": {
+    "averageRating": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "averageRating"
+  ]
+}

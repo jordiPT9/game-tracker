@@ -5,8 +5,8 @@ Feature: Get library games
 
   Background:
     Given the following roles exist:
-      | USER |
-    And a user with username "johnsmith" and role "USER" is logged in
+      | ROLE_USER |
+    And a user with username "johnsmith" and role "ROLE_USER" is logged in
 
   Scenario: User gets an existing game of their library successfully
     Given the following library-games exist:
@@ -23,7 +23,7 @@ Feature: Get library games
   Scenario: User fails to get a game of another users library
     Given the following users exist:
       | id          | username     | password        | email                  | role |
-      | random_id_2 | marcgonzalez | marcgonzalez123 | marcgonzalez@email.com | USER |
+      | random_id_2 | marcgonzalez | marcgonzalez123 | marcgonzalez@email.com | ROLE_USER |
     Given the following library-games exist:
       | id                                   | title             | rating | status | username     |
       | da1e846d-25e1-44e7-91f8-3cca9348d1b6 | Random game title | 4.5    | PLAYED | marcgonzalez |

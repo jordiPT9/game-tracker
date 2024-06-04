@@ -5,8 +5,8 @@ Feature: Delete library game
 
   Background:
     Given the following roles exist:
-      | USER |
-    And a user with username "johnsmith" and role "USER" is logged in
+      | ROLE_USER |
+    And a user with username "johnsmith" and role "ROLE_USER" is logged in
 
   Scenario: User removes a game of their library successfully
     Given the following library-games exist:

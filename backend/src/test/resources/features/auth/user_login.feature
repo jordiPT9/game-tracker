@@ -5,10 +5,10 @@ Feature: User login
 
   Background:
     Given the following roles exist:
-      | USER |
+      | ROLE_USER |
     And the following users exist:
       | id        | username | password    | email              | role |
-      | random_id | johnsnow | johnsnow123 | johnsnow@email.com | USER |
+      | random_id | johnsnow | johnsnow123 | johnsnow@email.com | ROLE_USER |
 
   Scenario: User logs in successfully
     When the unauthenticated user sends a "POST" request to "/api/auth/login" with the following JSON body:

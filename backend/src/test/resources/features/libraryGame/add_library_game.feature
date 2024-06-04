@@ -5,8 +5,8 @@ Feature: Add library game
 
   Background:
     Given the following roles exist:
-      | USER |
-    And a user with username "johnsmith" and role "USER" is logged in
+      | ROLE_USER |
+    And a user with username "johnsmith" and role "ROLE_USER" is logged in
 
 
   Scenario: User adds an existing game to their library successfully

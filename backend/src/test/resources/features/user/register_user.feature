@@ -5,7 +5,7 @@ Feature: Register user
 
   Background:
     Given the following roles exist:
-      | USER |
+      | ROLE_USER |
 
   Scenario: Potential user registers successfully
     When the unauthenticated user sends a "POST" request to "/api/users" with the following JSON body:
@@ -15,7 +15,7 @@ Feature: Register user
         "username": "johnsmith",
         "password": "johnsmith1234",
         "email": "johnsmith@email.com",
-        "role": "USER"
+        "role": "ROLE_USER"
       }
       """
     Then the server responds with a 201 status code

@@ -10,7 +10,6 @@ import java.util.Objects;
 public class LibraryGameJpaEntity {
   @Id private String id;
 
-  @Column(unique = true)
   private String title;
 
   private double rating;
