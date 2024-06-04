@@ -32,7 +32,7 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- SnakeYaml https://mvnrepository.com/artifact/org.yaml/snakeyaml -->
+        <!-- SnakeYaml https://mvnrepository.com/artifact/org.yaml/snakeyaml (needed for application properties in .yml) -->
         <dependency>
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
@@ -101,7 +101,6 @@
             <version>${cucumber.version}</version>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>org.junit.platform</groupId>
             <artifactId>junit-platform-suite</artifactId>
@@ -160,7 +159,6 @@
             <version>RELEASE</version>
             <scope>compile</scope>
         </dependency>
-
     </dependencies>
 
     <build>
