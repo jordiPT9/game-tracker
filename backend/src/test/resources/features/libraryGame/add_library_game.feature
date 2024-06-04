@@ -24,7 +24,7 @@ Feature: Add library game
     And library-games with the following ids should be in the database:
       | da1e846d-25e1-44e7-91f8-3cca9348d1b6 |
 
-  Scenario: User fails to add an already existing game in their library
+  Scenario: User fails to add an already added game in their library
     Given the game exists
     And the following library-games exist:
       | id                                   | title             | rating | status | username  |
