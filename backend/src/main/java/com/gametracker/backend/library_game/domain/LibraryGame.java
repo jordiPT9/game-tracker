@@ -35,7 +35,7 @@ public class LibraryGame {
     return rating;
   }
 
-  private void setRating(double rating) {
+  public void setRating(double rating) {
     this.rating = rating;
   }
 
@@ -43,7 +43,7 @@ public class LibraryGame {
     return status;
   }
 
-  private void setStatus(LibraryGameStatus status) {
+  public void setStatus(LibraryGameStatus status) {
     this.status = status;
   }
 
